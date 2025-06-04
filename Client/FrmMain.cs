@@ -29,5 +29,11 @@ namespace Client
             pnlMain.AutoSizeMode = AutoSizeMode.GrowAndShrink;
         }
 
+        private void radSaKlijentimaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmKlijenti frmKlijenti = new FrmKlijenti();
+            frmKlijenti.ShowDialog();
+            //trebalo bi kontroler koristiti i za ovo
+        }
     }
 }

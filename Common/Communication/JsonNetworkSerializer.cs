@@ -34,6 +34,7 @@ namespace Common.Communication
 
         public T Receive<T>()
         {
+            //ne bi trebalo da Response moze da bude null, nego samo podaci unutar response
             string json = reader.ReadLine();
             return JsonSerializer.Deserialize<T>(json);
         }

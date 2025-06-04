@@ -48,6 +48,9 @@ namespace Server
                     case Operation.GetAllMesto:
                         r.Result = Controller.Instance.GetAllCity();
                         break;
+                    case Operation.GetAllKlijent:
+                        r.Result = Controller.Instance.GetAllKlijent();
+                        break;
                 }
             }
             catch (Exception ex)

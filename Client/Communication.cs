@@ -86,5 +86,29 @@ namespace Client
             return serializer.ReadType<List<Mesto>>(response.Result);
 
         }
+
+        internal List<Klijent> GetAllKlijent()
+        {
+            Request request = new Request
+            {
+                Operation = Operation.GetAllKlijent
+            };
+            serializer.Send(request);
+            Response response = serializer.Receive<Response>();
+            return serializer.ReadType<List<Klijent>>(response.Result);
+
+        }
+
+        //internal List<Mesto> GetAllCity()
+        //{
+        //    Request request = new Request
+        //    {
+        //        Operation = Operation.GetAllMesto
+        //    };
+        //    serializer.Send(request);
+        //    Response response = serializer.Receive<Response>();
+        //    return serializer.ReadType<List<Mesto>>(response.Result);
+
+        //}
     }
 }

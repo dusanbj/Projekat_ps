@@ -53,5 +53,19 @@ namespace Server
 
             }
         }
+
+        internal List<Klijent> GetAllKlijent()
+        {
+            try
+            {
+                broker.OpenConnection();
+                return broker.GetAll(new Klijent()).Cast<Klijent>().ToList();
+            }
+            finally
+            {
+                broker.CloseConnection();
+
+            }
+        }
     }
 }

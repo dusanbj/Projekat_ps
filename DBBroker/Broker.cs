@@ -48,6 +48,9 @@ namespace DBBroker
             connection.OpenConnection();
         }
 
+        //1. GetAllJoin - uzima nazive dve tabele i joinuje ih
+        //2. dodati u GetByCondition
+        //3. entity da ima join condition, ako je join condition null ide bez joina, ako nije null nalepi join i povezi property
 
         public List<IEntity> GetAll(IEntity entity)
         {

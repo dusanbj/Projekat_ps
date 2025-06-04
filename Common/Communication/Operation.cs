@@ -10,6 +10,7 @@ namespace Common.Communication
     {
         CreateKlijent,
         Login,
-        GetAllMesto
+        GetAllMesto,
+        GetAllKlijent
     }
 }

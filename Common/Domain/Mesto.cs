@@ -6,7 +6,7 @@ namespace Domen
     public class Mesto : IEntity
     {
         public long Ptt { get; set; }
-        public string Naziv { get; set; }
+        public string Naziv { get; set; } 
 
         public string TableName => "mesto";
 
@@ -31,5 +31,7 @@ namespace Domen
             }
             return mesta;
         }
+
+        
     }
 }
