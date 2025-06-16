@@ -19,10 +19,10 @@ namespace Client.GuiController
         private UCDodajKlijenta dodajKlijenta;
        // private FrmKlijenti frmKlijenti;
 
-        internal Control CreateAddPerson()
+        internal Control CreateDodajKlijenta()
         {
             dodajKlijenta = new UCDodajKlijenta();
-            dodajKlijenta.btnDodaj.Click += AddPerson;
+            dodajKlijenta.btnDodaj.Click += AddKlijent;
             return dodajKlijenta;
         }
 
@@ -31,7 +31,7 @@ namespace Client.GuiController
             
         //}
 
-        private void AddPerson(object sender, EventArgs e)
+        private void AddKlijent(object sender, EventArgs e)
         {
             Klijent klijent = new Klijent
             {
@@ -43,7 +43,7 @@ namespace Client.GuiController
                 //Birthday = dodajKlijenta.McBirthday.SelectionStart,
                 //Gender = (Gender)Enum.Parse(typeof(Gender), dodajKlijenta.CmbGender.SelectedItem.ToString())
             };
-            Response response = Communication.Instance.CreatePerson(klijent);
+            Response response = Communication.Instance.CreateKlijent(klijent);
             //if (response.Exception == null)
             //{
             //    MessageBox.Show("Uspesno ste dodali osobu!");

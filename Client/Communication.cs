@@ -58,12 +58,29 @@ namespace Client
             return response;
         }
 
-        internal Response CreatePerson(Klijent klijent)
+        internal Response CreateKlijent(Klijent klijent)
         {
             Request request = new Request
             {
                 Argument = klijent,
                 Operation = Operation.CreateKlijent
+            };
+            serializer.Send(request);
+
+            Response response = serializer.Receive<Response>();
+            if (response.ExceptionMessage != null)
+            {
+                throw new Exception(response.ExceptionMessage);
+            }
+            return response;
+        }
+
+        internal Response CreateRevers(Revers revers)
+        {
+            Request request = new Request
+            {
+                Argument = revers,
+                Operation = Operation.CreateRevers
             };
             serializer.Send(request);
 

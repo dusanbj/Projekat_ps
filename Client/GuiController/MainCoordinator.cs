@@ -7,6 +7,8 @@ using System.Windows.Forms;
 
 namespace Client.GuiController
 {
+
+    //kontrolise valjda sta se desava na mainu kad klikces po padajucem meniju, ima smisla
     internal class MainCoordinator
     {
         private static MainCoordinator instance;
@@ -25,10 +27,12 @@ namespace Client.GuiController
         private MainCoordinator()
         {
             klijentGuiController = new KlijentGuiController();
+            reversGuiController = new ReversGuiController();
         }
 
         private FrmMain frmMain;
         private KlijentGuiController klijentGuiController;
+        private ReversGuiController reversGuiController;
 
         internal void ShowFrmMain()
         {
@@ -37,9 +41,15 @@ namespace Client.GuiController
             frmMain.ShowDialog();
         }
 
-        internal void ShowAddPersonPanel()
+        internal void ShowDodajKlijenta()
         {
-           frmMain.ChangePanel(klijentGuiController.CreateAddPerson());
+           frmMain.ChangePanel(klijentGuiController.CreateDodajKlijenta());
+        }
+
+        internal void ShowAddReversPanel()
+        {
+            frmMain.ChangePanel(reversGuiController.CreateDodajRevers());
+            //ovde baca exception, proveriti sta se ovde desava
         }
         //internal void ShowRadSaKlijentima()
         //{

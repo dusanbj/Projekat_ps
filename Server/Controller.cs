@@ -58,8 +58,11 @@ namespace Server
         {
             try
             {
-                broker.OpenConnection();
-                return broker.GetAll(new Klijent()).Cast<Klijent>().ToList();
+                //broker.OpenConnection();
+                //return broker.GetAll(new Klijent()).Cast<Klijent>().ToList();
+                GetAllKlijentFullSO getKlijent = new GetAllKlijentFullSO();
+                getKlijent.ExecuteTemplate();
+                return getKlijent.Result;
             }
             finally
             {

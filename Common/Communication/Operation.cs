@@ -9,6 +9,7 @@ namespace Common.Communication
     public enum Operation
     {
         CreateKlijent,
+        CreateRevers,
         Login,
         GetAllMesto,
         GetAllKlijent

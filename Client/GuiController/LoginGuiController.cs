@@ -13,6 +13,7 @@ namespace Client.GuiController
 {
     public class LoginGuiController
     {
+        public Zaposleni z;
 
         private static LoginGuiController instance;
         public static LoginGuiController Instance
@@ -57,7 +58,7 @@ namespace Client.GuiController
                 return;
             }
 
-            Zaposleni z = new Zaposleni
+            z = new Zaposleni
             {
                 Username = frmLogin.TxtUsername.Text,
                 Password = frmLogin.TxtPassword.Text,

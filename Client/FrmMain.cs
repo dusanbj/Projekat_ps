@@ -17,7 +17,9 @@ namespace Client
         public FrmMain()
         {
             InitializeComponent();
-            itemAddPerson.Click += (s, a) => MainCoordinator.Instance.ShowAddPersonPanel();
+            dodajKlijentaToolStripMenuItem.Click += (s, a) => MainCoordinator.Instance.ShowDodajKlijenta();
+            dodajReversToolStripMenuItem.Click += (s, a) => MainCoordinator.Instance.ShowAddReversPanel();
+            
         }
 
         public void ChangePanel(Control control)
@@ -34,6 +36,21 @@ namespace Client
             FrmKlijenti frmKlijenti = new FrmKlijenti();
             frmKlijenti.ShowDialog();
             //trebalo bi kontroler koristiti i za ovo
+        }
+
+        private void itemAddPerson_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dodajKlijentaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dodajReversToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

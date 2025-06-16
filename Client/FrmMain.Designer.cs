@@ -62,12 +62,14 @@
             itemAddPerson.Name = "itemAddPerson";
             itemAddPerson.Size = new System.Drawing.Size(52, 20);
             itemAddPerson.Text = "Klijent";
+            itemAddPerson.Click += itemAddPerson_Click;
             // 
             // dodajKlijentaToolStripMenuItem
             // 
             dodajKlijentaToolStripMenuItem.Name = "dodajKlijentaToolStripMenuItem";
             dodajKlijentaToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             dodajKlijentaToolStripMenuItem.Text = "Dodaj klijenta";
+            dodajKlijentaToolStripMenuItem.Click += dodajKlijentaToolStripMenuItem_Click;
             // 
             // radSaKlijentimaToolStripMenuItem
             // 
@@ -92,8 +94,9 @@
             // dodajReversToolStripMenuItem
             // 
             dodajReversToolStripMenuItem.Name = "dodajReversToolStripMenuItem";
-            dodajReversToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            dodajReversToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             dodajReversToolStripMenuItem.Text = "Dodaj revers";
+            dodajReversToolStripMenuItem.Click += dodajReversToolStripMenuItem_Click;
             // 
             // robaToolStripMenuItem
             // 

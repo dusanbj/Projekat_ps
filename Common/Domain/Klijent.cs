@@ -14,6 +14,11 @@ namespace Domen
 
         public string TableName => "klijent";
 
+        public override string ToString()
+        {
+            return $"{Id} - {Prezime}, {Ime}";
+        }
+
         public string Values => $"'{Ime}', '{Prezime}', '{BrTelefona}', {Mesto.Ptt}";
 
         public List<IEntity> GetReaderList(SqlDataReader reader)
@@ -30,7 +35,7 @@ namespace Domen
                     Mesto = new Mesto
                     {
                         Ptt = (long)reader["ptt"],
-                        Naziv = (string)reader["naziv"] 
+                        //Naziv = (string)reader["naziv"] 
                     }
                 };
                 klijenti.Add(k);
