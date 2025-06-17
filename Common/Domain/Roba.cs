@@ -10,9 +10,10 @@ namespace Domen
         public long Id { get; set; }
         public string Naziv { get; set; }
         public string Opis { get; set; }
+        public decimal Cena { get; set; }
 
         public string TableName => "roba";
-        public string Values => $"'{Naziv}', '{Opis}'";
+        public string Values => $"'{Naziv}', '{Opis}', {Cena}";
 
         public List<IEntity> GetReaderList(SqlDataReader reader)
         {
@@ -23,7 +24,8 @@ namespace Domen
                 {
                     Id = (long)reader["id"],
                     Naziv = (string)reader["naziv"],
-                    Opis = (string)reader["opis"]
+                    Opis = (string)reader["opis"],
+                    Cena = (decimal)reader["cena"]
                 });
             }
             return roba;

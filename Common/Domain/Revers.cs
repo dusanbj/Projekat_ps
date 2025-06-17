@@ -15,9 +15,10 @@ namespace Domen
         public Zaposleni Zaposleni { get; set; }
         public Klijent Klijent { get; set; }
         public List<StavkaReversa> Stavke { get; set; }
+        public decimal UkupnaCena { get; set; }
 
         public string TableName => "revers";
-        public string Values => $"'{Datum.ToString("yyyyMMdd HH:mm")}', {Zaposleni.Id}, {Klijent.Id}";
+        public string Values => $"'{Datum.ToString("yyyyMMdd HH:mm")}', {Zaposleni.Id}, {Klijent.Id}, {UkupnaCena}";
 
         public List<IEntity> GetReaderList(SqlDataReader reader)
         {
@@ -29,7 +30,8 @@ namespace Domen
                     Id = (long)reader["id"],
                     Datum = (DateTime)reader["datum"],
                     Zaposleni = new Zaposleni { Id = (long)reader["idZaposleni"] },
-                    Klijent = new Klijent { Id = (long)reader["idKlijent"] }
+                    Klijent = new Klijent { Id = (long)reader["idKlijent"] },
+                    UkupnaCena = (decimal)reader["ukupnaCena"]
                 });
             }
             return reversi;
