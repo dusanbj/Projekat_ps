@@ -15,6 +15,17 @@ namespace Client.UserControls
         public UCDodajStavke()
         {
             InitializeComponent();
+
+            //UC se otvori cim se kreira revers (edituje revers)
+            //na UC pise broj reversa koji je upravo kreiran
+            //informacije o stavki se upisu u UC
+            //na dugme "Sacuvaj" - pokupi se i validira se
+            //zapise se u objekat tipa StavkaReversa
+            //strpa se u binding listu "Stavke" koja je DataSource za dgvStavke
+            //na dugme "Sacuvaj" se za celu listu zove SO Dodavanje stavki 
+            //u toj SO foreach i dodaje se jedna po jedna stavka za taj revers
+            //commit ako je sve ok, rollback ako nije :) 
+
         }
     }
 }

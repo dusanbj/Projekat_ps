@@ -7,7 +7,6 @@ namespace Domen
     {
         public long Rb { get; set; }
         public Revers Revers { get; set; }
-        public string Naziv { get; set; }
         public int Kolicina { get; set; }
         public Roba Roba { get; set; }
         public decimal IznosStavke { get; set; }
@@ -15,7 +14,7 @@ namespace Domen
 
         public string TableName => "stavkaReversa";
 
-        public string Values => $"{Revers.Id}, {Rb}, '{Naziv}', {Kolicina}, {Roba.Id}, {IznosStavke}";
+        public string Values => $"{Revers.Id}, {Rb}, {Kolicina}, {Roba.Id}, {IznosStavke}";
 
         public List<IEntity> GetReaderList(SqlDataReader reader)
         {
@@ -26,7 +25,6 @@ namespace Domen
                 {
                     Revers = new Revers { Id = (long)reader["idRevers"] },
                     Rb = (int)reader["rb"],
-                    Naziv = (string)reader["naziv"],
                     Kolicina = (int)reader["kolicina"],
                     Roba = new Roba { Id = (long)reader["idRoba"] },
                     IznosStavke = (decimal)reader["iznosStavke"]
