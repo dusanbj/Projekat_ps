@@ -35,7 +35,7 @@
             dgvStavke = new System.Windows.Forms.DataGridView();
             textBox1 = new System.Windows.Forms.TextBox();
             label3 = new System.Windows.Forms.Label();
-            textBox2 = new System.Windows.Forms.TextBox();
+            tbKolicina = new System.Windows.Forms.TextBox();
             label4 = new System.Windows.Forms.Label();
             btnDodaj = new System.Windows.Forms.Button();
             btnSacuvaj = new System.Windows.Forms.Button();
@@ -103,12 +103,12 @@
             label3.TabIndex = 5;
             label3.Text = "Količina:";
             // 
-            // textBox2
+            // tbKolicina
             // 
-            textBox2.Location = new System.Drawing.Point(128, 153);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new System.Drawing.Size(121, 23);
-            textBox2.TabIndex = 6;
+            tbKolicina.Location = new System.Drawing.Point(128, 153);
+            tbKolicina.Name = "tbKolicina";
+            tbKolicina.Size = new System.Drawing.Size(121, 23);
+            tbKolicina.TabIndex = 6;
             // 
             // label4
             // 
@@ -127,6 +127,7 @@
             btnDodaj.TabIndex = 8;
             btnDodaj.Text = "Dodaj stavku";
             btnDodaj.UseVisualStyleBackColor = true;
+            btnDodaj.Click += btnDodaj_Click;
             // 
             // btnSacuvaj
             // 
@@ -144,7 +145,7 @@
             Controls.Add(btnSacuvaj);
             Controls.Add(btnDodaj);
             Controls.Add(label4);
-            Controls.Add(textBox2);
+            Controls.Add(tbKolicina);
             Controls.Add(label3);
             Controls.Add(textBox1);
             Controls.Add(panel1);
@@ -161,16 +162,16 @@
 
         #endregion
 
-        private System.Windows.Forms.ComboBox cmbRoba;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.DataGridView dgvStavke;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button btnDodaj;
-        private System.Windows.Forms.Button btnSacuvaj;
+        public System.Windows.Forms.ComboBox cmbRoba;
+        public System.Windows.Forms.Label label1;
+        public System.Windows.Forms.Label label2;
+        public System.Windows.Forms.Panel panel1;
+        public System.Windows.Forms.DataGridView dgvStavke;
+        public System.Windows.Forms.TextBox textBox1;
+        public System.Windows.Forms.Label label3;
+        public System.Windows.Forms.TextBox tbKolicina;
+        public System.Windows.Forms.Label label4;
+        public System.Windows.Forms.Button btnDodaj;
+        public System.Windows.Forms.Button btnSacuvaj;
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domen;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,6 +13,7 @@ namespace Client.UserControls
 {
     public partial class UCDodajStavke : UserControl
     {
+        public BindingList<StavkaReversa> Stavke { get; set; }
         public UCDodajStavke()
         {
             InitializeComponent();
@@ -25,6 +27,14 @@ namespace Client.UserControls
             //na dugme "Sacuvaj" se za celu listu zove SO Dodavanje stavki 
             //u toj SO foreach i dodaje se jedna po jedna stavka za taj revers
             //commit ako je sve ok, rollback ako nije :) 
+
+            Stavke = new BindingList<StavkaReversa>();
+            dgvStavke.DataSource = Stavke;
+
+        }
+
+        private void btnDodaj_Click(object sender, EventArgs e)
+        {
 
         }
     }

@@ -51,6 +51,12 @@ namespace Server
                     case Operation.GetAllKlijent:
                         r.Result = Controller.Instance.GetAllKlijent();
                         break;
+                    case Operation.DeleteRevers:
+                        //implementiraj ovo
+                        break;
+                    case Operation.UpdateRevers:
+                        //implementiraj ovo
+                        break;
                 }
             }
             catch (Exception ex)

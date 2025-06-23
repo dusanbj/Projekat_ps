@@ -116,6 +116,16 @@ namespace Client
 
         }
 
+        internal void DeleteRevers(Revers revers)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal Response UpdateRevers(Revers revers)
+        {
+            throw new NotImplementedException();
+        }
+
         //internal List<Mesto> GetAllCity()
         //{
         //    Request request = new Request

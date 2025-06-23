@@ -12,6 +12,8 @@ namespace Common.Communication
         CreateRevers,
         Login,
         GetAllMesto,
-        GetAllKlijent
+        GetAllKlijent,
+        DeleteRevers,
+        UpdateRevers
     }
 }
