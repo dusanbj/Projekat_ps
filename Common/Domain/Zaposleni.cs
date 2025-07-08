@@ -20,6 +20,12 @@ namespace Domen
         public string TableName => "zaposleni";
         public string Values => $"'{Ime}', '{Prezime}', '{BrTelefona}', '{Username}', '{Password}'";
 
+        public string PrimaryKeyName => "id";
+
+        public string PrimaryKeyValue => Id.ToString();
+
+        public string UpdateValues => $"ime='{Ime}', prezime='{Prezime}', brTelefona='{BrTelefona}', username='{Username}', password='{Password}'";
+
         public List<IEntity> GetReaderList(SqlDataReader reader)
         {
             List<IEntity> zaposleni = new List<IEntity>();

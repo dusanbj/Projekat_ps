@@ -15,6 +15,10 @@ namespace Domen
 
         public string TableName => "strSprema";
         public string Values => $"'{Naziv}'";
+        public string PrimaryKeyName => "id";
+        public string PrimaryKeyValue => Id.ToString();
+        public string UpdateValues => $"naziv='{Naziv}'";
+
 
         public List<IEntity> GetReaderList(SqlDataReader reader)
         {

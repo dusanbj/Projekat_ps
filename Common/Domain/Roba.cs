@@ -15,6 +15,11 @@ namespace Domen
         public string TableName => "roba";
         public string Values => $"'{Naziv}', '{Opis}', {Cena}";
 
+        public string PrimaryKeyName => "id";
+        public string PrimaryKeyValue => Id.ToString();
+        public string UpdateValues => $"naziv='{Naziv}', opis='{Opis}', cena={Cena}";
+
+
         public List<IEntity> GetReaderList(SqlDataReader reader)
         {
             List<IEntity> roba = new List<IEntity>();

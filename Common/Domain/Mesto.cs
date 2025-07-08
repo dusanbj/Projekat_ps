@@ -12,6 +12,12 @@ namespace Domen
 
         public string Values => $"'{Ptt}', '{Naziv}'";
 
+        public string PrimaryKeyName => "ptt";
+
+        public string PrimaryKeyValue => Ptt.ToString();
+
+        public string UpdateValues => $"naziv='{Naziv}'";
+
         public override string? ToString()
         {
             return Naziv;

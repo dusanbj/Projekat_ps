@@ -17,6 +17,12 @@ namespace Domen
         public string TableName => "prSS";
         public string Values => $"{Zaposleni.Id}, {StrSprema.Id}, '{Opis}'";
 
+        public string PrimaryKeyName => "idZaposleni, idStrucnaSprema";
+
+        public string PrimaryKeyValue => $"{Zaposleni.Id}, {StrSprema.Id}";
+
+        public string UpdateValues => $"opis='{Opis}'";
+
         public List<IEntity> GetReaderList(SqlDataReader reader)
         {
             List<IEntity> prSSLista = new List<IEntity>();

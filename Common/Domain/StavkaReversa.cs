@@ -16,6 +16,11 @@ namespace Domen
 
         public string Values => $"{Revers.Id}, {Rb}, {Kolicina}, {Roba.Id}, {IznosStavke}";
 
+        public string PrimaryKeyName => "idRevers, rb";
+        public string PrimaryKeyValue => $"{Revers.Id}, {Rb}";
+        public string UpdateValues => $"kolicina={Kolicina}, idRoba={Roba.Id}, iznosStavke={IznosStavke}";
+
+
         public List<IEntity> GetReaderList(SqlDataReader reader)
         {
             List<IEntity> stavke = new List<IEntity>();

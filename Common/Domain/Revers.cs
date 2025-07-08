@@ -20,6 +20,12 @@ namespace Domen
         public string TableName => "revers";
         public string Values => $"'{Datum.ToString("yyyyMMdd HH:mm")}', {Zaposleni.Id}, {Klijent.Id}, {UkupnaCena}";
 
+        public string PrimaryKeyName => "id";
+
+        public string PrimaryKeyValue => Id.ToString();
+
+        public string UpdateValues => $"datum='{Datum:yyyyMMdd HH:mm}', idZaposleni={Zaposleni.Id}, idKlijent={Klijent.Id}, ukupnaCena={UkupnaCena}";
+
         public List<IEntity> GetReaderList(SqlDataReader reader)
         {
             List<IEntity> reversi = new List<IEntity>();
