@@ -14,6 +14,6 @@ namespace Common.Communication
         GetAllMesto,
         GetAllKlijent,
         DeleteRevers,
-        UpdateRevers
+        UpdateRevers,
     }
 }

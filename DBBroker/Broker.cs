@@ -38,6 +38,16 @@ namespace DBBroker
             cmd.Dispose();
         }
 
+        public void Delete(IEntity obj)
+        {
+            
+        }
+
+        public void Update(IEntity obj)
+        {
+
+        }
+
         public void CloseConnection()
         {
             connection.CloseConnection();

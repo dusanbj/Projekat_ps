@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Sockets;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -40,7 +41,7 @@ namespace Server
                 switch (req.Operation)
                 {
                     case Operation.CreateKlijent:
-                        Controller.Instance.AddPerson(serializer.ReadType<Klijent>(req.Argument));
+                        Controller.Instance.CreateKlijent(serializer.ReadType<Klijent>(req.Argument));
                         break;
                     case Operation.Login:
                         r.Result = Controller.Instance.Login(serializer.ReadType<Zaposleni>(req.Argument));
@@ -52,10 +53,13 @@ namespace Server
                         r.Result = Controller.Instance.GetAllKlijent();
                         break;
                     case Operation.DeleteRevers:
-                        //implementiraj ovo
+                        Controller.Instance.DeleteRevers(serializer.ReadType<Revers>(req.Argument));
                         break;
                     case Operation.UpdateRevers:
-                        //implementiraj ovo
+                        Controller.Instance.UpdateRevers(serializer.ReadType<Revers>(req.Argument));
+                        break;
+                    case Operation.CreateRevers:
+                        Controller.Instance.CreateRevers(serializer.ReadType<Revers>(req.Argument));
                         break;
                 }
             }

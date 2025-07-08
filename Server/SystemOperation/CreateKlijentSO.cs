@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace Server.SystemOperation
 {
-    public class AddKlijentSO : SystemOperationBase
+    public class CreateKlijentSO : SystemOperationBase
     {
         private readonly Klijent p;
 
-        public AddKlijentSO(Klijent p)
+        public CreateKlijentSO(Klijent p)
         {
             this.p = p;
         }

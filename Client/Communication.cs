@@ -41,18 +41,18 @@ namespace Client
 
         internal Response Login(Zaposleni zap)
         {
-            Request req = new Request
+            Request request = new Request
             {
                 Argument = zap,
                 Operation = Operation.Login
             };
-            serializer.Send(req);
+            serializer.Send(request);
             Response response = serializer.Receive<Response>();
 
-            //if (response.ExceptionMessage != null)
-            //{
-            //    throw new Exception(response.ExceptionMessage);
-            //}
+            if (response.ExceptionMessage != null)
+            {
+                throw new Exception(response.ExceptionMessage);
+            }
 
             response.Result = serializer.ReadType<Zaposleni>(response.Result); // deserijalizujemo result u user-a
             return response;
@@ -116,14 +116,38 @@ namespace Client
 
         }
 
-        internal void DeleteRevers(Revers revers)
+        internal Response DeleteRevers(Revers revers)
         {
-            throw new NotImplementedException();
+            Request request = new Request
+            {
+                Argument = revers,
+                Operation = Operation.DeleteRevers
+            };
+            serializer.Send(request);
+
+            Response response = serializer.Receive<Response>();
+            if (response.ExceptionMessage != null)
+            {
+                throw new Exception(response.ExceptionMessage);
+            }
+            return response;
         }
 
         internal Response UpdateRevers(Revers revers)
         {
-            throw new NotImplementedException();
+            Request request = new Request
+            {
+                Argument = revers,
+                Operation = Operation.UpdateRevers
+            };
+            serializer.Send(request);
+
+            Response response = serializer.Receive<Response>();
+            if (response.ExceptionMessage != null)
+            {
+                throw new Exception(response.ExceptionMessage);
+            }
+            return response;
         }
 
         //internal List<Mesto> GetAllCity()
