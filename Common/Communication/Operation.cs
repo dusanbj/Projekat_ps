@@ -8,12 +8,41 @@ namespace Common.Communication
 {
     public enum Operation
     {
-        CreateKlijent,
-        CreateRevers,
+        //logovanje
         Login,
-        GetAllMesto,
+        Logout,
+        //klijenti
+        CreateKlijent,
+        UpdateKlijent,
+        DeleteKlijent,
         GetAllKlijent,
-        DeleteRevers,
+        GetKlijent,
+        //zaposleni
+        CreateZaposleni,
+        UpdateZaposleni,
+        DeleteZaposleni,
+        GetZaposleni,
+        //reversi
+        CreateRevers,
         UpdateRevers,
+        DeleteRevers,
+        GetRevers,
+        GetAllRevers,
+        //Roba
+        CreateRoba,
+        UpdateRoba,
+        DeleteRoba,
+        GetRoba,
+        //Mesto
+        CreateMesto,
+        UpdateMesto,
+        DeleteMesto,
+        GetMesto,
+        GetAllMesto,
+        //strucna sprema
+        AddStrSprema,
+        UpdateStrSprema,
+        DeleteStrSprema,
+        GetStrSprema
     }
 }

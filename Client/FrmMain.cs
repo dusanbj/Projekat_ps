@@ -1,13 +1,5 @@
 ﻿using Client.GuiController;
-using Client.UserControls;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Client
@@ -17,9 +9,16 @@ namespace Client
         public FrmMain()
         {
             InitializeComponent();
+
+            // Ovi meniji su već žičeni ka kontroleru:
             dodajKlijentaToolStripMenuItem.Click += (s, a) => MainCoordinator.Instance.ShowDodajKlijenta();
             dodajReversToolStripMenuItem.Click += (s, a) => MainCoordinator.Instance.ShowAddReversPanel();
-            
+            dodajRobuToolStripMenuItem.Click += (s, a) => MainCoordinator.Instance.ShowDodajRobuOnMain();
+            radSaRobomToolStripMenuItem.Click += (s, a) => MainCoordinator.Instance.ShowRadSaRobom();
+
+            // Rad sa klijentima neka ostane preko Designer eventa (ispod),
+            // ili ako želiš i ovde lambda:
+            // radSaKlijentimaToolStripMenuItem.Click += (s, a) => MainCoordinator.Instance.ShowRadSaKlijentima();
         }
 
         public void ChangePanel(Control control)
@@ -31,26 +30,26 @@ namespace Client
             pnlMain.AutoSizeMode = AutoSizeMode.GrowAndShrink;
         }
 
+        // SADA: ovaj handler zove kontroler (više ne instancira FrmKlijenti direktno)
         private void radSaKlijentimaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmKlijenti frmKlijenti = new FrmKlijenti();
-            frmKlijenti.ShowDialog();
-            //trebalo bi kontroler koristiti i za ovo
+            MainCoordinator.Instance.ShowRadSaKlijentima();
         }
 
         private void itemAddPerson_Click(object sender, EventArgs e)
         {
-
+            // Ako je mapiran u Designeru, može pozivati:
+            // MainCoordinator.Instance.ShowDodajKlijenta();
         }
 
         private void dodajKlijentaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            MainCoordinator.Instance.ShowDodajKlijenta();
         }
 
         private void dodajReversToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            MainCoordinator.Instance.ShowAddReversPanel();
         }
     }
 }

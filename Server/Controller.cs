@@ -37,15 +37,19 @@ namespace Server
         {
             CreateZaposleniSO so = new CreateZaposleniSO(argument);
             so.ExecuteTemplate();
+            //prepraviti da vraca Zaposleni
         }
         internal void UpdateZaposleni (Zaposleni argument)
         {
             UpdateZaposleni so = new UpdateZaposleni(argument);
             so.ExecuteTemplate();
+            //prepraviti da vraca bool
         }
         internal void DeleteZaposleni(Zaposleni argument)
         {
-            //poziva SO
+            DeleteZaposleniSO so = new DeleteZaposleniSO(argument);
+            so.ExecuteTemplate();
+            //kako da napravim da bude bool nzm
         }
         internal List<Zaposleni> GetZaposleni(String argument)
         {
@@ -55,39 +59,52 @@ namespace Server
 
         internal void CreateKlijent(Klijent argument)
         {
+            //ispraviti da vraca klijenta
             CreateKlijentSO createKlijent = new CreateKlijentSO(argument);
             createKlijent.ExecuteTemplate();
         }
-        internal void CreateRevers(Revers revers)
+        internal Revers CreateRevers(Revers revers)
         {
             //poziva SO
+            return null;
+            //vraca revers sa ID-em
         }
 
-        internal void UpdateRevers(Revers argument)
+        internal bool UpdateRevers(Revers argument)
         {
             //poziva SO
+            return false;
         }
 
-        internal void DeleteRevers(Revers argument)
+        internal bool DeleteRevers(Revers argument)
         {
+            //poziva SO
+            return false;
+        }
+        internal Revers GetRevers(string argument)
+        {
+            return null;
             //poziva SO
         }
-        internal void GetRevers(string argument)
+        internal List<Revers> GetAllRevers()
         {
             //poziva SO
+            return null;
         }
         internal List<Klijent> GetKlijent(string argument)
         {
             //poziva SO
             return null;
         }
-        internal void UpdateKlijent(Klijent argument)
+        internal bool UpdateKlijent(Klijent argument)
         {
             //poziva SO
+            return false;
         }
-        internal void DeleteKlijent(Klijent argument)
+        internal bool DeleteKlijent(Klijent argument)
         {
             //poziva SO
+            return false;
         }
         internal List<Klijent> GetAllKlijent()
         {
@@ -105,41 +122,51 @@ namespace Server
 
             }
         }
-        internal void CreateRoba(Roba argument)
+        internal Roba CreateRoba(Roba argument)
         {
-            //poziva SO
+            var so = new CreateRobaSO(argument);
+            so.ExecuteTemplate();
+            return argument; // mozda da vratimo ID posle INSERT-a -> treba dopuniti
         }
-        internal void UpdateRoba(Roba argument)
+        internal bool UpdateRoba(Roba argument)
         {
-            //poziva SO
+            var so = new UpdateRobaSO(argument);
+            so.ExecuteTemplate();
+            return true;
         }
-        internal void DeleteRoba(Roba argument)
+        internal bool DeleteRoba(Roba argument)
         {
-            //poziva SO
+            var so = new DeleteRobaSO(argument);
+            so.ExecuteTemplate();
+            return true;
         }
-        internal List<Roba> GetRoba(string argument)
+        internal List<Roba> GetRoba(string argument) // null ili "" => sve
+        {
+            var so = new GetRobaSO(argument);
+            so.ExecuteTemplate();
+            return so.Result;
+        }
+        internal Mesto CreateMesto(Mesto argument)
         {
             //poziva SO
             return null;
         }
-        internal void CreateMesto(Mesto argument)
+        internal bool UpdateMesto(Mesto argument)
         {
             //poziva SO
+            return false;
         }
-        internal void UpdateMesto(Mesto argument)
+        internal bool DeleteMesto(Mesto argument)
         {
             //poziva SO
-        }
-        internal void DeleteMesto(Mesto argument)
-        {
-            //poziva SO
+            return false;
         }
         internal List<Mesto> GetMesto(string argument)
         {
             //poziva SO
             return null;
         }
-        internal List<Mesto> GetAllCity()
+        internal List<Mesto> GetAllMesto()
         {
             try
             {
@@ -156,13 +183,15 @@ namespace Server
         {
             //poziva SO
         }
-        internal void UpdateStrSprema(StrSprema argument)
+        internal bool UpdateStrSprema(StrSprema argument)
         {
             //poziva SO
+            return false;
         }
-        internal void DeleteStrSprema(StrSprema argument)
+        internal bool DeleteStrSprema(StrSprema argument)
         {
             //poziva SO
+            return false;
         }
         internal StrSprema GetStrSprema(string argument)
         {

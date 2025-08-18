@@ -150,6 +150,77 @@ namespace Client
             return response;
         }
 
+        internal Response CreateRoba(Roba roba)
+        {
+            var request = new Request
+            {
+                Argument = roba,
+                Operation = Operation.CreateRoba
+            };
+            serializer.Send(request);
+
+            var response = serializer.Receive<Response>();
+            if (response.ExceptionMessage != null)
+                throw new Exception(response.ExceptionMessage);
+
+            return response;
+        }
+
+        internal Response UpdateRoba(Roba roba)
+        {
+            var request = new Request
+            {
+                Argument = roba,
+                Operation = Operation.UpdateRoba
+            };
+            serializer.Send(request);
+
+            var response = serializer.Receive<Response>();
+            if (response.ExceptionMessage != null)
+                throw new Exception(response.ExceptionMessage);
+
+            return response;
+        }
+
+        internal Response DeleteRoba(Roba roba)
+        {
+            var request = new Request
+            {
+                Argument = roba,
+                Operation = Operation.DeleteRoba
+            };
+            serializer.Send(request);
+
+            var response = serializer.Receive<Response>();
+            if (response.ExceptionMessage != null)
+                throw new Exception(response.ExceptionMessage);
+
+            return response;
+        }
+
+        //ako je filter null, vraca svu robu
+        internal List<Roba> GetRoba(string filter = null)
+        {
+            var request = new Request
+            {
+                Operation = Operation.GetRoba,
+                Argument = filter // server neka tretira null/"" kao "SELECT *"
+            };
+            serializer.Send(request);
+
+            var response = serializer.Receive<Response>();
+            if (response.ExceptionMessage != null)
+                throw new Exception(response.ExceptionMessage);
+
+            return serializer.ReadType<List<Roba>>(response.Result);
+        }
+        //vraca celu listu
+        internal List<Roba> GetAllRoba()
+        {
+            return GetRoba(null);
+        }
+
+
         //internal List<Mesto> GetAllCity()
         //{
         //    Request request = new Request

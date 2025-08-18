@@ -47,7 +47,7 @@ namespace Server
                         r.Result = Controller.Instance.Login(serializer.ReadType<Zaposleni>(req.Argument));
                         break;
                     case Operation.GetAllMesto:
-                        r.Result = Controller.Instance.GetAllCity();
+                        r.Result = Controller.Instance.GetAllMesto();
                         break;
                     case Operation.GetAllKlijent:
                         r.Result = Controller.Instance.GetAllKlijent();
@@ -60,6 +60,18 @@ namespace Server
                         break;
                     case Operation.CreateRevers:
                         Controller.Instance.CreateRevers(serializer.ReadType<Revers>(req.Argument));
+                        break;
+                    case Operation.CreateRoba:
+                        Controller.Instance.CreateRoba(serializer.ReadType<Roba>(req.Argument));
+                        break;
+                    case Operation.UpdateRoba:
+                        Controller.Instance.UpdateRoba(serializer.ReadType<Roba>(req.Argument));
+                        break;
+                    case Operation.DeleteRoba:
+                        Controller.Instance.DeleteRoba(serializer.ReadType<Roba>(req.Argument));
+                        break;
+                    case Operation.GetRoba:
+                        r.Result = Controller.Instance.GetRoba(serializer.ReadType<string>(req.Argument)); // null => sve
                         break;
                 }
             }

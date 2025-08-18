@@ -1,7 +1,6 @@
 ﻿using Domen;
-using Server.SystemOperation;
 
-namespace Server
+namespace Server.SystemOperation
 {
     internal class UpdateZaposleni : SystemOperationBase
     {

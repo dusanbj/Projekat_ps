@@ -67,21 +67,21 @@
             // dodajKlijentaToolStripMenuItem
             // 
             dodajKlijentaToolStripMenuItem.Name = "dodajKlijentaToolStripMenuItem";
-            dodajKlijentaToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            dodajKlijentaToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             dodajKlijentaToolStripMenuItem.Text = "Dodaj klijenta";
             dodajKlijentaToolStripMenuItem.Click += dodajKlijentaToolStripMenuItem_Click;
             // 
             // radSaKlijentimaToolStripMenuItem
             // 
             radSaKlijentimaToolStripMenuItem.Name = "radSaKlijentimaToolStripMenuItem";
-            radSaKlijentimaToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            radSaKlijentimaToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             radSaKlijentimaToolStripMenuItem.Text = "Rad sa klijentima";
             radSaKlijentimaToolStripMenuItem.Click += radSaKlijentimaToolStripMenuItem_Click;
             // 
             // prikaziKlijenteToolStripMenuItem
             // 
             prikaziKlijenteToolStripMenuItem.Name = "prikaziKlijenteToolStripMenuItem";
-            prikaziKlijenteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            prikaziKlijenteToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             prikaziKlijenteToolStripMenuItem.Text = "Prikazi klijente";
             // 
             // reversToolStripMenuItem
@@ -94,7 +94,7 @@
             // dodajReversToolStripMenuItem
             // 
             dodajReversToolStripMenuItem.Name = "dodajReversToolStripMenuItem";
-            dodajReversToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            dodajReversToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             dodajReversToolStripMenuItem.Text = "Dodaj revers";
             dodajReversToolStripMenuItem.Click += dodajReversToolStripMenuItem_Click;
             // 
@@ -108,20 +108,20 @@
             // dodajRobuToolStripMenuItem
             // 
             dodajRobuToolStripMenuItem.Name = "dodajRobuToolStripMenuItem";
-            dodajRobuToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            dodajRobuToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             dodajRobuToolStripMenuItem.Text = "Dodaj robu";
             // 
             // radSaRobomToolStripMenuItem
             // 
             radSaRobomToolStripMenuItem.Name = "radSaRobomToolStripMenuItem";
-            radSaRobomToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            radSaRobomToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             radSaRobomToolStripMenuItem.Text = "Rad sa robom";
             // 
             // prikaziRovuToolStripMenuItem
             // 
             prikaziRovuToolStripMenuItem.Name = "prikaziRovuToolStripMenuItem";
-            prikaziRovuToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
-            prikaziRovuToolStripMenuItem.Text = "Prikazi rovu";
+            prikaziRovuToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            prikaziRovuToolStripMenuItem.Text = "Prikazi robu";
             // 
             // strucnaSpremaToolStripMenuItem
             // 
