@@ -120,12 +120,12 @@
 
         #endregion
 
-        public System.Windows.Forms.Button btnDodaj;
-        public System.Windows.Forms.Label label1;
-        public System.Windows.Forms.Label lblDatum;
-        public System.Windows.Forms.Label label2;
-        public System.Windows.Forms.Label lblZaposleni;
-        public System.Windows.Forms.ComboBox cmbKlijent;
-        public System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button btnDodaj;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblDatum;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblZaposleni;
+        private System.Windows.Forms.ComboBox cmbKlijent;
+        private System.Windows.Forms.Label label3;
     }
 }

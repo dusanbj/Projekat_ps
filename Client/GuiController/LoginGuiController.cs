@@ -67,6 +67,7 @@ namespace Client.GuiController
             if (response.ExceptionMessage == null)
             {
                 frmLogin.Visible = false;
+                z = (Zaposleni)response.Result;
                 MainCoordinator.Instance.ShowFrmMain();
             }
             else
