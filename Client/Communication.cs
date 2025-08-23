@@ -75,6 +75,39 @@ namespace Client
             return response;
         }
 
+        internal Response UpdateKlijent(Klijent klijent)
+        {
+            var request = new Request
+            {
+                Argument = klijent,
+                Operation = Operation.UpdateKlijent
+            };
+            serializer.Send(request);
+
+            var response = serializer.Receive<Response>();
+            if (response.ExceptionMessage != null)
+                throw new Exception(response.ExceptionMessage);
+
+            return response;
+        }
+
+        internal Response DeleteKlijent(Klijent klijent)
+        {
+            var request = new Request
+            {
+                Argument = klijent,
+                Operation = Operation.DeleteKlijent
+            };
+            serializer.Send(request);
+
+            var response = serializer.Receive<Response>();
+            if (response.ExceptionMessage != null)
+                throw new Exception(response.ExceptionMessage);
+
+            return response;
+        }
+
+
         internal Response CreateRevers(Revers revers)
         {
             Request request = new Request
@@ -92,7 +125,7 @@ namespace Client
             return response;
         }
 
-        internal List<Mesto> GetAllCity()
+        internal List<Mesto> GetAllMesto()
         {
             Request request = new Request
             {
@@ -220,17 +253,29 @@ namespace Client
             return GetRoba(null);
         }
 
+        public Mesto CreateMesto(Mesto mesto)
+        {
+            var req = new Request { Operation = Operation.CreateMesto, Argument = mesto };
+            serializer.Send(req);
+            var resp = serializer.Receive<Response>();
+            if (resp.ExceptionMessage != null) throw new Exception(resp.ExceptionMessage);
+            return serializer.ReadType<Mesto>(resp.Result);
+        }
 
-        //internal List<Mesto> GetAllCity()
-        //{
-        //    Request request = new Request
-        //    {
-        //        Operation = Operation.GetAllMesto
-        //    };
-        //    serializer.Send(request);
-        //    Response response = serializer.Receive<Response>();
-        //    return serializer.ReadType<List<Mesto>>(response.Result);
+        public void UpdateMesto(Mesto mesto)
+        {
+            var req = new Request { Operation = Operation.UpdateMesto, Argument = mesto };
+            serializer.Send(req);
+            var resp = serializer.Receive<Response>();
+            if (resp.ExceptionMessage != null) throw new Exception(resp.ExceptionMessage);
+        }
 
-        //}
+        public void DeleteMesto(Mesto mesto)
+        {
+            var req = new Request { Operation = Operation.DeleteMesto, Argument = mesto };
+            serializer.Send(req);
+            var resp = serializer.Receive<Response>();
+            if (resp.ExceptionMessage != null) throw new Exception(resp.ExceptionMessage);
+        }
     }
 }

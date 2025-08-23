@@ -148,37 +148,40 @@ namespace Server
         }
         internal Mesto CreateMesto(Mesto argument)
         {
-            //poziva SO
-            return null;
+            var so = new CreateMestoSO(argument);
+            so.ExecuteTemplate();
+            return argument; // po uzoru na Robu: Create vraća prosleđeni entitet
         }
+
         internal bool UpdateMesto(Mesto argument)
         {
-            //poziva SO
-            return false;
+            var so = new UpdateMestoSO(argument);
+            so.ExecuteTemplate();
+            return true;
         }
+
         internal bool DeleteMesto(Mesto argument)
         {
-            //poziva SO
-            return false;
+            var so = new DeleteMestoSO(argument);
+            so.ExecuteTemplate();
+            return true;
         }
-        internal List<Mesto> GetMesto(string argument)
-        {
-            //poziva SO
-            return null;
-        }
+
         internal List<Mesto> GetAllMesto()
         {
-            try
-            {
-                broker.OpenConnection();
-                return broker.GetAll(new Mesto()).Cast<Mesto>().ToList();
-            }
-            finally
-            {
-                broker.CloseConnection();
-
-            }
+            var so = new GetAllMestoSO();
+            so.ExecuteTemplate();
+            return so.Result;
         }
+
+        // (opciono – filtriranje po ptt/nazivu)
+        internal List<Mesto> GetMesto(string filter)
+        {
+            var so = new GetMestoSO(filter);
+            so.ExecuteTemplate();
+            return so.Result;
+        }
+
         internal void AddStrSprema(StrSprema argument)
         {
             //poziva SO

@@ -40,6 +40,8 @@
             radSaRobomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             prikaziRovuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             strucnaSpremaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            mestoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            radSaMestimaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             lblUser = new System.Windows.Forms.Label();
             pnlMain = new System.Windows.Forms.Panel();
             mnMain.SuspendLayout();
@@ -48,7 +50,7 @@
             // mnMain
             // 
             mnMain.ImageScalingSize = new System.Drawing.Size(20, 20);
-            mnMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { itemAddPerson, reversToolStripMenuItem, robaToolStripMenuItem, strucnaSpremaToolStripMenuItem });
+            mnMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { itemAddPerson, reversToolStripMenuItem, robaToolStripMenuItem, strucnaSpremaToolStripMenuItem, mestoToolStripMenuItem });
             mnMain.Location = new System.Drawing.Point(0, 0);
             mnMain.Name = "mnMain";
             mnMain.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
@@ -108,19 +110,19 @@
             // dodajRobuToolStripMenuItem
             // 
             dodajRobuToolStripMenuItem.Name = "dodajRobuToolStripMenuItem";
-            dodajRobuToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            dodajRobuToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             dodajRobuToolStripMenuItem.Text = "Dodaj robu";
             // 
             // radSaRobomToolStripMenuItem
             // 
             radSaRobomToolStripMenuItem.Name = "radSaRobomToolStripMenuItem";
-            radSaRobomToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            radSaRobomToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             radSaRobomToolStripMenuItem.Text = "Rad sa robom";
             // 
             // prikaziRovuToolStripMenuItem
             // 
             prikaziRovuToolStripMenuItem.Name = "prikaziRovuToolStripMenuItem";
-            prikaziRovuToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            prikaziRovuToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             prikaziRovuToolStripMenuItem.Text = "Prikazi robu";
             // 
             // strucnaSpremaToolStripMenuItem
@@ -128,6 +130,20 @@
             strucnaSpremaToolStripMenuItem.Name = "strucnaSpremaToolStripMenuItem";
             strucnaSpremaToolStripMenuItem.Size = new System.Drawing.Size(101, 20);
             strucnaSpremaToolStripMenuItem.Text = "Strucna sprema";
+            // 
+            // mestoToolStripMenuItem
+            // 
+            mestoToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { radSaMestimaToolStripMenuItem });
+            mestoToolStripMenuItem.Name = "mestoToolStripMenuItem";
+            mestoToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
+            mestoToolStripMenuItem.Text = "Mesto";
+            // 
+            // radSaMestimaToolStripMenuItem
+            // 
+            radSaMestimaToolStripMenuItem.Name = "radSaMestimaToolStripMenuItem";
+            radSaMestimaToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            radSaMestimaToolStripMenuItem.Text = "Rad sa mestima";
+            radSaMestimaToolStripMenuItem.Click += radSaMestimaToolStripMenuItem_Click;
             // 
             // lblUser
             // 
@@ -178,5 +194,7 @@
         private System.Windows.Forms.ToolStripMenuItem radSaRobomToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem prikaziRovuToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem strucnaSpremaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mestoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem radSaMestimaToolStripMenuItem;
     }
 }

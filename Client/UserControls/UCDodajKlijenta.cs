@@ -16,7 +16,7 @@ namespace Client.UserControls
         public UCDodajKlijenta()
         {
             InitializeComponent();
-            BindingList<Mesto> mesta = new BindingList<Mesto>((List<Mesto>)Communication.Instance.GetAllCity());
+            BindingList<Mesto> mesta = new BindingList<Mesto>((List<Mesto>)Communication.Instance.GetAllMesto());
             cbMesto.DataSource = mesta;
             cbMesto.DisplayMember = "Naziv";
         }

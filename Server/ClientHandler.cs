@@ -73,6 +73,16 @@ namespace Server
                     case Operation.GetRoba:
                         r.Result = Controller.Instance.GetRoba(serializer.ReadType<string>(req.Argument)); // null => sve
                         break;
+                    case Operation.CreateMesto:
+                         var arg = serializer.ReadType<Mesto>(req.Argument);
+                         r.Result = Controller.Instance.CreateMesto(arg);
+                         break;
+                    case Operation.UpdateMesto:
+                         Controller.Instance.UpdateMesto(serializer.ReadType<Mesto>(req.Argument));
+                         break;
+                    case Operation.DeleteMesto:
+                         Controller.Instance.DeleteMesto(serializer.ReadType<Mesto>(req.Argument));
+                         break;
                 }
             }
             catch (Exception ex)

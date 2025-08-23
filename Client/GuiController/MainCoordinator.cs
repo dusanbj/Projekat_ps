@@ -23,12 +23,14 @@ namespace Client.GuiController
             klijentGuiController = new KlijentGuiController();
             reversGuiController = new ReversGuiController();
             robaGuiController = new RobaGuiController();
+            mestoGuiController = new MestoGuiController();
         }
 
         private FrmMain frmMain;
         private KlijentGuiController klijentGuiController;
         private ReversGuiController reversGuiController;
         private readonly RobaGuiController robaGuiController;
+        private MestoGuiController mestoGuiController;
 
         internal void ShowFrmMain()
         {
@@ -36,32 +38,25 @@ namespace Client.GuiController
             {
                 AutoSize = true
             };
-            // Ako želiš da glavna forma ne blokira nit, koristi Show();
-            // ovde ostavljam kao do sada:
+            // Ako želimo da glavna forma ne blokira nit, koristi Show();
+            // za sada nek bude ovo:
             frmMain.ShowDialog();
         }
 
-        /// <summary>
         /// Dodaj robu -> prikazuje SAMO UCDodajRobu u centralnom panelu FrmMain.
         /// (PREVEŽI meni item u FrmMain da zove ovu metodu.)
-        /// </summary>
         internal void ShowDodajRobuOnMain()
         {
             var uc = robaGuiController.CreateDodajRobu(onSaved: null);
             frmMain.ChangePanel(uc);
         }
 
-        /// <summary>
-        /// (Ostavljeno ako ti negde treba modalni dijalog za dodavanje.)
-        /// </summary>
         internal void ShowDodajRobuDialog()
         {
             robaGuiController.ShowDodajRobuDialog(frmMain, onSaved: null);
         }
 
-        /// <summary>
         /// Rad sa robom -> otvara tvoj FrmRoba (UC + DGV).
-        /// </summary>
         internal void ShowRadSaRobom()
         {
             robaGuiController.ShowFrmRoba(frmMain);
@@ -80,10 +75,13 @@ namespace Client.GuiController
         // Rad sa klijentima ide isključivo preko kontrolera
         internal void ShowRadSaKlijentima()
         {
-            using (var frmKlijenti = new FrmKlijenti())
-            {
-                frmKlijenti.ShowDialog(frmMain);
-            }
+            klijentGuiController.ShowFrmKlijenti(frmMain);
+        }
+
+        // Rad sa mestima – otvara FrmMesta kao novu formu (modalno)
+        internal void ShowRadSaMestima()
+        {
+            mestoGuiController.ShowFrmMesta(frmMain);
         }
     }
 }

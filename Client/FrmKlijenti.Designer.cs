@@ -30,17 +30,19 @@
         {
             pnlOsoba = new System.Windows.Forms.Panel();
             btnDodajGrad = new System.Windows.Forms.Button();
-            btnDodaj = new System.Windows.Forms.Button();
+            btnSacuvaj = new System.Windows.Forms.Button();
             cbMesto = new System.Windows.Forms.ComboBox();
             label4 = new System.Windows.Forms.Label();
             label3 = new System.Windows.Forms.Label();
-            txtBrojTelefona = new System.Windows.Forms.TextBox();
+            tbBrojTelefona = new System.Windows.Forms.TextBox();
             label2 = new System.Windows.Forms.Label();
-            txtPrezime = new System.Windows.Forms.TextBox();
+            tbPrezime = new System.Windows.Forms.TextBox();
             label1 = new System.Windows.Forms.Label();
-            txtIme = new System.Windows.Forms.TextBox();
+            tbIme = new System.Windows.Forms.TextBox();
+            btnSacuvajSve = new System.Windows.Forms.Button();
+            btnAzuriraj = new System.Windows.Forms.Button();
+            btnObrisi = new System.Windows.Forms.Button();
             panel1 = new System.Windows.Forms.Panel();
-            button1 = new System.Windows.Forms.Button();
             dgvKlijenti = new System.Windows.Forms.DataGridView();
             pnlOsoba.SuspendLayout();
             panel1.SuspendLayout();
@@ -52,15 +54,15 @@
             pnlOsoba.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             pnlOsoba.BackColor = System.Drawing.SystemColors.ActiveCaption;
             pnlOsoba.Controls.Add(btnDodajGrad);
-            pnlOsoba.Controls.Add(btnDodaj);
+            pnlOsoba.Controls.Add(btnSacuvaj);
             pnlOsoba.Controls.Add(cbMesto);
             pnlOsoba.Controls.Add(label4);
             pnlOsoba.Controls.Add(label3);
-            pnlOsoba.Controls.Add(txtBrojTelefona);
+            pnlOsoba.Controls.Add(tbBrojTelefona);
             pnlOsoba.Controls.Add(label2);
-            pnlOsoba.Controls.Add(txtPrezime);
+            pnlOsoba.Controls.Add(tbPrezime);
             pnlOsoba.Controls.Add(label1);
-            pnlOsoba.Controls.Add(txtIme);
+            pnlOsoba.Controls.Add(tbIme);
             pnlOsoba.Location = new System.Drawing.Point(12, 18);
             pnlOsoba.Name = "pnlOsoba";
             pnlOsoba.Size = new System.Drawing.Size(407, 375);
@@ -75,14 +77,14 @@
             btnDodajGrad.Text = "+";
             btnDodajGrad.UseVisualStyleBackColor = true;
             // 
-            // btnDodaj
+            // btnSacuvaj
             // 
-            btnDodaj.Location = new System.Drawing.Point(61, 276);
-            btnDodaj.Name = "btnDodaj";
-            btnDodaj.Size = new System.Drawing.Size(295, 29);
-            btnDodaj.TabIndex = 10;
-            btnDodaj.Text = "Dodaj";
-            btnDodaj.UseVisualStyleBackColor = true;
+            btnSacuvaj.Location = new System.Drawing.Point(57, 229);
+            btnSacuvaj.Name = "btnSacuvaj";
+            btnSacuvaj.Size = new System.Drawing.Size(295, 29);
+            btnSacuvaj.TabIndex = 10;
+            btnSacuvaj.Text = "Sacuvaj";
+            btnSacuvaj.UseVisualStyleBackColor = true;
             // 
             // cbMesto
             // 
@@ -111,12 +113,12 @@
             label3.TabIndex = 5;
             label3.Text = "Broj telefona:";
             // 
-            // txtBrojTelefona
+            // tbBrojTelefona
             // 
-            txtBrojTelefona.Location = new System.Drawing.Point(140, 127);
-            txtBrojTelefona.Name = "txtBrojTelefona";
-            txtBrojTelefona.Size = new System.Drawing.Size(196, 23);
-            txtBrojTelefona.TabIndex = 4;
+            tbBrojTelefona.Location = new System.Drawing.Point(140, 127);
+            tbBrojTelefona.Name = "tbBrojTelefona";
+            tbBrojTelefona.Size = new System.Drawing.Size(196, 23);
+            tbBrojTelefona.TabIndex = 4;
             // 
             // label2
             // 
@@ -127,12 +129,12 @@
             label2.TabIndex = 3;
             label2.Text = "Prezime:";
             // 
-            // txtPrezime
+            // tbPrezime
             // 
-            txtPrezime.Location = new System.Drawing.Point(140, 85);
-            txtPrezime.Name = "txtPrezime";
-            txtPrezime.Size = new System.Drawing.Size(196, 23);
-            txtPrezime.TabIndex = 2;
+            tbPrezime.Location = new System.Drawing.Point(140, 85);
+            tbPrezime.Name = "tbPrezime";
+            tbPrezime.Size = new System.Drawing.Size(196, 23);
+            tbPrezime.TabIndex = 2;
             // 
             // label1
             // 
@@ -143,12 +145,42 @@
             label1.TabIndex = 1;
             label1.Text = "Ime:";
             // 
-            // txtIme
+            // tbIme
             // 
-            txtIme.Location = new System.Drawing.Point(140, 41);
-            txtIme.Name = "txtIme";
-            txtIme.Size = new System.Drawing.Size(196, 23);
-            txtIme.TabIndex = 0;
+            tbIme.Location = new System.Drawing.Point(140, 41);
+            tbIme.Name = "tbIme";
+            tbIme.Size = new System.Drawing.Size(196, 23);
+            tbIme.TabIndex = 0;
+            // 
+            // btnSacuvajSve
+            // 
+            btnSacuvajSve.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            btnSacuvajSve.Location = new System.Drawing.Point(683, 405);
+            btnSacuvajSve.Name = "btnSacuvajSve";
+            btnSacuvajSve.Size = new System.Drawing.Size(168, 28);
+            btnSacuvajSve.TabIndex = 4;
+            btnSacuvajSve.Text = "Sacuvaj sve";
+            btnSacuvajSve.UseVisualStyleBackColor = true;
+            // 
+            // btnAzuriraj
+            // 
+            btnAzuriraj.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            btnAzuriraj.Location = new System.Drawing.Point(511, 405);
+            btnAzuriraj.Name = "btnAzuriraj";
+            btnAzuriraj.Size = new System.Drawing.Size(166, 29);
+            btnAzuriraj.TabIndex = 12;
+            btnAzuriraj.Text = "Azuriraj";
+            btnAzuriraj.UseVisualStyleBackColor = true;
+            // 
+            // btnObrisi
+            // 
+            btnObrisi.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            btnObrisi.Location = new System.Drawing.Point(339, 405);
+            btnObrisi.Name = "btnObrisi";
+            btnObrisi.Size = new System.Drawing.Size(166, 29);
+            btnObrisi.TabIndex = 13;
+            btnObrisi.Text = "Obrisi";
+            btnObrisi.UseVisualStyleBackColor = true;
             // 
             // panel1
             // 
@@ -159,21 +191,13 @@
             panel1.Size = new System.Drawing.Size(426, 374);
             panel1.TabIndex = 2;
             // 
-            // button1
-            // 
-            button1.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            button1.Location = new System.Drawing.Point(683, 405);
-            button1.Name = "button1";
-            button1.Size = new System.Drawing.Size(168, 28);
-            button1.TabIndex = 4;
-            button1.Text = "Sacuvaj sve";
-            button1.UseVisualStyleBackColor = true;
-            // 
             // dgvKlijenti
             // 
             dgvKlijenti.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvKlijenti.Location = new System.Drawing.Point(0, 1);
             dgvKlijenti.Name = "dgvKlijenti";
+            dgvKlijenti.ReadOnly = true;
+            dgvKlijenti.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             dgvKlijenti.Size = new System.Drawing.Size(426, 374);
             dgvKlijenti.TabIndex = 0;
             // 
@@ -182,7 +206,9 @@
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(869, 470);
-            Controls.Add(button1);
+            Controls.Add(btnObrisi);
+            Controls.Add(btnAzuriraj);
+            Controls.Add(btnSacuvajSve);
             Controls.Add(panel1);
             Controls.Add(pnlOsoba);
             Name = "FrmKlijenti";
@@ -197,18 +223,20 @@
         #endregion
 
         private System.Windows.Forms.Panel pnlOsoba;
-        private System.Windows.Forms.Button btnDodajGrad;
-        private System.Windows.Forms.Button btnDodaj;
-        private System.Windows.Forms.ComboBox cbMesto;
+        public System.Windows.Forms.Button btnDodajGrad;
+        public System.Windows.Forms.Button btnSacuvaj;
+        public System.Windows.Forms.ComboBox cbMesto;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox txtBrojTelefona;
+        public System.Windows.Forms.TextBox tbBrojTelefona;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txtPrezime;
+        public System.Windows.Forms.TextBox tbPrezime;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtIme;
+        public System.Windows.Forms.TextBox tbIme;
+        public System.Windows.Forms.Button btnSacuvajSve;
+        public System.Windows.Forms.Button btnAzuriraj;
+        public System.Windows.Forms.Button btnObrisi;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.DataGridView dgvKlijenti;
+        public System.Windows.Forms.DataGridView dgvKlijenti;
     }
 }

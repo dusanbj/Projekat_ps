@@ -37,7 +37,7 @@
             tbBrojTelefona = new System.Windows.Forms.TextBox();
             cbMesto = new System.Windows.Forms.ComboBox();
             btnDodajGrad = new System.Windows.Forms.Button();
-            btnDodaj = new System.Windows.Forms.Button();
+            btnSacuvaj = new System.Windows.Forms.Button();
             SuspendLayout();
             // 
             // label1
@@ -115,20 +115,20 @@
             btnDodajGrad.Text = "+";
             btnDodajGrad.UseVisualStyleBackColor = true;
             // 
-            // btnDodaj
+            // btnSacuvaj
             // 
-            btnDodaj.Location = new System.Drawing.Point(38, 221);
-            btnDodaj.Name = "btnDodaj";
-            btnDodaj.Size = new System.Drawing.Size(300, 23);
-            btnDodaj.TabIndex = 9;
-            btnDodaj.Text = "Dodaj";
-            btnDodaj.UseVisualStyleBackColor = true;
+            btnSacuvaj.Location = new System.Drawing.Point(38, 221);
+            btnSacuvaj.Name = "btnSacuvaj";
+            btnSacuvaj.Size = new System.Drawing.Size(300, 23);
+            btnSacuvaj.TabIndex = 9;
+            btnSacuvaj.Text = "Sacuvaj";
+            btnSacuvaj.UseVisualStyleBackColor = true;
             // 
             // UCDodajKlijenta
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            Controls.Add(btnDodaj);
+            Controls.Add(btnSacuvaj);
             Controls.Add(btnDodajGrad);
             Controls.Add(cbMesto);
             Controls.Add(tbBrojTelefona);
@@ -155,6 +155,6 @@
         public System.Windows.Forms.TextBox tbBrojTelefona;
         public System.Windows.Forms.ComboBox cbMesto;
         public System.Windows.Forms.Button btnDodajGrad;
-        public System.Windows.Forms.Button btnDodaj;
+        public System.Windows.Forms.Button btnSacuvaj;
     }
 }

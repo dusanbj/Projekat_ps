@@ -16,8 +16,6 @@ namespace Client
             dodajRobuToolStripMenuItem.Click += (s, a) => MainCoordinator.Instance.ShowDodajRobuOnMain();
             radSaRobomToolStripMenuItem.Click += (s, a) => MainCoordinator.Instance.ShowRadSaRobom();
 
-            // Rad sa klijentima neka ostane preko Designer eventa (ispod),
-            // ili ako želiš i ovde lambda:
             // radSaKlijentimaToolStripMenuItem.Click += (s, a) => MainCoordinator.Instance.ShowRadSaKlijentima();
         }
 
@@ -30,7 +28,6 @@ namespace Client
             pnlMain.AutoSizeMode = AutoSizeMode.GrowAndShrink;
         }
 
-        // SADA: ovaj handler zove kontroler (više ne instancira FrmKlijenti direktno)
         private void radSaKlijentimaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MainCoordinator.Instance.ShowRadSaKlijentima();
@@ -51,5 +48,12 @@ namespace Client
         {
             MainCoordinator.Instance.ShowAddReversPanel();
         }
+
+        private void radSaMestimaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MainCoordinator.Instance.ShowRadSaMestima();
+        }
+        
+
     }
 }

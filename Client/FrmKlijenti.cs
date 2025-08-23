@@ -13,11 +13,11 @@ namespace Client
 {
     public partial class FrmKlijenti : Form
     {
-        
+
         public FrmKlijenti()
         {
             InitializeComponent();
-            BindingList<Mesto> mesta = new BindingList<Mesto>((List<Mesto>)Communication.Instance.GetAllCity());
+            BindingList<Mesto> mesta = new BindingList<Mesto>((List<Mesto>)Communication.Instance.GetAllMesto());
             BindingList<Klijent> klijenti = new BindingList<Klijent>((List<Klijent>)Communication.Instance.GetAllKlijent());
             cbMesto.DataSource = mesta;
             cbMesto.DisplayMember = "Naziv";
@@ -31,7 +31,5 @@ namespace Client
         {
 
         }
-
-
     }
 }
