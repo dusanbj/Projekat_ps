@@ -1,11 +1,14 @@
 using Common.Domain;
 using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 namespace Domen
 {
     public class StavkaReversa : IEntity
     {
         public long Rb { get; set; }
+
+        [JsonIgnore]
         public Revers Revers { get; set; }
         public decimal Kolicina { get; set; }
         public Roba Roba { get; set; }

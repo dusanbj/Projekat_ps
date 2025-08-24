@@ -28,33 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmStavke));
             uc = new UserControls.UCDodajStavke();
-            btnSave = new System.Windows.Forms.Button();
             SuspendLayout();
             // 
             // uc
             // 
             uc.Location = new System.Drawing.Point(-1, -2);
             uc.Name = "uc";
-            uc.Size = new System.Drawing.Size(761, 371);
+            uc.Size = new System.Drawing.Size(761, 385);
             uc.TabIndex = 0;
             uc.Load += ucDodajStavke1_Load;
-            // 
-            // btnSave
-            // 
-            btnSave.Location = new System.Drawing.Point(581, 346);
-            btnSave.Name = "btnSave";
-            btnSave.Size = new System.Drawing.Size(149, 23);
-            btnSave.TabIndex = 1;
-            btnSave.Text = "Sačuvaj stavke";
-            btnSave.UseVisualStyleBackColor = true;
             // 
             // FrmStavke
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(800, 385);
-            Controls.Add(btnSave);
+            ClientSize = new System.Drawing.Size(754, 394);
             Controls.Add(uc);
             Name = "FrmStavke";
             Text = "Stavke reversa";
@@ -64,6 +54,5 @@
         #endregion
 
         public UserControls.UCDodajStavke uc;
-        public System.Windows.Forms.Button btnSave;
     }
 }

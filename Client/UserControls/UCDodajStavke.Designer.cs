@@ -33,7 +33,7 @@
             label2 = new System.Windows.Forms.Label();
             panel1 = new System.Windows.Forms.Panel();
             dgvStavke = new System.Windows.Forms.DataGridView();
-            textBox1 = new System.Windows.Forms.TextBox();
+            tbBrojReversa = new System.Windows.Forms.TextBox();
             label3 = new System.Windows.Forms.Label();
             tbKolicina = new System.Windows.Forms.TextBox();
             label4 = new System.Windows.Forms.Label();
@@ -86,13 +86,13 @@
             dgvStavke.Size = new System.Drawing.Size(398, 288);
             dgvStavke.TabIndex = 0;
             // 
-            // textBox1
+            // tbBrojReversa
             // 
-            textBox1.Location = new System.Drawing.Point(128, 77);
-            textBox1.Name = "textBox1";
-            textBox1.ReadOnly = true;
-            textBox1.Size = new System.Drawing.Size(121, 23);
-            textBox1.TabIndex = 4;
+            tbBrojReversa.Location = new System.Drawing.Point(128, 77);
+            tbBrojReversa.Name = "tbBrojReversa";
+            tbBrojReversa.ReadOnly = true;
+            tbBrojReversa.Size = new System.Drawing.Size(121, 23);
+            tbBrojReversa.TabIndex = 4;
             // 
             // label3
             // 
@@ -147,7 +147,7 @@
             Controls.Add(label4);
             Controls.Add(tbKolicina);
             Controls.Add(label3);
-            Controls.Add(textBox1);
+            Controls.Add(tbBrojReversa);
             Controls.Add(panel1);
             Controls.Add(label2);
             Controls.Add(label1);
@@ -167,7 +167,7 @@
         public System.Windows.Forms.Label label2;
         public System.Windows.Forms.Panel panel1;
         public System.Windows.Forms.DataGridView dgvStavke;
-        public System.Windows.Forms.TextBox textBox1;
+        public System.Windows.Forms.TextBox tbBrojReversa;
         public System.Windows.Forms.Label label3;
         public System.Windows.Forms.TextBox tbKolicina;
         public System.Windows.Forms.Label label4;

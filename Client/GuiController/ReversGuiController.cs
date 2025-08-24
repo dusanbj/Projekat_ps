@@ -3,11 +3,9 @@ using Common.Communication;
 using Domen;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Client.GuiController
@@ -16,25 +14,49 @@ namespace Client.GuiController
     {
         private UCDodajRevers dodajRevers;
         private UCDodajStavke dodajStavke;
-        Form forma;
+        private Form forma;
         private Revers revers;
-        
 
         internal Control CreateDodajRevers()
         {
             dodajRevers = new UCDodajRevers();
+
+            // 1) Kontroler preuzima učitavanje (binduje podatke u view)
+            dodajRevers.ViewLoaded += OnViewLoaded;
+
+            // 2) Flow kreiranja reversta
             dodajRevers.btnDodaj.Click += AddRevers;
+
             return dodajRevers;
+        }
+
+        private void OnViewLoaded(object sender, EventArgs e)
+        {
+            try
+            {
+                var lista = (List<Klijent>)Communication.Instance.GetAllKlijent();
+                var binding = new BindingList<Klijent>(lista ?? new List<Klijent>());
+
+                // “Ubrizgaj” podatke u view
+                dodajRevers.BindKlijenti(binding);
+                dodajRevers.SetDatum(DateTime.Today);
+                dodajRevers.SetZaposleni(LoginGuiController.Instance.z);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Greška pri učitavanju klijenata: " + ex.Message);
+            }
         }
 
         private void AddRevers(object sender, EventArgs e)
         {
-            Klijent izabrani = dodajRevers.cmbKlijent.SelectedItem as Klijent;
+            var izabrani = dodajRevers.cmbKlijent.SelectedItem as Klijent;
             if (izabrani == null)
             {
                 MessageBox.Show("Morate izabrati klijenta!");
                 return;
             }
+
             revers = new Revers
             {
                 Datum = dodajRevers.danas,
@@ -43,59 +65,42 @@ namespace Client.GuiController
                 Stavke = null
             };
 
-
             Response response = Communication.Instance.CreateRevers(revers);
             if (response.ExceptionMessage == null)
             {
-                MessageBox.Show("Uspesno ste kreirali revers! Molimo dodajte stavke");
-                forma = new Form();
-                forma.Text = "Dodavanje stavki";
-                forma.Size = new Size(600, 400);
+                // preuzmi kreirani revers sa ID-em iz response-a (prilagodi po tvojoj Response klasi)
+                if (response.Result is Revers r) revers = r;
 
-                dodajStavke = new UCDodajStavke();
-                dodajStavke.Dock = DockStyle.Fill;
-                forma.Controls.Add(dodajStavke);
+                MessageBox.Show("Uspešno kreiran revers! Dodajte stavke.");
 
+                // otvori FrmStavke i zadrži reference
+                var frmStavke = new FrmStavke();
+                forma = frmStavke;
+                dodajStavke = frmStavke.uc;
+
+                // upiši broj reversa (Id) u UC
+                dodajStavke.SetBrojReversa(revers.Id);
+
+                // napuni cmbRoba iz servisa kroz UC API
+                var robe = Communication.Instance.GetRoba(null); // null => sve
+                dodajStavke.BindRobe(new BindingList<Roba>(robe ?? new List<Roba>()));
+
+                // handleri za dodavanje i čuvanje (pazi da se ne dupliraju ako ponovo otvaraš)
+                dodajStavke.btnDodaj.Click -= AddStavke;
+                dodajStavke.btnSacuvaj.Click -= SacuvajStavke;
                 dodajStavke.btnDodaj.Click += AddStavke;
                 dodajStavke.btnSacuvaj.Click += SacuvajStavke;
 
-                forma.ShowDialog();
-
+                frmStavke.ShowDialog();
             }
             else
             {
                 Debug.WriteLine(response.ExceptionMessage);
+                MessageBox.Show("Greška: " + response.ExceptionMessage);
             }
         }
 
-        private void SacuvajStavke(object sender, EventArgs e)
-        {
-            if (dodajStavke.Stavke == null || dodajStavke.Stavke.Count == 0)
-            {
-                MessageBox.Show("Revers mora sadržati barem jednu stavku!");
-
-                // Rollback ako revers nema stavki
-                Communication.Instance.DeleteRevers(revers);
-                return;
-            }
-
-            revers.Stavke = dodajStavke.Stavke.ToList();
-
-            Response response = Communication.Instance.UpdateRevers(revers);
-            if (response.ExceptionMessage == null)
-            {
-                MessageBox.Show("Revers i stavke su uspešno sačuvani!");
-
-                // zatvori formu ako imaš referencu na nju (možda kroz event ili prosleđenu referencu)
-                forma.Close();
-            }
-            else
-            {
-                MessageBox.Show("Greška prilikom čuvanja: " + response.ExceptionMessage);
-            }
-        }
-
-        private void AddStavke(Object sender, EventArgs e)
+        private void AddStavke(object sender, EventArgs e)
         {
             if (dodajStavke.cmbRoba.SelectedItem == null ||
                 !decimal.TryParse(dodajStavke.tbKolicina.Text, out decimal kolicina) || kolicina <= 0)
@@ -104,25 +109,53 @@ namespace Client.GuiController
                 return;
             }
 
-            Roba roba = dodajStavke.cmbRoba.SelectedItem as Roba;
+            var roba = (Roba)dodajStavke.cmbRoba.SelectedItem;
 
-            StavkaReversa stavka = new StavkaReversa
+            var stavka = new StavkaReversa
             {
-                Kolicina = kolicina,
-                Revers = revers,
+                // Rb možeš da postaviš i ovde ako želiš prikaz rednog broja:
+                // Rb = (dodajStavke.Stavke?.Count ?? 0) + 1,
                 Roba = roba,
-                IznosStavke = kolicina * roba.Cena
+                Kolicina = kolicina,
+                IznosStavke = kolicina * (roba?.Cena ?? 0m)
+                // NE postavljamo Revers — [JsonIgnore] će ionako preseći ciklus,
+                // ali nam na klijentu back-ref nije potreban.
             };
 
+            // UC već ima BindingList i dgvStavke je vezan — dodavanje auto-osvežava grid
             dodajStavke.Stavke.Add(stavka);
+
+            // UX sitnica
+            dodajStavke.tbKolicina.Clear();
+            dodajStavke.cmbRoba.Focus();
         }
 
-        /*
-        ovako cemo:
-        1. UCDodajRevers - doda revers i napravi se u bazi podataka prazan revers
-        2. odmah kad se kreira revers - izbaci formu za dodavanje stavki u revers
-        3. dugme dodaj dodaje stavku u revers, i potom dugme sacuvaj update revers i dodaje mu stavke
-        4. ako bude revers bez stavki - uradi se rollback 
-        */
+        private void SacuvajStavke(object sender, EventArgs e)
+        {
+            if (dodajStavke.Stavke == null || dodajStavke.Stavke.Count == 0)
+            {
+                MessageBox.Show("Revers mora sadržati barem jednu stavku!");
+                // Opcioni rollback header-a:
+                try { Communication.Instance.DeleteRevers(revers); }
+                catch (Exception ex) { MessageBox.Show("Rollback greška: " + ex.Message); }
+                return;
+            }
+
+            // Ako ipak negde ostane back-ref, [JsonIgnore] ga neće serijalizovati.
+            // Dovoljno je samo spakovati listu.
+            revers.Stavke = dodajStavke.Stavke.ToList();
+
+            Response response = Communication.Instance.UpdateRevers(revers);
+            if (response.ExceptionMessage == null)
+            {
+                MessageBox.Show("Revers i stavke su uspešno sačuvani!");
+                forma?.Close();
+                forma?.Dispose();
+            }
+            else
+            {
+                MessageBox.Show("Greška prilikom čuvanja: " + response.ExceptionMessage);
+            }
+        }
     }
 }

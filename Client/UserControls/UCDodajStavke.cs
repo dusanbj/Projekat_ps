@@ -37,5 +37,19 @@ namespace Client.UserControls
         {
 
         }
+
+        public void BindRobe(BindingList<Roba> robe)
+        {
+            cmbRoba.DataSource = robe ?? new BindingList<Roba>();
+            // Ako dodam u domensku klasu Roba override ToString() => skloniti DisplayMember
+            cmbRoba.DisplayMember = "Naziv"; 
+            cmbRoba.ValueMember = "Id";
+        }
+
+        public void SetBrojReversa(long id)
+        {
+            tbBrojReversa.Text = id.ToString();
+            tbBrojReversa.ReadOnly = true;
+        }
     }
 }

@@ -1,47 +1,50 @@
-﻿using Client.GuiController;
-using Domen;
+﻿using Domen;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Client.UserControls
 {
     public partial class UCDodajRevers : UserControl
     {
-        private BindingList<Klijent> klijenti;
+        public BindingList<Klijent> Klijenti { get; private set; }
         public DateTime danas;
+
+        // Kontroler se kači na ovaj event i radi učitavanje
+        public event EventHandler ViewLoaded;
+
         public UCDodajRevers()
         {
             InitializeComponent();
+
+            // Prosleđujemo WinForms Load u naš custom event
+            this.Load += (s, e) => ViewLoaded?.Invoke(this, EventArgs.Empty);
         }
 
-        private void UCDodajRevers_Load(object sender, EventArgs e)
+        // “Bind” metode koje kontroler zove (UC ne zove servise!)
+        public void BindKlijenti(BindingList<Klijent> klijenti)
         {
+            Klijenti = klijenti ?? new BindingList<Klijent>();
+ //           cmbKlijent.ValueMember = "Id";
 
-            klijenti = new BindingList<Klijent>((List<Klijent>)Communication.Instance.GetAllKlijent());
-            danas = DateTime.Today;
-            lblDatum.Text = danas.ToString("dd.MM.yyyy.");
-            lblZaposleni.Text = LoginGuiController.Instance.z.Ime;
-            cmbKlijent.DisplayMember = "ToString";
-            cmbKlijent.ValueMember = "Id";
-            cmbKlijent.DataSource = klijenti;
+            cmbKlijent.DataSource = Klijenti;
             cmbKlijent.DropDownStyle = ComboBoxStyle.DropDown;
             cmbKlijent.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             cmbKlijent.AutoCompleteSource = AutoCompleteSource.ListItems;
         }
 
-        private void btnDodaj_Click(object sender, EventArgs e)
+        public void SetDatum(DateTime date)
         {
-           
-
+            danas = date.Date;
+            lblDatum.Text = danas.ToString("dd.MM.yyyy.");
         }
 
+        public void SetZaposleni(Zaposleni z)
+        {
+            lblZaposleni.Text = z?.Ime ?? "/";
+        }
 
+        // Dugme je “prazno” – kontroler je već subscribe-ovan na Click
+        private void btnDodaj_Click(object sender, EventArgs e) { }
     }
 }

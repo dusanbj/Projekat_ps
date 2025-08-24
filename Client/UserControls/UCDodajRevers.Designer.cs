@@ -113,19 +113,18 @@
             Controls.Add(btnDodaj);
             Name = "UCDodajRevers";
             Size = new System.Drawing.Size(341, 206);
-            Load += UCDodajRevers_Load;
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private System.Windows.Forms.Button btnDodaj;
+        public System.Windows.Forms.Button btnDodaj;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblDatum;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lblZaposleni;
-        private System.Windows.Forms.ComboBox cmbKlijent;
+        public System.Windows.Forms.ComboBox cmbKlijent;
         private System.Windows.Forms.Label label3;
     }
 }
