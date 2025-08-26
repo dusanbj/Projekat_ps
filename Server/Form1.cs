@@ -34,6 +34,7 @@ namespace Server
             btnStop.Enabled = false;
             txtServer.Text = "Server je zaustavljen!";
             server.Stop();
+            server = null;
         }
 
         private void FrmServer_FormClosed(object sender, FormClosedEventArgs e)

@@ -16,6 +16,7 @@ namespace Server
         private Broker broker;
 
         private static Controller instance;
+        private List<Zaposleni> prijavljeniZaposleni = new List<Zaposleni>();
         public static Controller Instance
         {
             get
@@ -30,7 +31,23 @@ namespace Server
         {
             LoginSO so = new LoginSO(argument);
             so.ExecuteTemplate();
+            if (so != null)
+            {
+                prijavljeniZaposleni.Add(argument);
+            }
             return so.Result;
+        }
+        internal void Logout(Zaposleni prijavljen)
+        {
+            foreach (Zaposleni z in prijavljeniZaposleni)
+            {
+                if (z.Username.Equals(prijavljen.Username)
+                    && z.Password.Equals(prijavljen.Password))
+                {
+                    prijavljeniZaposleni.Remove(z);
+                    break;
+                }
+            }
         }
 
         internal void CreateZaposleni(Zaposleni argument)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domen;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
@@ -15,6 +16,8 @@ namespace Server
     {
 
         Socket socket;
+        private List<ClientHandler> handlers = new List<ClientHandler>();
+        private bool kraj;
 
         public Server()
         {
@@ -38,12 +41,14 @@ namespace Server
         {
             try
             {
-                while (true)
+                kraj = false;
+                while (!kraj)
                 {
                     Socket klijentskiSoket = socket.Accept();
-                    ClientHandler handler = new ClientHandler(klijentskiSoket);
+                    ClientHandler handler = new ClientHandler(klijentskiSoket, handlers);
                     Thread klijentskaNit = new Thread(handler.HandleRequest);
                     klijentskaNit.Start();
+                    handlers.Add(handler);
                 }
             }
             catch (Exception ex)
@@ -52,10 +57,34 @@ namespace Server
             }
         }
 
+        //za sada nema primenu
+        //ovo je ako budem kasnije hteo da implementiram da server moze da izloguje zaposlenog
+        internal void Logout(Zaposleni zaposleni)
+        {
+            foreach (ClientHandler ch in handlers)
+            {
+                if (ch.PrijaveljniZaposleni.Username.Equals(zaposleni.Username)
+                    && ch.PrijaveljniZaposleni.Password.Equals(zaposleni.Password))
+                {
+                    ch.Logout();
+                    break;
+                }
+            }
+        }
+
 
         public void Stop()
         {
+            //zaustaviti sve ch
+            for (int i = 0; i < handlers.Count; i++)
+            {
+                handlers[i].Logout(); //bilo je handlers[i].Logout(); => verovatno greska
+            }
+            handlers = new List<ClientHandler>();
+
+            //zaustaviti Accept() metodu - osluskivanje 
             socket.Close();
+            kraj = true;
         }
 
     }

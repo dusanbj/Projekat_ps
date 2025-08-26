@@ -15,35 +15,46 @@ namespace Server
     {
         private JsonNetworkSerializer serializer;
         private Socket socket;
+        private bool kraj;
+        private List<ClientHandler> clientHandlers;
 
-        public ClientHandler(Socket socket)
+        public Zaposleni PrijaveljniZaposleni { get; set; }
+
+        public ClientHandler(Socket socket, List<ClientHandler> clientHandlers)
         {
             this.socket = socket;
             serializer = new JsonNetworkSerializer(socket);
+            this.clientHandlers = clientHandlers;
         }
 
         public void HandleRequest()
-{
-    while (true)
-    {
-        var req = (Request)serializer.Receive<Request>();
-        var resp = ProcessRequest(req);
-        serializer.Send(resp);
-    }
-}
+        {
+            kraj = false;
+            while (!kraj)
+            {
+                var req = (Request)serializer.Receive<Request>();
+                var resp = ProcessRequest(req);
+                serializer.Send(resp);
+            }
+        }
 
         private Response ProcessRequest(Request req)
         {
             var r = new Response();
             try
-            {
+            { 
                 switch (req.Operation)
                 {
                     case Operation.Login:
-                        r.Result = Controller.Instance.Login(serializer.ReadType<Zaposleni>(req.Argument));
+                        Zaposleni zap = serializer.ReadType<Zaposleni>(req.Argument);
+                        r.Result = Controller.Instance.Login(zap);
+                        if(r.Result != null)
+                        {
+                            PrijaveljniZaposleni = zap;
+                        }
                         break;
                     case Operation.Logout:
-                           
+                        Logout();
                         break;
                     case Operation.CreateKlijent:
                         Controller.Instance.CreateKlijent(serializer.ReadType<Klijent>(req.Argument));
@@ -119,6 +130,20 @@ namespace Server
                 r.ExceptionMessage = ex.Message;
             }
             return r;
+        }
+
+        public void Logout()
+        {
+            //izlazak iz petlje
+            kraj = true;
+
+            //izbacivanje iz listi
+            Controller.Instance.Logout(PrijaveljniZaposleni);
+            clientHandlers.Remove(this);
+
+            //prekidanje komunikacije
+            socket.Close();
+            socket = null;
         }
     }
 }
