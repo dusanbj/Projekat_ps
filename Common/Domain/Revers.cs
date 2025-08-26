@@ -1,10 +1,9 @@
 using Common.Domain;
 using Microsoft.Data.SqlClient;
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Globalization;
+using System.Text.Json.Serialization;
 
 namespace Domen
 {
@@ -17,18 +16,24 @@ namespace Domen
         public List<StavkaReversa> Stavke { get; set; }
         public decimal UkupnaCena { get; set; }
 
-        public string TableName => "revers";
-        public string Values => $"'{Datum.ToString("yyyyMMdd HH:mm")}', {Zaposleni.Id}, {Klijent.Id}, {UkupnaCena}";
+        [JsonIgnore] public string TableName => "revers";
 
-        public string PrimaryKeyName => "id";
+        [JsonIgnore] public string PrimaryKeyName => "id";
+        [JsonIgnore] public string PrimaryKeyValue => Id.ToString(CultureInfo.InvariantCulture);
 
-        public string PrimaryKeyValue => Id.ToString();
+        [JsonIgnore] public string InsertColumns => "datum, idZaposleni, idKlijent, ukupnaCena";
 
-        public string UpdateValues => $"datum='{Datum:yyyyMMdd HH:mm}', idZaposleni={Zaposleni.Id}, idKlijent={Klijent.Id}, ukupnaCena={UkupnaCena}";
+        [JsonIgnore]
+        public string Values =>
+            $"'{Datum:yyyy-MM-dd HH:mm:ss}', {(Zaposleni?.Id ?? 0)}, {(Klijent?.Id ?? 0)}, {UkupnaCena.ToString(CultureInfo.InvariantCulture)}";
+
+        [JsonIgnore]
+        public string UpdateValues =>
+            $"datum='{Datum:yyyy-MM-dd HH:mm:ss}', idZaposleni={(Zaposleni?.Id ?? 0)}, idKlijent={(Klijent?.Id ?? 0)}, ukupnaCena={UkupnaCena.ToString(CultureInfo.InvariantCulture)}";
 
         public List<IEntity> GetReaderList(SqlDataReader reader)
         {
-            List<IEntity> reversi = new List<IEntity>();
+            var reversi = new List<IEntity>();
             while (reader.Read())
             {
                 reversi.Add(new Revers
@@ -42,6 +47,5 @@ namespace Domen
             }
             return reversi;
         }
-
     }
 }

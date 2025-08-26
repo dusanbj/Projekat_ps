@@ -130,6 +130,8 @@ namespace Client.GuiController
             dodajStavke.cmbRoba.Focus();
         }
 
+        //FrmClosing event da proverim da li su stavke null ili count=0 i da obrisem revers
+
         private void SacuvajStavke(object sender, EventArgs e)
         {
             if (dodajStavke.Stavke == null || dodajStavke.Stavke.Count == 0)

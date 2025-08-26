@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Sockets;
-using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,71 +23,99 @@ namespace Server
         }
 
         public void HandleRequest()
-        {
-            while (true)
-            {
-                Request req = (Request)serializer.Receive<Request>();
-                Response r = ProcessRequest(req);
-                serializer.Send(r);
-            }
-        }
+{
+    while (true)
+    {
+        var req = (Request)serializer.Receive<Request>();
+        var resp = ProcessRequest(req);
+        serializer.Send(resp);
+    }
+}
 
         private Response ProcessRequest(Request req)
         {
-            Response r = new Response();
+            var r = new Response();
             try
             {
                 switch (req.Operation)
                 {
-                    case Operation.CreateKlijent:
-                        Controller.Instance.CreateKlijent(serializer.ReadType<Klijent>(req.Argument));
-                        break;
                     case Operation.Login:
                         r.Result = Controller.Instance.Login(serializer.ReadType<Zaposleni>(req.Argument));
                         break;
-                    case Operation.GetAllMesto:
-                        r.Result = Controller.Instance.GetAllMesto();
+                    case Operation.Logout:
+                           
                         break;
+                    case Operation.CreateKlijent:
+                        Controller.Instance.CreateKlijent(serializer.ReadType<Klijent>(req.Argument));
+                        r.Result = true;
+                        break;
+
+                    case Operation.UpdateKlijent:
+                        r.Result = Controller.Instance.UpdateKlijent(serializer.ReadType<Klijent>(req.Argument));
+                        break;
+
+                    case Operation.DeleteKlijent:
+                        r.Result = Controller.Instance.DeleteKlijent(serializer.ReadType<Klijent>(req.Argument));
+                        break;
+
                     case Operation.GetAllKlijent:
                         r.Result = Controller.Instance.GetAllKlijent();
                         break;
-                    case Operation.DeleteRevers:
-                        Controller.Instance.DeleteRevers(serializer.ReadType<Revers>(req.Argument));
+
+                    case Operation.GetAllMesto:
+                        r.Result = Controller.Instance.GetAllMesto();
                         break;
-                    case Operation.UpdateRevers:
-                        Controller.Instance.UpdateRevers(serializer.ReadType<Revers>(req.Argument));
-                        break;
+
                     case Operation.CreateRevers:
-                        Controller.Instance.CreateRevers(serializer.ReadType<Revers>(req.Argument));
+                        r.Result = Controller.Instance.CreateRevers(serializer.ReadType<Revers>(req.Argument));
                         break;
-                    case Operation.CreateRoba:
-                        Controller.Instance.CreateRoba(serializer.ReadType<Roba>(req.Argument));
+
+                    case Operation.UpdateRevers:
+                        r.Result = Controller.Instance.UpdateRevers(serializer.ReadType<Revers>(req.Argument));
                         break;
-                    case Operation.UpdateRoba:
-                        Controller.Instance.UpdateRoba(serializer.ReadType<Roba>(req.Argument));
+
+                    case Operation.DeleteRevers:
+                        r.Result = Controller.Instance.DeleteRevers(serializer.ReadType<Revers>(req.Argument));
                         break;
-                    case Operation.DeleteRoba:
-                        Controller.Instance.DeleteRoba(serializer.ReadType<Roba>(req.Argument));
-                        break;
+
                     case Operation.GetRoba:
-                        r.Result = Controller.Instance.GetRoba(serializer.ReadType<string>(req.Argument)); // null => sve
+                        r.Result = Controller.Instance.GetRoba(serializer.ReadType<string>(req.Argument));
                         break;
+
+                    case Operation.CreateRoba:
+                        r.Result = Controller.Instance.CreateRoba(serializer.ReadType<Roba>(req.Argument));
+                        break;
+
+                    case Operation.UpdateRoba:
+                        r.Result = Controller.Instance.UpdateRoba(serializer.ReadType<Roba>(req.Argument));
+                        break;
+
+                    case Operation.DeleteRoba:
+                        r.Result = Controller.Instance.DeleteRoba(serializer.ReadType<Roba>(req.Argument));
+                        break;
+
                     case Operation.CreateMesto:
-                         var arg = serializer.ReadType<Mesto>(req.Argument);
-                         r.Result = Controller.Instance.CreateMesto(arg);
-                         break;
+                        r.Result = Controller.Instance.CreateMesto(serializer.ReadType<Mesto>(req.Argument));
+                        break;
+
                     case Operation.UpdateMesto:
-                         Controller.Instance.UpdateMesto(serializer.ReadType<Mesto>(req.Argument));
-                         break;
+                        Controller.Instance.UpdateMesto(serializer.ReadType<Mesto>(req.Argument));
+                        r.Result = true;
+                        break;
+
                     case Operation.DeleteMesto:
-                         Controller.Instance.DeleteMesto(serializer.ReadType<Mesto>(req.Argument));
-                         break;
+                        Controller.Instance.DeleteMesto(serializer.ReadType<Mesto>(req.Argument));
+                        r.Result = true;
+                        break;
+
+                    default:
+                        r.ExceptionMessage = $"Nepodržana operacija: {req.Operation}";
+                        break;
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
-                Debug.WriteLine(r.ExceptionMessage);
+                Debug.WriteLine(ex.ToString());
                 r.ExceptionMessage = ex.Message;
             }
             return r;

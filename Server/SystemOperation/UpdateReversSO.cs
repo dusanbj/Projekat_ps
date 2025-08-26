@@ -10,23 +10,17 @@ namespace Server.SystemOperation
 
         public UpdateReversSO(Revers revers)
         {
-            this.input = revers;
+            input = revers;
         }
 
         protected override void ExecuteConcreteOperation()
         {
-            if (input == null)
-                throw new System.Exception("Revers nije prosleđen.");
-            if (input.Id <= 0)
-                throw new System.Exception("Nevalidan Revers.Id.");
-            if (input.Klijent == null || input.Klijent.Id <= 0)
-                throw new System.Exception("Klijent je obavezan.");
-            if (input.Zaposleni == null || input.Zaposleni.Id <= 0)
-                throw new System.Exception("Zaposleni je obavezan.");
-            if (input.Stavke == null || input.Stavke.Count == 0)
-                throw new System.Exception("Revers mora sadržati bar jednu stavku.");
+            if (input == null) throw new System.Exception("Revers nije prosleđen.");
+            if (input.Id <= 0) throw new System.Exception("Nevalidan Revers.Id.");
+            if (input.Klijent == null || input.Klijent.Id <= 0) throw new System.Exception("Klijent je obavezan.");
+            if (input.Zaposleni == null || input.Zaposleni.Id <= 0) throw new System.Exception("Zaposleni je obavezan.");
+            if (input.Stavke == null || input.Stavke.Count == 0) throw new System.Exception("Revers mora sadržati bar jednu stavku.");
 
-            // 1) Ažuriraj header (bez ukupne cene za sada)
             var header = new Revers
             {
                 Id = input.Id,
@@ -37,16 +31,15 @@ namespace Server.SystemOperation
             };
             broker.Update(header);
 
-            // 2) Obriši postojeće stavke za taj revers
             var postojece = broker.GetByCondition(new StavkaReversa(), $"idRevers = {input.Id}")
                                   .Cast<StavkaReversa>()
                                   .ToList();
             foreach (var old in postojece)
                 broker.Delete(old);
 
-            // 3) Ponovo upiši nove stavke i izračunaj total
             decimal total = 0m;
             long rb = 1;
+
             foreach (var s in input.Stavke)
             {
                 var cena = s.Roba?.Cena ?? 0m;
@@ -54,6 +47,7 @@ namespace Server.SystemOperation
 
                 var row = new StavkaReversa
                 {
+                    IdRevers = header.Id,
                     Revers = header,
                     Rb = rb++,
                     Roba = s.Roba,
@@ -64,7 +58,6 @@ namespace Server.SystemOperation
                 total += iznos;
             }
 
-            // 4) Ukupna cena
             header.UkupnaCena = total;
             broker.Update(header);
 

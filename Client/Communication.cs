@@ -110,18 +110,19 @@ namespace Client
 
         internal Response CreateRevers(Revers revers)
         {
-            Request request = new Request
+            var request = new Request
             {
                 Argument = revers,
                 Operation = Operation.CreateRevers
             };
             serializer.Send(request);
 
-            Response response = serializer.Receive<Response>();
+            var response = serializer.Receive<Response>();
             if (response.ExceptionMessage != null)
-            {
                 throw new Exception(response.ExceptionMessage);
-            }
+
+            response.Result = serializer.ReadType<Revers>(response.Result);
+
             return response;
         }
 

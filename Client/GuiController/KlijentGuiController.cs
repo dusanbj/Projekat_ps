@@ -167,8 +167,37 @@ namespace Client.GuiController
             {
                 var data = Communication.Instance.GetAllKlijent() ?? new System.Collections.Generic.List<Klijent>();
                 _klijenti = new BindingList<Klijent>(data);
-                listView.dgvKlijenti.AutoGenerateColumns = true;
-                listView.dgvKlijenti.DataSource = _klijenti;
+
+                var dgv = listView.dgvKlijenti;
+                dgv.AutoGenerateColumns = false;
+                dgv.Columns.Clear();
+
+                dgv.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = nameof(Klijent.Ime),
+                    HeaderText = "Ime",
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                });
+                dgv.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = nameof(Klijent.Prezime),
+                    HeaderText = "Prezime",
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                });
+                dgv.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = nameof(Klijent.BrTelefona),
+                    HeaderText = "Broj telefona",
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+                });
+                dgv.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = nameof(Klijent.Mesto),
+                    HeaderText = "Mesto",
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                });
+
+                dgv.DataSource = _klijenti;
 
                 RefreshMestaListForm();
                 ResetListForm();

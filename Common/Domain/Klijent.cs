@@ -2,6 +2,8 @@ using Common;
 using Common.Domain;
 using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
+
 namespace Domen
 {
     public class Klijent : IEntity
@@ -12,36 +14,37 @@ namespace Domen
         public string BrTelefona { get; set; }
         public Mesto Mesto { get; set; }
 
+        [JsonIgnore]
         public string TableName => "klijent";
 
-        public override string ToString()
-        {
-            return $"{Id} - {Prezime}, {Ime}";
-        }
+        public override string ToString() => $"{Id} - {Prezime}, {Ime}";
 
-        public string Values => $"'{Ime}', '{Prezime}', '{BrTelefona}', {Mesto.Ptt}";
+        [JsonIgnore]
+        public string Values => $"'{Ime}', '{Prezime}', '{BrTelefona}', {(Mesto?.Ptt ?? 0)}";
 
+        [JsonIgnore]
         public string PrimaryKeyName => "id";
 
+        [JsonIgnore]
         public string PrimaryKeyValue => Id.ToString();
 
-        public string UpdateValues => $"ime='{Ime}', prezime='{Prezime}', brTelefona='{BrTelefona}', ptt={Mesto.Ptt}";
+        [JsonIgnore]
+        public string UpdateValues => $"ime='{Ime}', prezime='{Prezime}', brTelefona='{BrTelefona}', ptt={(Mesto?.Ptt ?? 0)}";
 
         public List<IEntity> GetReaderList(SqlDataReader reader)
         {
-            List<IEntity> klijenti = new List<IEntity>();
+            var klijenti = new List<IEntity>();
             while (reader.Read())
             {
-                Klijent k = new Klijent
+                var k = new Klijent
                 {
                     Id = (long)reader["id"],
                     Ime = (string)reader["ime"],
                     Prezime = (string)reader["prezime"],
-                    BrTelefona = (string)reader["brTelefona"],
+                    BrTelefona = reader["brTelefona"] as string,
                     Mesto = new Mesto
                     {
                         Ptt = (long)reader["ptt"],
-                        //Naziv = (string)reader["naziv"] 
                     }
                 };
                 klijenti.Add(k);

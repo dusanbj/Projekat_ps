@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
 
-
 namespace DBBroker
 {
     public class Broker
@@ -15,10 +14,21 @@ namespace DBBroker
         {
             connection = new DbConnection();
         }
+
         public void Add(IEntity obj)
         {
-            SqlCommand cmd = connection.CreateCommand();
-            cmd.CommandText = $"insert into {obj.TableName} values({obj.Values} )";
+            var cmd = connection.CreateCommand();
+
+            string cols = "";
+            var insertColsProp = obj.GetType().GetProperty("InsertColumns");
+            if (insertColsProp != null)
+            {
+                var val = insertColsProp.GetValue(obj) as string;
+                if (!string.IsNullOrWhiteSpace(val))
+                    cols = $"({val})";
+            }
+
+            cmd.CommandText = $"INSERT INTO {obj.TableName} {cols} VALUES({obj.Values})";
             cmd.ExecuteNonQuery();
             cmd.Dispose();
         }
@@ -52,7 +62,7 @@ namespace DBBroker
         public List<IEntity> GetAll(IEntity entity)
         {
             SqlCommand command = connection.CreateCommand();
-            command.CommandText = $"select * from {entity.TableName}";
+            command.CommandText = $"SELECT * FROM {entity.TableName}";
             using SqlDataReader reader = command.ExecuteReader();
             List<IEntity> list = entity.GetReaderList(reader);
             command.Dispose();
@@ -78,6 +88,7 @@ namespace DBBroker
         {
             connection.OpenConnection();
         }
+
         public void Rollback()
         {
             connection.Rollback();

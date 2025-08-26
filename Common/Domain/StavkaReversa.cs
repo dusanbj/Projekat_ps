@@ -1,46 +1,72 @@
 using Common.Domain;
 using Microsoft.Data.SqlClient;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text.Json.Serialization;
+
 namespace Domen
 {
     public class StavkaReversa : IEntity
     {
         public long Rb { get; set; }
 
+        private Revers _revers;
+
         [JsonIgnore]
-        public Revers Revers { get; set; }
+        public Revers Revers
+        {
+            get => _revers;
+            set
+            {
+                _revers = value;
+                if (value != null && value.Id > 0) IdRevers = value.Id;
+            }
+        }
+
+        public long IdRevers { get; set; }
         public decimal Kolicina { get; set; }
         public Roba Roba { get; set; }
         public decimal IznosStavke { get; set; }
 
+        [JsonIgnore] public string TableName => "stavkaReversa";
 
-        public string TableName => "stavkaReversa";
+        //BITNO: eksplicitno navodimo samo ove kolone (IDENTITY kolona se ne pominje)
+        [JsonIgnore] public string InsertColumns => "idRevers, rb, kolicina, idRoba, iznosStavke";
 
-        public string Values => $"{Revers.Id}, {Rb}, {Kolicina}, {Roba.Id}, {IznosStavke}";
+        [JsonIgnore]
+        public string Values =>
+            $"{IdRevers}, {Rb}, {Kolicina.ToString(CultureInfo.InvariantCulture)}, {(Roba?.Id ?? 0)}, {IznosStavke.ToString(CultureInfo.InvariantCulture)}";
 
-        public string PrimaryKeyName => "idRevers, rb";
-        public string PrimaryKeyValue => $"{Revers.Id}, {Rb}";
-        public string UpdateValues => $"kolicina={Kolicina}, idRoba={Roba.Id}, iznosStavke={IznosStavke}";
+        [JsonIgnore] public string PrimaryKeyName => "idRevers, rb";
+        [JsonIgnore] public string PrimaryKeyValue => $"{IdRevers}, {Rb}";
 
+        [JsonIgnore]
+        public string UpdateValues =>
+            $"kolicina={Kolicina.ToString(CultureInfo.InvariantCulture)}, idRoba={(Roba?.Id ?? 0)}, iznosStavke={IznosStavke.ToString(CultureInfo.InvariantCulture)}";
 
         public List<IEntity> GetReaderList(SqlDataReader reader)
         {
-            List<IEntity> stavke = new List<IEntity>();
+            var stavke = new List<IEntity>();
             while (reader.Read())
             {
+                var idRevers = Convert.ToInt64(reader["idRevers"]);
+                var rb = Convert.ToInt64(reader["rb"]);
+                var kolicina = Convert.ToDecimal(reader["kolicina"], CultureInfo.InvariantCulture);
+                var idRoba = Convert.ToInt64(reader["idRoba"]);
+                var iznos = Convert.ToDecimal(reader["iznosStavke"], CultureInfo.InvariantCulture);
+
                 stavke.Add(new StavkaReversa
                 {
-                    Revers = new Revers { Id = (long)reader["idRevers"] },
-                    Rb = (int)reader["rb"],
-                    Kolicina = (int)reader["kolicina"],
-                    Roba = new Roba { Id = (long)reader["idRoba"] },
-                    IznosStavke = (decimal)reader["iznosStavke"]
+                    IdRevers = idRevers,
+                    Revers = new Revers { Id = idRevers },
+                    Rb = rb,
+                    Kolicina = kolicina,
+                    Roba = new Roba { Id = idRoba },
+                    IznosStavke = iznos
                 });
             }
             return stavke;
         }
-
-
     }
 }
