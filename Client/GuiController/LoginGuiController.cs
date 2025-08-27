@@ -13,7 +13,7 @@ namespace Client.GuiController
 {
     public class LoginGuiController
     {
-        public Zaposleni z;
+        public Zaposleni Z { get; set; }
 
         private static LoginGuiController instance;
         public static LoginGuiController Instance
@@ -58,16 +58,16 @@ namespace Client.GuiController
                 return;
             }
 
-            z = new Zaposleni
+            Z = new Zaposleni
             {
                 Username = frmLogin.TxtUsername.Text,
                 Password = frmLogin.TxtPassword.Text,
             };
-            Response response = Communication.Instance.Login(z);
+            Response response = Communication.Instance.Login(Z);
             if (response.ExceptionMessage == null)
             {
                 frmLogin.Visible = false;
-                z = (Zaposleni)response.Result;
+                Z = (Zaposleni)response.Result;
                 MainCoordinator.Instance.ShowFrmMain();
             }
             else

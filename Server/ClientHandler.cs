@@ -4,10 +4,8 @@ using Domen;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
+using System.IO;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Server
 {
@@ -30,32 +28,68 @@ namespace Server
         public void HandleRequest()
         {
             kraj = false;
-            while (!kraj)
+
+            try
             {
-                var req = (Request)serializer.Receive<Request>();
-                var resp = ProcessRequest(req);
-                serializer.Send(resp);
+                while (!kraj)
+                {
+                    Request req = null;
+                    try
+                    {
+                        req = serializer.Receive<Request>();
+                    }
+                    catch (IOException) { break; }
+                    catch (SocketException) { break; }
+
+                    if (req == null) break;
+
+                    Response resp;
+                    try
+                    {
+                        resp = ProcessRequest(req) ?? new Response();
+                    }
+                    catch (Exception ex)
+                    {
+                        resp = new Response { ExceptionMessage = ex.Message };
+                    }
+
+                    try
+                    {
+                        serializer.Send(resp);
+                    }
+                    catch (IOException) { break; }
+                    catch (SocketException) { break; }
+                    catch (ObjectDisposedException) { break; }
+                }
+            }
+            finally
+            {
+                try { serializer?.Close(); } catch { }
+                try { socket?.Close(); } catch { }
+                socket = null;
             }
         }
 
         private Response ProcessRequest(Request req)
         {
+            if (req == null) return new Response { ExceptionMessage = "Prekid veze." };
+
             var r = new Response();
             try
-            { 
+            {
                 switch (req.Operation)
                 {
                     case Operation.Login:
                         Zaposleni zap = serializer.ReadType<Zaposleni>(req.Argument);
                         r.Result = Controller.Instance.Login(zap);
-                        if(r.Result != null)
-                        {
-                            PrijaveljniZaposleni = zap;
-                        }
+                        if (r.Result != null) PrijaveljniZaposleni = zap;
                         break;
+
                     case Operation.Logout:
+                        r.Result = true;
                         Logout();
                         break;
+
                     case Operation.CreateKlijent:
                         Controller.Instance.CreateKlijent(serializer.ReadType<Klijent>(req.Argument));
                         r.Result = true;
@@ -119,6 +153,10 @@ namespace Server
                         r.Result = true;
                         break;
 
+                    case Operation.CreateStrSprema:
+                        r.Result = Controller.Instance.AddStrSprema(serializer.ReadType<StrSprema>(req.Argument));
+                        break;
+
                     default:
                         r.ExceptionMessage = $"Nepodržana operacija: {req.Operation}";
                         break;
@@ -134,14 +172,9 @@ namespace Server
 
         public void Logout()
         {
-            //izlazak iz petlje
             kraj = true;
-
-            //izbacivanje iz listi
             Controller.Instance.Logout(PrijaveljniZaposleni);
             clientHandlers.Remove(this);
-
-            //prekidanje komunikacije
             socket.Close();
             socket = null;
         }

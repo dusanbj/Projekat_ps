@@ -40,7 +40,7 @@ namespace Client.GuiController
                 // “Ubrizgaj” podatke u view
                 dodajRevers.BindKlijenti(binding);
                 dodajRevers.SetDatum(DateTime.Today);
-                dodajRevers.SetZaposleni(LoginGuiController.Instance.z);
+                dodajRevers.SetZaposleni(LoginGuiController.Instance.Z);
             }
             catch (Exception ex)
             {
@@ -60,7 +60,7 @@ namespace Client.GuiController
             revers = new Revers
             {
                 Datum = dodajRevers.danas,
-                Zaposleni = LoginGuiController.Instance.z,
+                Zaposleni = LoginGuiController.Instance.Z,
                 Klijent = izabrani,
                 Stavke = null
             };

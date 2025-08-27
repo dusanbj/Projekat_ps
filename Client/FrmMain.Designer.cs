@@ -40,8 +40,11 @@
             radSaRobomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             prikaziRovuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             strucnaSpremaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            dodajStrucnuSpremuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             mestoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             radSaMestimaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            zaposleniToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            logoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             lblUser = new System.Windows.Forms.Label();
             pnlMain = new System.Windows.Forms.Panel();
             mnMain.SuspendLayout();
@@ -50,7 +53,7 @@
             // mnMain
             // 
             mnMain.ImageScalingSize = new System.Drawing.Size(20, 20);
-            mnMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { itemAddPerson, reversToolStripMenuItem, robaToolStripMenuItem, strucnaSpremaToolStripMenuItem, mestoToolStripMenuItem });
+            mnMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { itemAddPerson, reversToolStripMenuItem, robaToolStripMenuItem, strucnaSpremaToolStripMenuItem, mestoToolStripMenuItem, zaposleniToolStripMenuItem });
             mnMain.Location = new System.Drawing.Point(0, 0);
             mnMain.Name = "mnMain";
             mnMain.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
@@ -127,9 +130,17 @@
             // 
             // strucnaSpremaToolStripMenuItem
             // 
+            strucnaSpremaToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { dodajStrucnuSpremuToolStripMenuItem });
             strucnaSpremaToolStripMenuItem.Name = "strucnaSpremaToolStripMenuItem";
             strucnaSpremaToolStripMenuItem.Size = new System.Drawing.Size(101, 20);
             strucnaSpremaToolStripMenuItem.Text = "Strucna sprema";
+            // 
+            // dodajStrucnuSpremuToolStripMenuItem
+            // 
+            dodajStrucnuSpremuToolStripMenuItem.Name = "dodajStrucnuSpremuToolStripMenuItem";
+            dodajStrucnuSpremuToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+            dodajStrucnuSpremuToolStripMenuItem.Text = "Dodaj strucnu spremu";
+            dodajStrucnuSpremuToolStripMenuItem.Click += dodajStrucnuSpremuToolStripMenuItem_Click;
             // 
             // mestoToolStripMenuItem
             // 
@@ -141,9 +152,23 @@
             // radSaMestimaToolStripMenuItem
             // 
             radSaMestimaToolStripMenuItem.Name = "radSaMestimaToolStripMenuItem";
-            radSaMestimaToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            radSaMestimaToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             radSaMestimaToolStripMenuItem.Text = "Rad sa mestima";
             radSaMestimaToolStripMenuItem.Click += radSaMestimaToolStripMenuItem_Click;
+            // 
+            // zaposleniToolStripMenuItem
+            // 
+            zaposleniToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { logoutToolStripMenuItem });
+            zaposleniToolStripMenuItem.Name = "zaposleniToolStripMenuItem";
+            zaposleniToolStripMenuItem.Size = new System.Drawing.Size(70, 20);
+            zaposleniToolStripMenuItem.Text = "Zaposleni";
+            // 
+            // logoutToolStripMenuItem
+            // 
+            logoutToolStripMenuItem.Name = "logoutToolStripMenuItem";
+            logoutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            logoutToolStripMenuItem.Text = "Logout";
+            logoutToolStripMenuItem.Click += logoutToolStripMenuItem_Click;
             // 
             // lblUser
             // 
@@ -196,5 +221,8 @@
         private System.Windows.Forms.ToolStripMenuItem strucnaSpremaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem mestoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem radSaMestimaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dodajStrucnuSpremuToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem zaposleniToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem logoutToolStripMenuItem;
     }
 }

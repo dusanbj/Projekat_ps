@@ -15,8 +15,6 @@ namespace Client
             dodajReversToolStripMenuItem.Click += (s, a) => MainCoordinator.Instance.ShowAddReversPanel();
             dodajRobuToolStripMenuItem.Click += (s, a) => MainCoordinator.Instance.ShowDodajRobuOnMain();
             radSaRobomToolStripMenuItem.Click += (s, a) => MainCoordinator.Instance.ShowRadSaRobom();
-
-            // radSaKlijentimaToolStripMenuItem.Click += (s, a) => MainCoordinator.Instance.ShowRadSaKlijentima();
         }
 
         public void ChangePanel(Control control)
@@ -53,7 +51,21 @@ namespace Client
         {
             MainCoordinator.Instance.ShowRadSaMestima();
         }
-        
 
+        private void dodajStrucnuSpremuToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MainCoordinator.Instance.ShowRadSaStrSpremom();
+        }
+
+        //setter za tekst menija "zaposleni"
+        public void SetZaposleniCaption(string naziv)
+        {
+            zaposleniToolStripMenuItem.Text = $"Sesija: {naziv}";
+        }
+
+        private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MainCoordinator.Instance.Logout();
+        }
     }
 }

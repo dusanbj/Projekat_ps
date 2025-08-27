@@ -40,9 +40,9 @@ namespace Common.Communication
         GetMesto,
         GetAllMesto,
         //strucna sprema
-        AddStrSprema,
+        CreateStrSprema,
         UpdateStrSprema,
         DeleteStrSprema,
-        GetStrSprema
+        GetStrSprema,
     }
 }

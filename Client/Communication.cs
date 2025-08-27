@@ -278,5 +278,57 @@ namespace Client
             var resp = serializer.Receive<Response>();
             if (resp.ExceptionMessage != null) throw new Exception(resp.ExceptionMessage);
         }
+
+        public Response CreateStrSprema(StrSprema ss)
+        {
+            var req = new Request
+            {
+                Operation = Operation.CreateStrSprema,
+                Argument = ss
+            };
+
+            serializer.Send(req);
+
+            var resp = serializer.Receive<Response>();
+            if (resp == null)
+                return new Response { ExceptionMessage = "Veza sa serverom je prekinuta." };
+
+            // ako server vraća kreirani entitet, možeš ga tipizovati ovako:
+            // resp.Result = serializer.ReadType<StrSprema>(resp.Result);
+
+            if (resp.ExceptionMessage != null)
+                throw new Exception(resp.ExceptionMessage);
+
+            return resp;
+        }
+
+        internal void Logout()
+        {
+            // Ako nismo povezani, nema posla
+            if (socket == null || serializer == null)
+                return;
+
+            try
+            {
+                // Pošalji serveru da zna da prekine sesiju (bez čekanja odgovora)
+                var req = new Request
+                {
+                    Operation = Operation.Logout,
+                    Argument = null
+                };
+                serializer.Send(req); // fire-and-forget
+            }
+            catch
+            {
+                // Ignorišemo greške pri slanju tokom odjave (npr. konekcija već prekinuta)
+            }
+            finally
+            {
+                try { socket.Shutdown(SocketShutdown.Both); } catch { }
+                try { socket.Close(); } catch { }
+                socket = null;
+                serializer = null;
+            }
+        }
     }
 }

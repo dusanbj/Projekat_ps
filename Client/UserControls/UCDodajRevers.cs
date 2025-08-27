@@ -41,8 +41,19 @@ namespace Client.UserControls
 
         public void SetZaposleni(Zaposleni z)
         {
-            lblZaposleni.Text = z?.Ime ?? "/";
+            if (z == null)
+            {
+                lblZaposleni.Text = "/";
+                return;
+            }
+
+            string ime = z.Ime ?? string.Empty;
+            string prezime = z.Prezime ?? string.Empty;
+
+            string prikaz = (ime + " " + prezime).Trim();
+            lblZaposleni.Text = string.IsNullOrWhiteSpace(prikaz) ? "/" : prikaz;
         }
+
 
         // Dugme je “prazno” – kontroler je već subscribe-ovan na Click
         private void btnDodaj_Click(object sender, EventArgs e) { }

@@ -221,9 +221,11 @@ namespace Server
             return so.Result;
         }
 
-        internal void AddStrSprema(StrSprema argument)
+        internal StrSprema AddStrSprema(StrSprema argument)
         {
-            //poziva SO
+            var so = new CreateStrSpremaSO(argument);
+            so.ExecuteTemplate();
+            return argument; // po uzoru na Robu: Create vraća prosleđeni entitet
         }
 
         internal bool UpdateStrSprema(StrSprema argument)
@@ -240,7 +242,7 @@ namespace Server
 
         internal StrSprema GetStrSprema(string argument)
         {
-            //pzoiva SO
+            //poziva SO
             return null;
         }
     }

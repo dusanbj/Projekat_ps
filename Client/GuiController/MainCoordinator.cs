@@ -1,8 +1,9 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 
 namespace Client.GuiController
 {
-    // kontrolise sta se desava na mainu kad klikces po meniju
+    // kontrolise sta se desava na mainu kad klikcemo po meniju
     internal class MainCoordinator
     {
         private static MainCoordinator instance;
@@ -10,10 +11,7 @@ namespace Client.GuiController
         {
             get
             {
-                if (instance == null)
-                {
-                    instance = new MainCoordinator();
-                }
+                if (instance == null) instance = new MainCoordinator();
                 return instance;
             }
         }
@@ -24,27 +22,38 @@ namespace Client.GuiController
             reversGuiController = new ReversGuiController();
             robaGuiController = new RobaGuiController();
             mestoGuiController = new MestoGuiController();
+            strSpremaGuiController = new StrSpremaGuiController();
         }
 
         private FrmMain frmMain;
-        private KlijentGuiController klijentGuiController;
-        private ReversGuiController reversGuiController;
+        private readonly KlijentGuiController klijentGuiController;
+        private readonly ReversGuiController reversGuiController;
         private readonly RobaGuiController robaGuiController;
-        private MestoGuiController mestoGuiController;
+        private readonly MestoGuiController mestoGuiController;
+        private readonly StrSpremaGuiController strSpremaGuiController;
+
+        public Form MainForm => frmMain;
 
         internal void ShowFrmMain()
         {
             frmMain = new FrmMain
             {
-                AutoSize = true
+                AutoSize = true,
+                StartPosition = FormStartPosition.CenterScreen
             };
-            // Ako želimo da glavna forma ne blokira nit, koristi Show();
-            // za sada nek bude ovo:
+
+            // Postavi tekst iz LoginGuiController-a
+            var z = LoginGuiController.Instance.Z;
+            if (z != null)
+            {
+                frmMain.SetZaposleniCaption($"{z.Ime} {z.Prezime}");
+            }
+
             frmMain.ShowDialog();
         }
 
-        /// Dodaj robu -> prikazuje SAMO UCDodajRobu u centralnom panelu FrmMain.
-        /// (PREVEŽI meni item u FrmMain da zove ovu metodu.)
+
+        // === ROBA ===
         internal void ShowDodajRobuOnMain()
         {
             var uc = robaGuiController.CreateDodajRobu(onSaved: null);
@@ -56,32 +65,44 @@ namespace Client.GuiController
             robaGuiController.ShowDodajRobuDialog(frmMain, onSaved: null);
         }
 
-        /// Rad sa robom -> otvara tvoj FrmRoba (UC + DGV).
         internal void ShowRadSaRobom()
         {
             robaGuiController.ShowFrmRoba(frmMain);
         }
 
+        // === KLIJENT ===
         internal void ShowDodajKlijenta()
         {
             frmMain.ChangePanel(klijentGuiController.CreateDodajKlijenta());
         }
 
-        internal void ShowAddReversPanel()
-        {
-            frmMain.ChangePanel(reversGuiController.CreateDodajRevers());
-        }
-
-        // Rad sa klijentima ide isključivo preko kontrolera
         internal void ShowRadSaKlijentima()
         {
             klijentGuiController.ShowFrmKlijenti(frmMain);
         }
 
-        // Rad sa mestima – otvara FrmMesta kao novu formu (modalno)
+        // === REVERS ===
+        internal void ShowAddReversPanel()
+        {
+            frmMain.ChangePanel(reversGuiController.CreateDodajRevers());
+        }
+
+        // === MESTO ===
         internal void ShowRadSaMestima()
         {
             mestoGuiController.ShowFrmMesta(frmMain);
+        }
+
+        // === STRUČNA SPREMA ===
+        internal void ShowRadSaStrSpremom()
+        {
+            var uc = strSpremaGuiController.CreateDodajStrSprema();
+            frmMain.ChangePanel(uc);
+        }
+
+        internal void Logout()
+        {
+            Communication.Instance.Logout();
         }
     }
 }
