@@ -100,9 +100,11 @@ namespace Client.GuiController
             frmMain.ChangePanel(uc);
         }
 
-        internal void Logout()
+        internal void PerformLogout()
         {
-            Communication.Instance.Logout();
+            try { Communication.Instance.Logout(); } catch { }
+            frmMain?.Close();
+            frmMain = null;
         }
     }
 }

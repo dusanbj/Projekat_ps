@@ -84,8 +84,8 @@
             // 
             // dgvMesta
             // 
+            dgvMesta.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             dgvMesta.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvMesta.Dock = System.Windows.Forms.DockStyle.Fill;
             dgvMesta.Location = new System.Drawing.Point(0, 0);
             dgvMesta.Name = "dgvMesta";
             dgvMesta.ReadOnly = true;

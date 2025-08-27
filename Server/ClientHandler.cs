@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Sockets;
+using System.Security;
 
 namespace Server
 {
@@ -93,6 +94,29 @@ namespace Server
                     case Operation.CreateKlijent:
                         Controller.Instance.CreateKlijent(serializer.ReadType<Klijent>(req.Argument));
                         r.Result = true;
+                        break;
+
+                    case Operation.GetKlijent:
+                        string filter = null;
+
+                        if (req.Argument == null)
+                        {
+                            filter = null; // tretiramo kao "vrati sve"
+                        }
+                        else if (req.Argument is string s)
+                        {
+                            filter = s;    // za string nema potrebe za ReadType
+                        }
+                        else
+                        {
+                            // npr. JToken / boxed JSON -> deserijalizuj
+                            filter = serializer.ReadType<string>(req.Argument);
+                        }
+
+                        // prazne/whitespace tretiraj kao null
+                        if (string.IsNullOrWhiteSpace(filter)) filter = null;
+
+                        r.Result = Controller.Instance.GetKlijent(filter); // List<Klijent>
                         break;
 
                     case Operation.UpdateKlijent:

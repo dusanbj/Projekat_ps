@@ -46,6 +46,7 @@
             // 
             // panel1
             // 
+            panel1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             panel1.Controls.Add(dgvRoba);
             panel1.Location = new System.Drawing.Point(321, 44);
             panel1.Name = "panel1";
@@ -54,8 +55,8 @@
             // 
             // dgvRoba
             // 
+            dgvRoba.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             dgvRoba.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvRoba.Dock = System.Windows.Forms.DockStyle.Fill;
             dgvRoba.Location = new System.Drawing.Point(0, 0);
             dgvRoba.Name = "dgvRoba";
             dgvRoba.Size = new System.Drawing.Size(444, 252);
@@ -63,6 +64,7 @@
             // 
             // btnObrisi
             // 
+            btnObrisi.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnObrisi.Location = new System.Drawing.Point(321, 302);
             btnObrisi.Name = "btnObrisi";
             btnObrisi.Size = new System.Drawing.Size(199, 23);
@@ -72,6 +74,7 @@
             // 
             // btnAzuriraj
             // 
+            btnAzuriraj.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnAzuriraj.Location = new System.Drawing.Point(566, 302);
             btnAzuriraj.Name = "btnAzuriraj";
             btnAzuriraj.Size = new System.Drawing.Size(199, 23);

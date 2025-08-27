@@ -65,7 +65,17 @@ namespace Client
 
         private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MainCoordinator.Instance.Logout();
+            var result = MessageBox.Show(
+                "Da li ste sigurni da želite da se odjavite?",
+                "Potvrda odjave",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (result == DialogResult.Yes)
+            {
+                MainCoordinator.Instance.PerformLogout();
+            }
         }
     }
 }

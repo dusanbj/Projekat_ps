@@ -5,6 +5,7 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 namespace Client.GuiController
 {
@@ -72,7 +73,7 @@ namespace Client.GuiController
         {
             try
             {
-                var lista = Communication.Instance.GetAllMesto() ?? new System.Collections.Generic.List<Mesto>();
+                var lista = Communication.Instance.GetAllMesto() ?? new List<Mesto>();
                 var ds = new BindingList<Mesto>(lista);
                 view.cbMesto.DataSource = ds;
                 view.cbMesto.DisplayMember = nameof(Mesto.Naziv);
@@ -152,6 +153,13 @@ namespace Client.GuiController
             listView.btnAzuriraj.Click += BtnAzuriraj_Click_List;
             listView.btnObrisi.Click += BtnObrisi_Click_List;
 
+            //Pretraga: dugme + Enter u tbFilter
+            listView.btnPretrazi.Click += BtnPretrazi_Click_List;
+            listView.tbFilter.KeyDown += (s, e) =>
+            {
+                if (e.KeyCode == Keys.Enter) BtnPretrazi_Click_List(s, e);
+            };
+
             return listView;
         }
 
@@ -165,13 +173,19 @@ namespace Client.GuiController
         {
             try
             {
-                var data = Communication.Instance.GetAllKlijent() ?? new System.Collections.Generic.List<Klijent>();
+                var data = Communication.Instance.GetAllKlijent() ?? new List<Klijent>();
                 _klijenti = new BindingList<Klijent>(data);
 
                 var dgv = listView.dgvKlijenti;
                 dgv.AutoGenerateColumns = false;
                 dgv.Columns.Clear();
 
+                dgv.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = nameof(Klijent.Id),
+                    HeaderText = "Id",
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                });
                 dgv.Columns.Add(new DataGridViewTextBoxColumn
                 {
                     DataPropertyName = nameof(Klijent.Ime),
@@ -192,7 +206,7 @@ namespace Client.GuiController
                 });
                 dgv.Columns.Add(new DataGridViewTextBoxColumn
                 {
-                    DataPropertyName = nameof(Klijent.Mesto),
+                    DataPropertyName = nameof(Klijent.MestoPrikaz),
                     HeaderText = "Mesto",
                     AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                 });
@@ -214,7 +228,7 @@ namespace Client.GuiController
             {
                 if (listView.cbMesto != null)
                 {
-                    var mesta = Communication.Instance.GetAllMesto() ?? new System.Collections.Generic.List<Mesto>();
+                    var mesta = Communication.Instance.GetAllMesto() ?? new List<Mesto>();
                     listView.cbMesto.DataSource = new BindingList<Mesto>(mesta);
                     listView.cbMesto.DisplayMember = nameof(Mesto.Naziv);
                     listView.cbMesto.Format += (s, e) =>
@@ -272,7 +286,7 @@ namespace Client.GuiController
 
             try
             {
-                Communication.Instance.UpdateKlijent(k); // implementiraj u Communication.cs ako fali
+                Communication.Instance.UpdateKlijent(k);
                 // osveži lokalno
                 sel.Ime = k.Ime;
                 sel.Prezime = k.Prezime;
@@ -298,13 +312,38 @@ namespace Client.GuiController
 
             try
             {
-                Communication.Instance.DeleteKlijent(k); // implementiraj u Communication.cs ako fali
+                Communication.Instance.DeleteKlijent(k);
                 _klijenti.Remove(k);
                 ResetListForm();
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Greška pri brisanju: " + ex.Message);
+            }
+        }
+
+        //Handler: pretraga -> napuni grid rezultatima
+        private void BtnPretrazi_Click_List(object sender, EventArgs e)
+        {
+            try
+            {
+                var q = (listView.tbFilter?.Text ?? string.Empty).Trim();
+                var results = Communication.Instance.GetKlijent(string.IsNullOrWhiteSpace(q) ? null : q);
+
+                _klijenti = new BindingList<Klijent>(results ?? new List<Klijent>());
+                listView.dgvKlijenti.DataSource = _klijenti;
+
+                // UX: očisti selekciju i form polja nakon pretrage
+                listView.dgvKlijenti.ClearSelection();
+                listView.dgvKlijenti.CurrentCell = null;
+                listView.tbIme.Clear();
+                listView.tbPrezime.Clear();
+                listView.tbBrojTelefona.Clear();
+                if (listView.cbMesto.Items.Count > 0) listView.cbMesto.SelectedIndex = 0;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Greška pri pretrazi klijenata: " + ex.Message);
             }
         }
 

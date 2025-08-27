@@ -330,5 +330,22 @@ namespace Client
                 serializer = null;
             }
         }
+
+        internal List<Klijent> GetKlijent(string filter = null)
+        {
+            var request = new Request
+            {
+                Operation = Operation.GetKlijent, // dodaćemo na serverskoj strani
+                Argument = filter                // null ili "" = vrati sve (dogovor)
+            };
+
+            serializer.Send(request);
+
+            var response = serializer.Receive<Response>();
+            if (response.ExceptionMessage != null)
+                throw new Exception(response.ExceptionMessage);
+
+            return serializer.ReadType<List<Klijent>>(response.Result);
+        }
     }
 }

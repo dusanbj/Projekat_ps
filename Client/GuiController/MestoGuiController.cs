@@ -31,18 +31,18 @@ namespace Client.GuiController
             var frm = (FrmMesto)CreateFrmMesta();
             frm.ShowDialog(parent);
         }
-
         private void FrmMesto_Load(object sender, EventArgs e)
         {
             try
             {
-                _suppressSelectionChanged = true; // <<< pauza
-                view.dgvMesta.AutoGenerateColumns = true;
+                _suppressSelectionChanged = true;
+
+                ConfigureGrid();
 
                 var lista = Communication.Instance.GetAllMesto();
                 view.dgvMesta.DataSource = new BindingList<Mesto>(lista ?? new List<Mesto>());
 
-                ResetForme(); // postavi create-mode
+                ResetForme();
             }
             catch (Exception ex)
             {
@@ -50,9 +50,44 @@ namespace Client.GuiController
             }
             finally
             {
-                _suppressSelectionChanged = false; // nastavi
+                _suppressSelectionChanged = false;
             }
         }
+
+        private void ConfigureGrid()
+        {
+            var dgv = view.dgvMesta;
+
+            dgv.AutoGenerateColumns = false;
+            dgv.Columns.Clear();
+
+            dgv.AllowUserToAddRows = false;
+            dgv.AllowUserToDeleteRows = false;
+            dgv.MultiSelect = false;
+            dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgv.ReadOnly = true;
+
+            // Ptt
+            dgv.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = nameof(Mesto.Ptt),
+                HeaderText = "PTT",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+            });
+
+            // Naziv
+            dgv.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = nameof(Mesto.Naziv),
+                HeaderText = "Naziv",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+            });
+
+            // (opciono) utišaj DataError popup
+            dgv.DataError += (s, e) => { e.ThrowException = false; };
+        }
+
+
 
         private void DgvMesta_SelectionChanged(object sender, EventArgs e)
         {

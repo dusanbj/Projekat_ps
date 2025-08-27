@@ -2,6 +2,7 @@
 using Common.Domain;
 using DBBroker;
 using Domen;
+using Microsoft.IdentityModel.Tokens;
 using Server.SystemOperation;
 using System;
 using System.Collections.Generic;
@@ -120,24 +121,35 @@ namespace Server
             return null;
         }
         // ===========================
-        //         / REVERS
+        //          KLIJENT
         // ===========================
 
         internal List<Klijent> GetKlijent(string argument)
         {
-            //poziva SO
-            return null;
+            if (string.IsNullOrWhiteSpace(argument))
+            {
+                // prazno => vrati sve
+                return GetAllKlijent();
+            }
+
+            var so = new GetKlijentSO(argument.Trim()); // filter može biti tekst ili broj
+            so.ExecuteTemplate();
+            return so.Result;
         }
 
         internal bool UpdateKlijent(Klijent argument)
         {
-            //poziva SO
+            //  var so = new UpdateKlijentSO(argument);
+            //   so.ExecuteTemplate();
+            //   return true;                           // ako nije bačen izuzetak, uspešno
             return false;
         }
 
         internal bool DeleteKlijent(Klijent argument)
         {
-            //poziva SO
+            // var so = new DeleteKlijentSO(argument);
+            //  so.ExecuteTemplate();
+            //  return true;                           // ako nije bačen izuzetak, uspešno
             return false;
         }
 
@@ -145,8 +157,6 @@ namespace Server
         {
             try
             {
-                //broker.OpenConnection();
-                //return broker.GetAll(new Klijent()).Cast<Klijent>().ToList();
                 GetAllKlijentFullSO getKlijent = new GetAllKlijentFullSO();
                 getKlijent.ExecuteTemplate();
                 return getKlijent.Result;

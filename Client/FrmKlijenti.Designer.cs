@@ -44,6 +44,8 @@
             btnObrisi = new System.Windows.Forms.Button();
             panel1 = new System.Windows.Forms.Panel();
             dgvKlijenti = new System.Windows.Forms.DataGridView();
+            btnPretrazi = new System.Windows.Forms.Button();
+            tbFilter = new System.Windows.Forms.TextBox();
             pnlOsoba.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvKlijenti).BeginInit();
@@ -65,7 +67,7 @@
             pnlOsoba.Controls.Add(tbIme);
             pnlOsoba.Location = new System.Drawing.Point(12, 18);
             pnlOsoba.Name = "pnlOsoba";
-            pnlOsoba.Size = new System.Drawing.Size(407, 375);
+            pnlOsoba.Size = new System.Drawing.Size(407, 392);
             pnlOsoba.TabIndex = 1;
             // 
             // btnDodajGrad
@@ -155,9 +157,9 @@
             // btnSacuvajSve
             // 
             btnSacuvajSve.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            btnSacuvajSve.Location = new System.Drawing.Point(683, 405);
+            btnSacuvajSve.Location = new System.Drawing.Point(769, 421);
             btnSacuvajSve.Name = "btnSacuvajSve";
-            btnSacuvajSve.Size = new System.Drawing.Size(168, 28);
+            btnSacuvajSve.Size = new System.Drawing.Size(168, 23);
             btnSacuvajSve.TabIndex = 4;
             btnSacuvajSve.Text = "Sacuvaj sve";
             btnSacuvajSve.UseVisualStyleBackColor = true;
@@ -165,9 +167,9 @@
             // btnAzuriraj
             // 
             btnAzuriraj.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            btnAzuriraj.Location = new System.Drawing.Point(511, 405);
+            btnAzuriraj.Location = new System.Drawing.Point(597, 421);
             btnAzuriraj.Name = "btnAzuriraj";
-            btnAzuriraj.Size = new System.Drawing.Size(166, 29);
+            btnAzuriraj.Size = new System.Drawing.Size(166, 24);
             btnAzuriraj.TabIndex = 12;
             btnAzuriraj.Text = "Azuriraj";
             btnAzuriraj.UseVisualStyleBackColor = true;
@@ -175,9 +177,9 @@
             // btnObrisi
             // 
             btnObrisi.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            btnObrisi.Location = new System.Drawing.Point(339, 405);
+            btnObrisi.Location = new System.Drawing.Point(425, 421);
             btnObrisi.Name = "btnObrisi";
-            btnObrisi.Size = new System.Drawing.Size(166, 29);
+            btnObrisi.Size = new System.Drawing.Size(166, 24);
             btnObrisi.TabIndex = 13;
             btnObrisi.Text = "Obrisi";
             btnObrisi.UseVisualStyleBackColor = true;
@@ -188,24 +190,45 @@
             panel1.Controls.Add(dgvKlijenti);
             panel1.Location = new System.Drawing.Point(425, 18);
             panel1.Name = "panel1";
-            panel1.Size = new System.Drawing.Size(426, 374);
+            panel1.Size = new System.Drawing.Size(512, 391);
             panel1.TabIndex = 2;
             // 
             // dgvKlijenti
             // 
+            dgvKlijenti.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             dgvKlijenti.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvKlijenti.Location = new System.Drawing.Point(0, 1);
             dgvKlijenti.Name = "dgvKlijenti";
             dgvKlijenti.ReadOnly = true;
             dgvKlijenti.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dgvKlijenti.Size = new System.Drawing.Size(426, 374);
+            dgvKlijenti.Size = new System.Drawing.Size(512, 391);
             dgvKlijenti.TabIndex = 0;
+            // 
+            // btnPretrazi
+            // 
+            btnPretrazi.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            btnPretrazi.Location = new System.Drawing.Point(12, 420);
+            btnPretrazi.Name = "btnPretrazi";
+            btnPretrazi.Size = new System.Drawing.Size(166, 23);
+            btnPretrazi.TabIndex = 15;
+            btnPretrazi.Text = "Pretrazi";
+            btnPretrazi.UseVisualStyleBackColor = true;
+            // 
+            // tbFilter
+            // 
+            tbFilter.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            tbFilter.Location = new System.Drawing.Point(184, 420);
+            tbFilter.Name = "tbFilter";
+            tbFilter.Size = new System.Drawing.Size(235, 23);
+            tbFilter.TabIndex = 16;
             // 
             // FrmKlijenti
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(869, 470);
+            ClientSize = new System.Drawing.Size(955, 487);
+            Controls.Add(tbFilter);
+            Controls.Add(btnPretrazi);
             Controls.Add(btnObrisi);
             Controls.Add(btnAzuriraj);
             Controls.Add(btnSacuvajSve);
@@ -218,6 +241,7 @@
             panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvKlijenti).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -238,5 +262,7 @@
         public System.Windows.Forms.Button btnObrisi;
         private System.Windows.Forms.Panel panel1;
         public System.Windows.Forms.DataGridView dgvKlijenti;
+        public System.Windows.Forms.Button btnPretrazi;
+        public System.Windows.Forms.TextBox tbFilter;
     }
 }

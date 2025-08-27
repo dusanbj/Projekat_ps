@@ -17,12 +17,12 @@ namespace Client
         {
             InitializeComponent();
 
-            // Accept/Esc rade preko dugmadi iz UC-a
+            ConfigureGrid();
+
             this.AcceptButton = ucDodajRobu1.btnSacuvaj;
             this.CancelButton = ucDodajRobu1.btnOtkazi;
 
-            // Handleri
-            ucDodajRobu1.btnSacuvaj.Click += BtnSacuvaj_Click;      // kreiranje nove robe
+            ucDodajRobu1.btnSacuvaj.Click += BtnSacuvaj_Click;
             ucDodajRobu1.btnOtkazi.Click += (s, e) => ClearForm();
 
             btnAzuriraj.Click += btnAzuriraj_Click;
@@ -30,9 +30,60 @@ namespace Client
 
             dgvRoba.SelectionChanged += dgvRoba_SelectionChanged;
 
-            // Učitaj listu kada se prikaže forma
             this.Shown += (s, e) => ReloadGrid();
         }
+
+        private void ConfigureGrid()
+        {
+            var dgv = dgvRoba;
+
+            dgv.AutoGenerateColumns = false;
+            dgv.Columns.Clear();
+
+            dgv.AllowUserToAddRows = false;
+            dgv.AllowUserToDeleteRows = false;
+            dgv.MultiSelect = false;
+            dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgv.ReadOnly = true; // uređivanje radiš kroz formu ispod grida
+
+            // Id
+            dgv.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = nameof(Roba.Id),
+                HeaderText = "Id",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+            });
+
+            // Naziv
+            dgv.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = nameof(Roba.Naziv),
+                HeaderText = "Naziv",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+            });
+
+            // Opis
+            dgv.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = nameof(Roba.Opis),
+                HeaderText = "Opis",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+            });
+
+            // Cena
+            var colCena = new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = nameof(Roba.Cena),
+                HeaderText = "Cena",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+                DefaultCellStyle = { Alignment = DataGridViewContentAlignment.MiddleRight, Format = "0.##" } // ili "N2"
+            };
+            dgv.Columns.Add(colCena);
+
+            // da utisamo default DataError popup
+            // dgv.DataError += (s, e) => { e.ThrowException = false; };
+        }
+
 
         /* === Public helper za vezivanje ako ti zatreba spolja === */
         public void Bind(IEnumerable<Roba> data)

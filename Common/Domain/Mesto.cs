@@ -1,6 +1,7 @@
 using Common.Domain;
 using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 namespace Domen
 {
     public class Mesto : IEntity
@@ -22,6 +23,7 @@ namespace Domen
         {
             return Naziv;
         }
+
 
         public List<IEntity> GetReaderList(SqlDataReader reader)
         {

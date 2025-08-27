@@ -31,6 +31,14 @@ namespace Domen
         [JsonIgnore]
         public string UpdateValues => $"ime='{Ime}', prezime='{Prezime}', brTelefona='{BrTelefona}', ptt={(Mesto?.Ptt ?? 0)}";
 
+        [JsonIgnore]
+        public string MestoPrikaz =>
+    Mesto == null
+        ? ""
+        : (string.IsNullOrWhiteSpace(Mesto.Naziv)
+            ? Mesto.Ptt.ToString()
+            : $"{Mesto.Naziv} ({Mesto.Ptt})");
+
         public List<IEntity> GetReaderList(SqlDataReader reader)
         {
             var klijenti = new List<IEntity>();
