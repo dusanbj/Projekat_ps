@@ -110,18 +110,16 @@ namespace Server
 
         internal bool UpdateKlijent(Klijent argument)
         {
-            // var so = new UpdateKlijentSO(argument);
-            // so.ExecuteTemplate();
-            // return true;
-            return false;
+            var so = new UpdateKlijentSO(argument);
+            so.ExecuteTemplate();
+            return true;
         }
 
         internal bool DeleteKlijent(Klijent argument)
         {
-            // var so = new DeleteKlijentSO(argument);
-            // so.ExecuteTemplate();
-            // return true;
-            return false;
+            var so = new DeleteKlijentSO(argument);
+            so.ExecuteTemplate();
+            return true;
         }
 
         internal List<Klijent> GetAllKlijent()

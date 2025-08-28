@@ -18,9 +18,7 @@ namespace Client.GuiController
         private FrmKlijenti listView;
         private BindingList<Klijent> _klijenti;
 
-        /// <summary>
         /// Kreira i konfiguriše UC za dodavanje klijenta (vezuje evente).
-        /// </summary>
         internal Control CreateDodajKlijenta()
         {
             view = new UCDodajKlijenta();
@@ -35,7 +33,7 @@ namespace Client.GuiController
             view.btnSacuvaj.Click += AddKlijent;
             view.btnDodajGrad.Click += BtnDodajGrad_Click;
 
-            // Enter u TB -> submit
+            // Enter u TB -> submit preko PerformClick (da izbegnemo dupli poziv)
             view.tbIme.KeyDown += SubmitOnEnter;
             view.tbPrezime.KeyDown += SubmitOnEnter;
             view.tbBrojTelefona.KeyDown += SubmitOnEnter;
@@ -48,14 +46,13 @@ namespace Client.GuiController
         {
             if (e.KeyCode == Keys.Enter)
             {
-                AddKlijent(sender, EventArgs.Empty);
+                view.btnSacuvaj.PerformClick();
                 e.Handled = true;
+                e.SuppressKeyPress = true;
             }
         }
 
-        /// <summary>
         /// Otvori rad sa Mestima i osveži combobox po zatvaranju (za UC).
-        /// </summary>
         private void BtnDodajGrad_Click(object sender, EventArgs e)
         {
             try
@@ -84,9 +81,25 @@ namespace Client.GuiController
             }
         }
 
-        /// <summary>
+        /// Pomoćni helper za kreiranje klijenta preko servera + poruka o uspehu.
+        /// Vraća true ako je sačuvan.
+        private bool TrySaveNewKlijent(Klijent k)
+        {
+            try
+            {
+                Communication.Instance.CreateKlijent(k);
+                MessageBox.Show("Sistem je zapamtio klijenta");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Greška pri dodavanju klijenta: " + ex.Message);
+                return false;
+            }
+        }
+
+
         /// Validacija + poziv CreateKlijent na serveru (UC).
-        /// </summary>
         private void AddKlijent(object sender, EventArgs e)
         {
             try
@@ -121,9 +134,10 @@ namespace Client.GuiController
                     Mesto = new Mesto { Ptt = mesto.Ptt } // bitno: setuj Ptt!
                 };
 
-                Communication.Instance.CreateKlijent(klijent); // server radi duplikat check
-                MessageBox.Show("Klijent uspešno dodat.");
-                ResetUcForm();
+                if (TrySaveNewKlijent(klijent))
+                {
+                    ResetUcForm();
+                }
             }
             catch (Exception ex)
             {
@@ -263,9 +277,11 @@ namespace Client.GuiController
             if (!TryBuildKlijentFromForm(out var k)) return;
             try
             {
-                Communication.Instance.CreateKlijent(k);
-                _klijenti.Add(k);
-                ResetListForm();
+                if (TrySaveNewKlijent(k))
+                {
+                    _klijenti.Add(k);
+                    ResetListForm();
+                }
             }
             catch (Exception ex)
             {
@@ -287,12 +303,15 @@ namespace Client.GuiController
             try
             {
                 Communication.Instance.UpdateKlijent(k);
+
                 // osveži lokalno
                 sel.Ime = k.Ime;
                 sel.Prezime = k.Prezime;
                 sel.BrTelefona = k.BrTelefona;
                 sel.Mesto = k.Mesto;
                 listView.dgvKlijenti.Refresh();
+
+                MessageBox.Show("Sistem je zapamtio klijenta");
                 ResetListForm();
             }
             catch (Exception ex)
@@ -314,6 +333,7 @@ namespace Client.GuiController
             {
                 Communication.Instance.DeleteKlijent(k);
                 _klijenti.Remove(k);
+                MessageBox.Show("Sistem je obrisao klijenta");
                 ResetListForm();
             }
             catch (Exception ex)

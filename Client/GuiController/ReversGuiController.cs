@@ -76,7 +76,7 @@ namespace Client.GuiController
                 // preuzmi kreirani revers sa ID-em iz response-a
                 if (response.Result is Revers r) revers = r;
 
-                MessageBox.Show("Uspešno kreiran revers! Dodajte stavke.");
+                MessageBox.Show("Sistem je kreirao revers");
                 OpenStavkeFormForRevers(revers);
             }
             else
@@ -147,6 +147,7 @@ namespace Client.GuiController
             {
                 if (revers != null && (dodajStavke?.Stavke == null || dodajStavke.Stavke.Count == 0))
                 {
+                    // rollback praznog header-a (bez poruke)
                     Communication.Instance.DeleteRevers(revers);
                 }
             }
@@ -251,9 +252,9 @@ namespace Client.GuiController
             Response response = Communication.Instance.UpdateRevers(revers);
             if (response.ExceptionMessage == null)
             {
-                MessageBox.Show("Revers i stavke su uspešno sačuvani!");
+                MessageBox.Show("Sistem je zapamtio revers");
 
-                // >>> NOVO: osveži grid u FrmRevers i zadrži selekciju na izmenjenom reversu
+                // osveži grid u FrmRevers i zadrži selekciju na izmenjenom reversu
                 RefreshReversGridAfterEdit(revers?.Id ?? 0);
 
                 forma?.Close();
@@ -576,7 +577,6 @@ namespace Client.GuiController
                         if (row?.DataBoundItem is Revers rr && rr.Id == editedReversId)
                         {
                             row.Selected = true;
-                            // pomeri fokus (ako postoji bar jedna kolona)
                             if (row.Cells.Count > 0)
                                 frmRevers.dgvReversi.CurrentCell = row.Cells[0];
                             break;

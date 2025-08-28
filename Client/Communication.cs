@@ -1,420 +1,197 @@
-﻿
-using Common;
+﻿using Common;
 using Common.Communication;
 using Common.Domain;
 using Domen;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Client
 {
     public class Communication
     {
-
         private static Communication _instance;
-        public static Communication Instance { 
-            get 
-            {
-                if( _instance == null ) _instance = new Communication();
-                return _instance;
-            } 
-        }
-        private Communication()
+        public static Communication Instance
         {
-            
+            get
+            {
+                if (_instance == null) _instance = new Communication();
+                return _instance;
+            }
         }
+        private Communication() { }
 
         private Socket socket;
-       private JsonNetworkSerializer serializer;
+        private JsonNetworkSerializer serializer;
 
         public void Connect()
         {
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             socket.Connect("127.0.0.1", 9999);
             serializer = new JsonNetworkSerializer(socket);
-
         }
+
+        // ==========
+        // Helpers
+        // ==========
+        private void EnsureReady()
+        {
+            if (socket == null || serializer == null)
+                throw new Exception("Niste povezani na server.");
+        }
+
+        private void CleanupConnection()
+        {
+            try { socket?.Shutdown(SocketShutdown.Both); } catch { }
+            try { socket?.Close(); } catch { }
+            socket = null;
+            serializer = null;
+        }
+
+        private Response SendAndReceiveRaw(Operation op, object arg)
+        {
+            EnsureReady();
+
+            try
+            {
+                var request = new Request { Operation = op, Argument = arg };
+                serializer.Send(request);
+
+                var response = serializer.Receive<Response>();
+                if (response == null)
+                    throw new Exception("Veza sa serverom je prekinuta ili server nije dostupan.");
+
+                if (response.ExceptionMessage != null)
+                    throw new Exception(response.ExceptionMessage);
+
+                return response;
+            }
+            catch (SocketException)
+            {
+                CleanupConnection();
+                throw new Exception("Server nije dostupan (SocketException). Proverite da li je pokrenut.");
+            }
+            catch (IOException)
+            {
+                CleanupConnection();
+                throw new Exception("Veza sa serverom je prekinuta (IOException).");
+            }
+            catch
+            {
+                // nemoj čistiti konekciju za sve ostale greške – mogu biti biznis greške
+                throw;
+            }
+        }
+
+        private T SendAndReceive<T>(Operation op, object arg) where T : class
+        {
+            var resp = SendAndReceiveRaw(op, arg);
+            return serializer.ReadType<T>(resp.Result);
+        }
+
+
+        // ==========
+        // API
+        // ==========
 
         internal Response Login(Zaposleni zap)
         {
-            Request request = new Request
-            {
-                Argument = zap,
-                Operation = Operation.Login
-            };
-            serializer.Send(request);
-            Response response = serializer.Receive<Response>();
-
-            if (response.ExceptionMessage != null)
-            {
-                throw new Exception(response.ExceptionMessage);
-            }
-
-            response.Result = serializer.ReadType<Zaposleni>(response.Result); // deserijalizujemo result u user-a
-            return response;
+            var resp = SendAndReceiveRaw(Operation.Login, zap);
+            resp.Result = serializer.ReadType<Zaposleni>(resp.Result);
+            return resp;
         }
 
         internal Response CreateKlijent(Klijent klijent)
-        {
-            Request request = new Request
-            {
-                Argument = klijent,
-                Operation = Operation.CreateKlijent
-            };
-            serializer.Send(request);
-
-            Response response = serializer.Receive<Response>();
-            if (response.ExceptionMessage != null)
-            {
-                throw new Exception(response.ExceptionMessage);
-            }
-            return response;
-        }
+            => SendAndReceiveRaw(Operation.CreateKlijent, klijent);
 
         internal Response UpdateKlijent(Klijent klijent)
-        {
-            var request = new Request
-            {
-                Argument = klijent,
-                Operation = Operation.UpdateKlijent
-            };
-            serializer.Send(request);
-
-            var response = serializer.Receive<Response>();
-            if (response.ExceptionMessage != null)
-                throw new Exception(response.ExceptionMessage);
-
-            return response;
-        }
+            => SendAndReceiveRaw(Operation.UpdateKlijent, klijent);
 
         internal Response DeleteKlijent(Klijent klijent)
-        {
-            var request = new Request
-            {
-                Argument = klijent,
-                Operation = Operation.DeleteKlijent
-            };
-            serializer.Send(request);
-
-            var response = serializer.Receive<Response>();
-            if (response.ExceptionMessage != null)
-                throw new Exception(response.ExceptionMessage);
-
-            return response;
-        }
-
+            => SendAndReceiveRaw(Operation.DeleteKlijent, klijent);
 
         internal Response CreateRevers(Revers revers)
         {
-            var request = new Request
-            {
-                Argument = revers,
-                Operation = Operation.CreateRevers
-            };
-            serializer.Send(request);
-
-            var response = serializer.Receive<Response>();
-            if (response.ExceptionMessage != null)
-                throw new Exception(response.ExceptionMessage);
-
-            response.Result = serializer.ReadType<Revers>(response.Result);
-
-            return response;
-        }
-
-        internal List<Mesto> GetAllMesto()
-        {
-            Request request = new Request
-            {
-                Operation = Operation.GetAllMesto
-            };
-            serializer.Send(request);
-            Response response = serializer.Receive<Response>();
-            return serializer.ReadType<List<Mesto>>(response.Result);
-
-        }
-
-        internal List<Klijent> GetAllKlijent()
-        {
-            Request request = new Request
-            {
-                Operation = Operation.GetAllKlijent
-            };
-            serializer.Send(request);
-            Response response = serializer.Receive<Response>();
-            return serializer.ReadType<List<Klijent>>(response.Result);
-
+            var resp = SendAndReceiveRaw(Operation.CreateRevers, revers);
+            resp.Result = serializer.ReadType<Revers>(resp.Result);
+            return resp;
         }
 
         internal Response DeleteRevers(Revers revers)
-        {
-            Request request = new Request
-            {
-                Argument = revers,
-                Operation = Operation.DeleteRevers
-            };
-            serializer.Send(request);
-
-            Response response = serializer.Receive<Response>();
-            if (response.ExceptionMessage != null)
-            {
-                throw new Exception(response.ExceptionMessage);
-            }
-            return response;
-        }
+            => SendAndReceiveRaw(Operation.DeleteRevers, revers);
 
         internal Response UpdateRevers(Revers revers)
-        {
-            Request request = new Request
-            {
-                Argument = revers,
-                Operation = Operation.UpdateRevers
-            };
-            serializer.Send(request);
-
-            Response response = serializer.Receive<Response>();
-            if (response.ExceptionMessage != null)
-            {
-                throw new Exception(response.ExceptionMessage);
-            }
-            return response;
-        }
+            => SendAndReceiveRaw(Operation.UpdateRevers, revers);
 
         internal Response CreateRoba(Roba roba)
-        {
-            var request = new Request
-            {
-                Argument = roba,
-                Operation = Operation.CreateRoba
-            };
-            serializer.Send(request);
-
-            var response = serializer.Receive<Response>();
-            if (response.ExceptionMessage != null)
-                throw new Exception(response.ExceptionMessage);
-
-            return response;
-        }
+            => SendAndReceiveRaw(Operation.CreateRoba, roba);
 
         internal Response UpdateRoba(Roba roba)
-        {
-            var request = new Request
-            {
-                Argument = roba,
-                Operation = Operation.UpdateRoba
-            };
-            serializer.Send(request);
-
-            var response = serializer.Receive<Response>();
-            if (response.ExceptionMessage != null)
-                throw new Exception(response.ExceptionMessage);
-
-            return response;
-        }
+            => SendAndReceiveRaw(Operation.UpdateRoba, roba);
 
         internal Response DeleteRoba(Roba roba)
-        {
-            var request = new Request
-            {
-                Argument = roba,
-                Operation = Operation.DeleteRoba
-            };
-            serializer.Send(request);
+            => SendAndReceiveRaw(Operation.DeleteRoba, roba);
 
-            var response = serializer.Receive<Response>();
-            if (response.ExceptionMessage != null)
-                throw new Exception(response.ExceptionMessage);
-
-            return response;
-        }
-
-        //ako je filter null, vraca svu robu
+        // null filter => sve
         internal List<Roba> GetRoba(string filter = null)
-        {
-            var request = new Request
-            {
-                Operation = Operation.GetRoba,
-                Argument = filter // server neka tretira null/"" kao "SELECT *"
-            };
-            serializer.Send(request);
+            => SendAndReceive<List<Roba>>(Operation.GetRoba, filter);
 
-            var response = serializer.Receive<Response>();
-            if (response.ExceptionMessage != null)
-                throw new Exception(response.ExceptionMessage);
-
-            return serializer.ReadType<List<Roba>>(response.Result);
-        }
-        //vraca celu listu
         internal List<Roba> GetAllRoba()
-        {
-            return GetRoba(null);
-        }
+            => GetRoba(null);
 
         public Mesto CreateMesto(Mesto mesto)
-        {
-            var req = new Request { Operation = Operation.CreateMesto, Argument = mesto };
-            serializer.Send(req);
-            var resp = serializer.Receive<Response>();
-            if (resp.ExceptionMessage != null) throw new Exception(resp.ExceptionMessage);
-            return serializer.ReadType<Mesto>(resp.Result);
-        }
+            => SendAndReceive<Mesto>(Operation.CreateMesto, mesto);
 
         public void UpdateMesto(Mesto mesto)
-        {
-            var req = new Request { Operation = Operation.UpdateMesto, Argument = mesto };
-            serializer.Send(req);
-            var resp = serializer.Receive<Response>();
-            if (resp.ExceptionMessage != null) throw new Exception(resp.ExceptionMessage);
-        }
+            => SendAndReceiveRaw(Operation.UpdateMesto, mesto);
 
         public void DeleteMesto(Mesto mesto)
-        {
-            var req = new Request { Operation = Operation.DeleteMesto, Argument = mesto };
-            serializer.Send(req);
-            var resp = serializer.Receive<Response>();
-            if (resp.ExceptionMessage != null) throw new Exception(resp.ExceptionMessage);
-        }
+            => SendAndReceiveRaw(Operation.DeleteMesto, mesto);
 
         public Response CreateStrSprema(StrSprema ss)
         {
-            var req = new Request
-            {
-                Operation = Operation.CreateStrSprema,
-                Argument = ss
-            };
-
-            serializer.Send(req);
-
-            var resp = serializer.Receive<Response>();
-            if (resp == null)
-                return new Response { ExceptionMessage = "Veza sa serverom je prekinuta." };
-
-            // ako server vraća kreirani entitet, možeš ga tipizovati ovako:
+            var resp = SendAndReceiveRaw(Operation.CreateStrSprema, ss);
+            // Ako server vraća kreirani entitet:
             // resp.Result = serializer.ReadType<StrSprema>(resp.Result);
-
-            if (resp.ExceptionMessage != null)
-                throw new Exception(resp.ExceptionMessage);
-
             return resp;
         }
 
         internal void Logout()
         {
-            // Ako nismo povezani, nema posla
-            if (socket == null || serializer == null)
-                return;
+            if (socket == null || serializer == null) return;
 
             try
             {
-                // Pošalji serveru da zna da prekine sesiju (bez čekanja odgovora)
-                var req = new Request
-                {
-                    Operation = Operation.Logout,
-                    Argument = null
-                };
-                serializer.Send(req); // fire-and-forget
+                var req = new Request { Operation = Operation.Logout, Argument = null };
+                serializer.Send(req);
             }
-            catch
-            {
-                // Ignorišemo greške pri slanju tokom odjave (npr. konekcija već prekinuta)
-            }
+            catch { }
             finally
             {
-                try { socket.Shutdown(SocketShutdown.Both); } catch { }
-                try { socket.Close(); } catch { }
-                socket = null;
-                serializer = null;
+                CleanupConnection();
             }
         }
 
         internal List<Klijent> GetKlijent(string filter = null)
-        {
-            var request = new Request
-            {
-                Operation = Operation.GetKlijent, // dodaćemo na serverskoj strani
-                Argument = filter                // null ili "" = vrati sve (dogovor)
-            };
+            => SendAndReceive<List<Klijent>>(Operation.GetKlijent, filter);
 
-            serializer.Send(request);
+        internal List<Mesto> GetAllMesto()
+            => SendAndReceive<List<Mesto>>(Operation.GetAllMesto, null);
 
-            var response = serializer.Receive<Response>();
-            if (response.ExceptionMessage != null)
-                throw new Exception(response.ExceptionMessage);
-
-            return serializer.ReadType<List<Klijent>>(response.Result);
-        }
+        internal List<Klijent> GetAllKlijent()
+            => SendAndReceive<List<Klijent>>(Operation.GetAllKlijent, null);
 
         internal List<Revers> GetAllRevers()
-        {
-            var request = new Request
-            {
-                Operation = Operation.GetAllRevers
-            };
-
-            serializer.Send(request);
-
-            var response = serializer.Receive<Response>();
-            if (response.ExceptionMessage != null)
-                throw new Exception(response.ExceptionMessage);
-
-            return serializer.ReadType<List<Revers>>(response.Result);
-        }
+            => SendAndReceive<List<Revers>>(Operation.GetAllRevers, null);
 
         internal List<Zaposleni> GetAllZaposleni()
-        {
-            var request = new Request
-            {
-                Operation = Operation.GetAllZaposleni
-            };
-
-            serializer.Send(request);
-
-            var response = serializer.Receive<Response>();
-            if (response.ExceptionMessage != null)
-                throw new Exception(response.ExceptionMessage);
-
-            return serializer.ReadType<List<Zaposleni>>(response.Result);
-        }
+            => SendAndReceive<List<Zaposleni>>(Operation.GetAllZaposleni, null);
 
         internal List<Revers> GetRevers(string filter)
-        {
-            var request = new Request
-            {
-                Operation = Operation.GetRevers,
-                // po želji: whitespace -> null; server svakako već tretira whitespace kao null
-                Argument = string.IsNullOrWhiteSpace(filter) ? null : filter
-            };
+            => SendAndReceive<List<Revers>>(Operation.GetRevers, string.IsNullOrWhiteSpace(filter) ? null : filter);
 
-            serializer.Send(request);
-
-            var response = serializer.Receive<Response>();
-            if (response.ExceptionMessage != null)
-                throw new Exception(response.ExceptionMessage);
-
-            return serializer.ReadType<List<Revers>>(response.Result);
-        }
-
-        // Client/Communication.cs
         internal List<StavkaReversa> GetStavkeByRevers(long idRevers)
-        {
-            var request = new Request
-            {
-                Operation = Operation.GetStavkeByRevers,
-                Argument = idRevers
-            };
-            serializer.Send(request);
-
-            var response = serializer.Receive<Response>();
-            if (response.ExceptionMessage != null)
-                throw new Exception(response.ExceptionMessage);
-
-            return serializer.ReadType<List<StavkaReversa>>(response.Result);
-        }
-
-
+            => SendAndReceive<List<StavkaReversa>>(Operation.GetStavkeByRevers, idRevers);
     }
 }
