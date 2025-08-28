@@ -29,9 +29,11 @@ namespace Domen
         public Roba Roba { get; set; }
         public decimal IznosStavke { get; set; }
 
-        [JsonIgnore] public string TableName => "stavkaReversa";
+        // NOVO: za prikaz u gridu (nije za bazu/JSON)
+        [JsonIgnore]
+        public string RobaPrikaz => Roba == null ? "" : Roba.Naziv;
 
-        //BITNO: eksplicitno navodimo samo ove kolone (IDENTITY kolona se ne pominje)
+        [JsonIgnore] public string TableName => "stavkaReversa";
         [JsonIgnore] public string InsertColumns => "idRevers, rb, kolicina, idRoba, iznosStavke";
 
         [JsonIgnore]

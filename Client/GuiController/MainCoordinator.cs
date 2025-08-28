@@ -86,6 +86,10 @@ namespace Client.GuiController
         {
             frmMain.ChangePanel(reversGuiController.CreateDodajRevers());
         }
+        internal void ShowRadSaReversima()
+        {
+            reversGuiController.ShowFrmPretragaReversa(frmMain);
+        }
 
         // === MESTO ===
         internal void ShowRadSaMestima()

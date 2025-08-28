@@ -22,12 +22,14 @@ namespace Common.Communication
         UpdateZaposleni,
         DeleteZaposleni,
         GetZaposleni,
+        GetAllZaposleni,
         //reversi
         CreateRevers,
         UpdateRevers,
         DeleteRevers,
         GetRevers,
         GetAllRevers,
+        GetStavkeByRevers,
         //Roba
         CreateRoba,
         UpdateRoba,

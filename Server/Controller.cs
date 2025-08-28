@@ -2,13 +2,9 @@
 using Common.Domain;
 using DBBroker;
 using Domen;
-using Microsoft.IdentityModel.Tokens;
 using Server.SystemOperation;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Server
 {
@@ -28,9 +24,12 @@ namespace Server
         }
         private Controller() { broker = new Broker(); }
 
+        // ===========================
+        //          LOGIN
+        // ===========================
         public Zaposleni Login(Zaposleni argument)
         {
-            LoginSO so = new LoginSO(argument);
+            var so = new LoginSO(argument);
             so.ExecuteTemplate();
             if (so != null)
             {
@@ -38,6 +37,7 @@ namespace Server
             }
             return so.Result;
         }
+
         internal void Logout(Zaposleni prijavljen)
         {
             foreach (Zaposleni z in prijavljeniZaposleni)
@@ -51,105 +51,76 @@ namespace Server
             }
         }
 
+        // ===========================
+        //        ZAPOSLENI
+        // ===========================
         internal void CreateZaposleni(Zaposleni argument)
         {
-            CreateZaposleniSO so = new CreateZaposleniSO(argument);
+            var so = new CreateZaposleniSO(argument);
             so.ExecuteTemplate();
-            //prepraviti da vraca Zaposleni
+            // TODO: vratiti kreiranog zaposlenog ako je potrebno
         }
 
         internal void UpdateZaposleni(Zaposleni argument)
         {
-            UpdateZaposleni so = new UpdateZaposleni(argument);
+            var so = new UpdateZaposleni(argument);
             so.ExecuteTemplate();
-            //prepraviti da vraca bool
         }
 
         internal void DeleteZaposleni(Zaposleni argument)
         {
-            DeleteZaposleniSO so = new DeleteZaposleniSO(argument);
+            var so = new DeleteZaposleniSO(argument);
             so.ExecuteTemplate();
-            //kako da napravim da bude bool nzm
         }
 
-        internal List<Zaposleni> GetZaposleni(String argument)
+        // (opciono) filtrirana pretraga zaposlenih – trenutno nije korišćeno
+        internal List<Zaposleni> GetZaposleni(string argument)
         {
-            //poziva SO
-            return null;
+            // Dodati SO po potrebi (npr. GetZaposleniSO)
+            return new List<Zaposleni>();
         }
 
+        internal List<Zaposleni> GetAllZaposleni()
+        {
+            var so = new GetAllZaposleniSO();
+            so.ExecuteTemplate();
+            return so.Result;
+        }
+
+        // ===========================
+        //           KLIJENT
+        // ===========================
         internal void CreateKlijent(Klijent argument)
         {
-            //ispraviti da vraca klijenta
-            CreateKlijentSO createKlijent = new CreateKlijentSO(argument);
-            createKlijent.ExecuteTemplate();
-        }
-
-        // ===========================
-        //           REVERS
-        // ===========================
-        internal Revers CreateRevers(Revers revers)
-        {
-            var so = new CreateReversSO(revers);
+            var so = new CreateKlijentSO(argument);
             so.ExecuteTemplate();
-            return so.Result; // vraca revers sa ID-em (i eventualno ukupnom cenom ako si slao stavke)
         }
-
-        internal bool UpdateRevers(Revers argument)
-        {
-            var so = new UpdateReversSO(argument);
-            so.ExecuteTemplate();
-            return true; // ako ExecuteTemplate ne baci izuzetak, uspeh
-        }
-
-        internal bool DeleteRevers(Revers argument)
-        {
-            var so = new DeleteReversSO(argument);
-            so.ExecuteTemplate();
-            return true; // ako ExecuteTemplate ne baci izuzetak, uspeh
-        }
-
-        internal Revers GetRevers(string argument)
-        {
-            return null;
-            //poziva SO (npr. GetReversSO) – ostavljeno po ugledu na ostale TODO
-        }
-
-        internal List<Revers> GetAllRevers()
-        {
-            //poziva SO (npr. GetAllReversSO)
-            return null;
-        }
-        // ===========================
-        //          KLIJENT
-        // ===========================
 
         internal List<Klijent> GetKlijent(string argument)
         {
             if (string.IsNullOrWhiteSpace(argument))
             {
-                // prazno => vrati sve
                 return GetAllKlijent();
             }
 
-            var so = new GetKlijentSO(argument.Trim()); // filter može biti tekst ili broj
+            var so = new GetKlijentSO(argument.Trim());
             so.ExecuteTemplate();
             return so.Result;
         }
 
         internal bool UpdateKlijent(Klijent argument)
         {
-            //  var so = new UpdateKlijentSO(argument);
-            //   so.ExecuteTemplate();
-            //   return true;                           // ako nije bačen izuzetak, uspešno
+            // var so = new UpdateKlijentSO(argument);
+            // so.ExecuteTemplate();
+            // return true;
             return false;
         }
 
         internal bool DeleteKlijent(Klijent argument)
         {
             // var so = new DeleteKlijentSO(argument);
-            //  so.ExecuteTemplate();
-            //  return true;                           // ako nije bačen izuzetak, uspešno
+            // so.ExecuteTemplate();
+            // return true;
             return false;
         }
 
@@ -157,9 +128,9 @@ namespace Server
         {
             try
             {
-                GetAllKlijentFullSO getKlijent = new GetAllKlijentFullSO();
-                getKlijent.ExecuteTemplate();
-                return getKlijent.Result;
+                var so = new GetAllKlijentFullSO();
+                so.ExecuteTemplate();
+                return so.Result;
             }
             finally
             {
@@ -167,11 +138,14 @@ namespace Server
             }
         }
 
+        // ===========================
+        //            ROBA
+        // ===========================
         internal Roba CreateRoba(Roba argument)
         {
             var so = new CreateRobaSO(argument);
             so.ExecuteTemplate();
-            return argument; // mozda da vratimo ID posle INSERT-a -> treba dopuniti
+            return argument;
         }
 
         internal bool UpdateRoba(Roba argument)
@@ -195,11 +169,14 @@ namespace Server
             return so.Result;
         }
 
+        // ===========================
+        //            MESTO
+        // ===========================
         internal Mesto CreateMesto(Mesto argument)
         {
             var so = new CreateMestoSO(argument);
             so.ExecuteTemplate();
-            return argument; // po uzoru na Robu: Create vraća prosleđeni entitet
+            return argument;
         }
 
         internal bool UpdateMesto(Mesto argument)
@@ -223,7 +200,6 @@ namespace Server
             return so.Result;
         }
 
-        // (opciono – filtriranje po ptt/nazivu)
         internal List<Mesto> GetMesto(string filter)
         {
             var so = new GetMestoSO(filter);
@@ -231,11 +207,14 @@ namespace Server
             return so.Result;
         }
 
+        // ===========================
+        //        STRUČNA SPREMA
+        // ===========================
         internal StrSprema AddStrSprema(StrSprema argument)
         {
             var so = new CreateStrSpremaSO(argument);
             so.ExecuteTemplate();
-            return argument; // po uzoru na Robu: Create vraća prosleđeni entitet
+            return argument;
         }
 
         internal bool UpdateStrSprema(StrSprema argument)
@@ -254,6 +233,56 @@ namespace Server
         {
             //poziva SO
             return null;
+        }
+
+        // ===========================
+        //            REVERS
+        // ===========================
+        internal Revers CreateRevers(Revers revers)
+        {
+            var so = new CreateReversSO(revers);
+            so.ExecuteTemplate();
+            return so.Result; // revers sa ID-em
+        }
+
+        internal bool UpdateRevers(Revers argument)
+        {
+            var so = new UpdateReversSO(argument);
+            so.ExecuteTemplate();
+            return true;
+        }
+
+        internal bool DeleteRevers(Revers argument)
+        {
+            var so = new DeleteReversSO(argument);
+            so.ExecuteTemplate();
+            return true;
+        }
+
+        // **SEARCH**: vrati listu reversa po filteru (ime/prezime zaposlenog/klijenta, id klijenta, id zaposlenog, id reversa)
+        internal List<Revers> GetRevers(string argument)
+        {
+            if (string.IsNullOrWhiteSpace(argument))
+            {
+                return GetAllRevers();
+            }
+            var so = new GetReversSO(argument); // SO koji sklapa WHERE uslov
+            so.ExecuteTemplate();
+            return so.Result; // List<Revers>
+        }
+
+        internal List<Revers> GetAllRevers()
+        {
+            var so = new GetAllReversSO();
+            so.ExecuteTemplate();
+            return so.Result;
+        }
+
+        internal List<StavkaReversa> GetStavkeByRevers(long idRevers)
+        {
+            var so = new GetStavkeByReversSO(idRevers);
+            so.ExecuteTemplate();
+            return so.Result;
         }
     }
 }

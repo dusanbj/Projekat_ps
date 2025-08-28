@@ -47,6 +47,7 @@
             logoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             lblUser = new System.Windows.Forms.Label();
             pnlMain = new System.Windows.Forms.Panel();
+            radSaReversimaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             mnMain.SuspendLayout();
             SuspendLayout();
             // 
@@ -91,7 +92,7 @@
             // 
             // reversToolStripMenuItem
             // 
-            reversToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { dodajReversToolStripMenuItem });
+            reversToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { dodajReversToolStripMenuItem, radSaReversimaToolStripMenuItem });
             reversToolStripMenuItem.Name = "reversToolStripMenuItem";
             reversToolStripMenuItem.Size = new System.Drawing.Size(53, 20);
             reversToolStripMenuItem.Text = "Revers";
@@ -99,7 +100,7 @@
             // dodajReversToolStripMenuItem
             // 
             dodajReversToolStripMenuItem.Name = "dodajReversToolStripMenuItem";
-            dodajReversToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            dodajReversToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             dodajReversToolStripMenuItem.Text = "Dodaj revers";
             dodajReversToolStripMenuItem.Click += dodajReversToolStripMenuItem_Click;
             // 
@@ -166,7 +167,7 @@
             // logoutToolStripMenuItem
             // 
             logoutToolStripMenuItem.Name = "logoutToolStripMenuItem";
-            logoutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            logoutToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             logoutToolStripMenuItem.Text = "Logout";
             logoutToolStripMenuItem.Click += logoutToolStripMenuItem_Click;
             // 
@@ -185,6 +186,13 @@
             pnlMain.Name = "pnlMain";
             pnlMain.Size = new System.Drawing.Size(643, 398);
             pnlMain.TabIndex = 2;
+            // 
+            // radSaReversimaToolStripMenuItem
+            // 
+            radSaReversimaToolStripMenuItem.Name = "radSaReversimaToolStripMenuItem";
+            radSaReversimaToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            radSaReversimaToolStripMenuItem.Text = "Rad sa reversima";
+            radSaReversimaToolStripMenuItem.Click += radSaReversimaToolStripMenuItem_Click;
             // 
             // FrmMain
             // 
@@ -224,5 +232,6 @@
         private System.Windows.Forms.ToolStripMenuItem dodajStrucnuSpremuToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem zaposleniToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem logoutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem radSaReversimaToolStripMenuItem;
     }
 }

@@ -347,5 +347,74 @@ namespace Client
 
             return serializer.ReadType<List<Klijent>>(response.Result);
         }
+
+        internal List<Revers> GetAllRevers()
+        {
+            var request = new Request
+            {
+                Operation = Operation.GetAllRevers
+            };
+
+            serializer.Send(request);
+
+            var response = serializer.Receive<Response>();
+            if (response.ExceptionMessage != null)
+                throw new Exception(response.ExceptionMessage);
+
+            return serializer.ReadType<List<Revers>>(response.Result);
+        }
+
+        internal List<Zaposleni> GetAllZaposleni()
+        {
+            var request = new Request
+            {
+                Operation = Operation.GetAllZaposleni
+            };
+
+            serializer.Send(request);
+
+            var response = serializer.Receive<Response>();
+            if (response.ExceptionMessage != null)
+                throw new Exception(response.ExceptionMessage);
+
+            return serializer.ReadType<List<Zaposleni>>(response.Result);
+        }
+
+        internal List<Revers> GetRevers(string filter)
+        {
+            var request = new Request
+            {
+                Operation = Operation.GetRevers,
+                // po želji: whitespace -> null; server svakako već tretira whitespace kao null
+                Argument = string.IsNullOrWhiteSpace(filter) ? null : filter
+            };
+
+            serializer.Send(request);
+
+            var response = serializer.Receive<Response>();
+            if (response.ExceptionMessage != null)
+                throw new Exception(response.ExceptionMessage);
+
+            return serializer.ReadType<List<Revers>>(response.Result);
+        }
+
+        // Client/Communication.cs
+        internal List<StavkaReversa> GetStavkeByRevers(long idRevers)
+        {
+            var request = new Request
+            {
+                Operation = Operation.GetStavkeByRevers,
+                Argument = idRevers
+            };
+            serializer.Send(request);
+
+            var response = serializer.Receive<Response>();
+            if (response.ExceptionMessage != null)
+                throw new Exception(response.ExceptionMessage);
+
+            return serializer.ReadType<List<StavkaReversa>>(response.Result);
+        }
+
+
     }
 }

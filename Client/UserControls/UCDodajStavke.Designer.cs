@@ -39,6 +39,8 @@
             label4 = new System.Windows.Forms.Label();
             btnDodaj = new System.Windows.Forms.Button();
             btnSacuvaj = new System.Windows.Forms.Button();
+            btnObrisi = new System.Windows.Forms.Button();
+            btnAzuriraj = new System.Windows.Forms.Button();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvStavke).BeginInit();
             SuspendLayout();
@@ -71,6 +73,7 @@
             // 
             // panel1
             // 
+            panel1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             panel1.Controls.Add(dgvStavke);
             panel1.Location = new System.Drawing.Point(332, 46);
             panel1.Name = "panel1";
@@ -79,8 +82,8 @@
             // 
             // dgvStavke
             // 
+            dgvStavke.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             dgvStavke.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvStavke.Dock = System.Windows.Forms.DockStyle.Fill;
             dgvStavke.Location = new System.Drawing.Point(0, 0);
             dgvStavke.Name = "dgvStavke";
             dgvStavke.Size = new System.Drawing.Size(398, 288);
@@ -131,6 +134,7 @@
             // 
             // btnSacuvaj
             // 
+            btnSacuvaj.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnSacuvaj.Location = new System.Drawing.Point(566, 351);
             btnSacuvaj.Name = "btnSacuvaj";
             btnSacuvaj.Size = new System.Drawing.Size(164, 23);
@@ -138,10 +142,32 @@
             btnSacuvaj.Text = "Sačuvaj revers";
             btnSacuvaj.UseVisualStyleBackColor = true;
             // 
+            // btnObrisi
+            // 
+            btnObrisi.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            btnObrisi.Location = new System.Drawing.Point(439, 351);
+            btnObrisi.Name = "btnObrisi";
+            btnObrisi.Size = new System.Drawing.Size(101, 23);
+            btnObrisi.TabIndex = 10;
+            btnObrisi.Text = "Obriši stavku";
+            btnObrisi.UseVisualStyleBackColor = true;
+            // 
+            // btnAzuriraj
+            // 
+            btnAzuriraj.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            btnAzuriraj.Location = new System.Drawing.Point(332, 351);
+            btnAzuriraj.Name = "btnAzuriraj";
+            btnAzuriraj.Size = new System.Drawing.Size(101, 23);
+            btnAzuriraj.TabIndex = 11;
+            btnAzuriraj.Text = "Ažuriraj stavku";
+            btnAzuriraj.UseVisualStyleBackColor = true;
+            // 
             // UCDodajStavke
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Controls.Add(btnAzuriraj);
+            Controls.Add(btnObrisi);
             Controls.Add(btnSacuvaj);
             Controls.Add(btnDodaj);
             Controls.Add(label4);
@@ -173,5 +199,7 @@
         public System.Windows.Forms.Label label4;
         public System.Windows.Forms.Button btnDodaj;
         public System.Windows.Forms.Button btnSacuvaj;
+        public System.Windows.Forms.Button btnObrisi;
+        public System.Windows.Forms.Button btnAzuriraj;
     }
 }

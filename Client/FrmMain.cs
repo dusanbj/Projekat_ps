@@ -77,5 +77,10 @@ namespace Client
                 MainCoordinator.Instance.PerformLogout();
             }
         }
+
+        private void radSaReversimaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MainCoordinator.Instance.ShowRadSaReversima();
+        }
     }
 }

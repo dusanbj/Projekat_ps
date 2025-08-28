@@ -31,6 +31,19 @@ namespace Domen
         public string UpdateValues =>
             $"datum='{Datum:yyyy-MM-dd HH:mm:ss}', idZaposleni={(Zaposleni?.Id ?? 0)}, idKlijent={(Klijent?.Id ?? 0)}, ukupnaCena={UkupnaCena.ToString(CultureInfo.InvariantCulture)}";
 
+        [JsonIgnore]
+        public string ZaposleniPrikaz
+    => Zaposleni == null ? "" :
+       $"{(Zaposleni.Ime ?? "").Trim()} {(Zaposleni.Prezime ?? "").Trim()}".Trim();
+
+        [JsonIgnore]
+        public string KlijentPrikaz
+            => Klijent == null ? "" :
+               $"{(Klijent.Ime ?? "").Trim()} {(Klijent.Prezime ?? "").Trim()}".Trim();
+
+        [JsonIgnore]
+        public long KlijentIdPrikaz => Klijent?.Id ?? 0;
+
         public List<IEntity> GetReaderList(SqlDataReader reader)
         {
             var reversi = new List<IEntity>();

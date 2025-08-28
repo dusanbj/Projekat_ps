@@ -34,17 +34,17 @@
             // 
             // uc
             // 
-            uc.Location = new System.Drawing.Point(-1, -2);
+            uc.Location = new System.Drawing.Point(3, 1);
             uc.Name = "uc";
-            uc.Size = new System.Drawing.Size(761, 385);
+            uc.Size = new System.Drawing.Size(761, 388);
             uc.TabIndex = 0;
-            uc.Load += ucDodajStavke1_Load;
+            uc.Load += ucDodajStavke1_Load_1;
             // 
             // FrmStavke
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(754, 394);
+            ClientSize = new System.Drawing.Size(767, 401);
             Controls.Add(uc);
             Name = "FrmStavke";
             Text = "Stavke reversa";
