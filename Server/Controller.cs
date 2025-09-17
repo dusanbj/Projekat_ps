@@ -5,6 +5,7 @@ using Domen;
 using Server.SystemOperation;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Server
 {
@@ -278,9 +279,13 @@ namespace Server
 
         internal List<StavkaReversa> GetStavkeByRevers(long idRevers)
         {
-            var so = new GetStavkeByReversSO(idRevers);
+            var so = new GetReversSO(idRevers.ToString());
             so.ExecuteTemplate();
-            return so.Result;
+
+            // Treba da postoji tačno jedan revers sa tim ID-jem
+            var revers = so.Result.FirstOrDefault(r => r.Id == idRevers);
+
+            return revers?.Stavke ?? new List<StavkaReversa>();
         }
     }
 }

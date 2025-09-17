@@ -13,6 +13,10 @@ namespace Server.SystemOperation
             input = revers;
         }
 
+        //1. kreiranje blanko reversa
+        //2. popunjavanje klijent, zaposleni, datum i uradim update
+        //3. u UpdateReversSO dodati stavke reversa
+
         protected override void ExecuteConcreteOperation()
         {
             if (input == null) throw new System.Exception("Revers nije prosleđen.");
