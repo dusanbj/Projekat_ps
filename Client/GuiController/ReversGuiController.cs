@@ -93,6 +93,9 @@ namespace Client.GuiController
             forma = frmStavke;
             dodajStavke = frmStavke.uc;
 
+            frmStavke.tbDatum.Text = rHeader.Datum.ToString("dd.MM.yyyy.");
+            frmStavke.tbKlijent.Text = Convert.ToString(rHeader.Klijent);
+            frmStavke.tbZaposleni.Text = Convert.ToString(rHeader.Zaposleni);
             // broj reversa
             dodajStavke.SetBrojReversa(rHeader.Id);
 

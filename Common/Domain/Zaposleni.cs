@@ -19,6 +19,7 @@ namespace Domen
 
         public string TableName => "zaposleni";
         public string Values => $"'{Ime}', '{Prezime}', '{BrTelefona}', '{Username}', '{Password}'";
+        public override string ToString() => $"{Id} - {Prezime}, {Ime}";
 
         public string PrimaryKeyName => "id";
 

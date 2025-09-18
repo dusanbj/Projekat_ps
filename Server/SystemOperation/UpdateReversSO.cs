@@ -21,6 +21,7 @@ namespace Server.SystemOperation
             if (input.Zaposleni == null || input.Zaposleni.Id <= 0) throw new System.Exception("Zaposleni je obavezan.");
             if (input.Stavke == null || input.Stavke.Count == 0) throw new System.Exception("Revers mora sadržati bar jednu stavku.");
 
+            // 1) Update headera (total računamo posle)
             var header = new Revers
             {
                 Id = input.Id,
@@ -31,12 +32,14 @@ namespace Server.SystemOperation
             };
             broker.Update(header);
 
+            // 2) Očisti sve postojeće stavke
             var postojece = broker.GetByCondition(new StavkaReversa(), $"idRevers = {input.Id}")
                                   .Cast<StavkaReversa>()
                                   .ToList();
             foreach (var old in postojece)
                 broker.Delete(old);
 
+            // 3) Upis novih stavki i računanje total-a
             decimal total = 0m;
             long rb = 1;
 
@@ -58,6 +61,7 @@ namespace Server.SystemOperation
                 total += iznos;
             }
 
+            // 4) Upis total-a i finalni header kao rezultat
             header.UkupnaCena = total;
             broker.Update(header);
 

@@ -24,12 +24,39 @@ namespace Domen
         [JsonIgnore] public string InsertColumns => "datum, idZaposleni, idKlijent, ukupnaCena";
 
         [JsonIgnore]
-        public string Values =>
-            $"'{Datum:yyyy-MM-dd HH:mm:ss}', {(Zaposleni?.Id ?? 0)}, {(Klijent?.Id ?? 0)}, {UkupnaCena.ToString(CultureInfo.InvariantCulture)}";
+        public string Values
+        {
+            get
+            {
+                // ako nema zaposlenog/klijenta -> NULL (umesto 0)
+                var idZap = (Zaposleni != null && Zaposleni.Id > 0)
+                    ? Zaposleni.Id.ToString(CultureInfo.InvariantCulture)
+                    : "NULL";
+
+                var idKli = (Klijent != null && Klijent.Id > 0)
+                    ? Klijent.Id.ToString(CultureInfo.InvariantCulture)
+                    : "NULL";
+
+                return $"'{Datum:yyyy-MM-dd HH:mm:ss}', {idZap}, {idKli}, {UkupnaCena.ToString(CultureInfo.InvariantCulture)}";
+            }
+        }
 
         [JsonIgnore]
-        public string UpdateValues =>
-            $"datum='{Datum:yyyy-MM-dd HH:mm:ss}', idZaposleni={(Zaposleni?.Id ?? 0)}, idKlijent={(Klijent?.Id ?? 0)}, ukupnaCena={UkupnaCena.ToString(CultureInfo.InvariantCulture)}";
+        public string UpdateValues
+        {
+            get
+            {
+                var idZap = (Zaposleni != null && Zaposleni.Id > 0)
+                    ? Zaposleni.Id.ToString(CultureInfo.InvariantCulture)
+                    : "NULL";
+
+                var idKli = (Klijent != null && Klijent.Id > 0)
+                    ? Klijent.Id.ToString(CultureInfo.InvariantCulture)
+                    : "NULL";
+
+                return $"datum='{Datum:yyyy-MM-dd HH:mm:ss}', idZaposleni={idZap}, idKlijent={idKli}, ukupnaCena={UkupnaCena.ToString(CultureInfo.InvariantCulture)}";
+            }
+        }
 
         [JsonIgnore]
         public string ZaposleniPrikaz
@@ -47,18 +74,40 @@ namespace Domen
         public List<IEntity> GetReaderList(SqlDataReader reader)
         {
             var reversi = new List<IEntity>();
+
+            // Uzmemo ordinale jednom (brže i jasnije)
+            int ordId = reader.GetOrdinal("id");
+            int ordDatum = reader.GetOrdinal("datum");
+            int ordZap = reader.GetOrdinal("idZaposleni");
+            int ordKli = reader.GetOrdinal("idKlijent");
+            int ordTotal = reader.GetOrdinal("ukupnaCena");
+
             while (reader.Read())
             {
+                // id moze biti INT ili BIGINT => Convert.ToInt64 je najbezbednije
+                long id = Convert.ToInt64(reader.GetValue(ordId));
+
+                // datum moze biti NULL u teoriji => fallback na 2000-01-01 (ili stavi DateTime.Today po želji)
+                DateTime datum = reader.IsDBNull(ordDatum) ? new DateTime(2000, 1, 1) : reader.GetDateTime(ordDatum);
+
+                // FK-ovi: ako su NULL => nema Zaposleni/Klijent objekta
+                long? zapId = reader.IsDBNull(ordZap) ? (long?)null : Convert.ToInt64(reader.GetValue(ordZap));
+                long? kliId = reader.IsDBNull(ordKli) ? (long?)null : Convert.ToInt64(reader.GetValue(ordKli));
+
+                decimal ukupno = reader.IsDBNull(ordTotal) ? 0m : reader.GetDecimal(ordTotal);
+
                 reversi.Add(new Revers
                 {
-                    Id = (long)reader["id"],
-                    Datum = (DateTime)reader["datum"],
-                    Zaposleni = new Zaposleni { Id = (long)reader["idZaposleni"] },
-                    Klijent = new Klijent { Id = (long)reader["idKlijent"] },
-                    UkupnaCena = (decimal)reader["ukupnaCena"]
+                    Id = id,
+                    Datum = datum,
+                    Zaposleni = zapId.HasValue ? new Zaposleni { Id = zapId.Value } : null,
+                    Klijent = kliId.HasValue ? new Klijent { Id = kliId.Value } : null,
+                    UkupnaCena = ukupno
                 });
             }
+
             return reversi;
         }
+
     }
 }

@@ -72,9 +72,11 @@ namespace DBBroker
         public List<IEntity> GetByCondition(IEntity entity, string condition)
         {
             SqlCommand command = connection.CreateCommand();
-            command.CommandText = $"SELECT * FROM {entity.TableName} WHERE {condition}";
+            command.CommandText = string.IsNullOrWhiteSpace(condition)
+                ? $"SELECT * FROM {entity.TableName}"
+                : $"SELECT * FROM {entity.TableName} WHERE {condition}";
             using SqlDataReader reader = command.ExecuteReader();
-            List<IEntity> list = entity.GetReaderList(reader);
+            var list = entity.GetReaderList(reader);
             command.Dispose();
             return list;
         }

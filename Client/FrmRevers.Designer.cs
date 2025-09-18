@@ -66,6 +66,7 @@
             // 
             // dgvReversi
             // 
+            dgvReversi.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             dgvReversi.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvReversi.Location = new System.Drawing.Point(0, 0);
             dgvReversi.Name = "dgvReversi";

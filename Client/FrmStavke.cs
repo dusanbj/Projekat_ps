@@ -18,15 +18,5 @@ namespace Client
             InitializeComponent();
 
         }
-
-        private void ucDodajStavke1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ucDodajStavke1_Load_1(object sender, EventArgs e)
-        {
-
-        }
     }
 }
