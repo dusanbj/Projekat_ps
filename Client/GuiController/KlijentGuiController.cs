@@ -1,5 +1,4 @@
 ﻿using Client.UserControls;
-using Common.Communication;
 using Domen;
 using System;
 using System.ComponentModel;
@@ -11,14 +10,9 @@ namespace Client.GuiController
 {
     public class KlijentGuiController
     {
-        // UC za dodavanje
+        // ============ UC Dodaj Klijenta ============
         private UCDodajKlijenta view;
 
-        // Forma/lista klijenata
-        private FrmKlijenti listView;
-        private BindingList<Klijent> _klijenti;
-
-        /// Kreira i konfiguriše UC za dodavanje klijenta (vezuje evente).
         internal Control CreateDodajKlijenta()
         {
             view = new UCDodajKlijenta();
@@ -33,13 +27,37 @@ namespace Client.GuiController
             view.btnSacuvaj.Click += AddKlijent;
             view.btnDodajGrad.Click += BtnDodajGrad_Click;
 
-            // Enter u TB -> submit preko PerformClick (da izbegnemo dupli poziv)
+            // Enter u TB -> submit
             view.tbIme.KeyDown += SubmitOnEnter;
             view.tbPrezime.KeyDown += SubmitOnEnter;
             view.tbBrojTelefona.KeyDown += SubmitOnEnter;
             view.cbMesto.KeyDown += SubmitOnEnter;
 
+            // ODMAH napuni combobox (sa “fazon” try/catch)
+            RefreshMesta_UC();
+
             return view;
+        }
+
+        // centralizovano ubacivanje UC-a na main panel (sa try/catch)
+        public void ShowDodajKlijentaIn(Form mainForm)
+        {
+            try
+            {
+                var uc = CreateDodajKlijenta();
+                uc.Dock = DockStyle.Fill;
+                if (mainForm is FrmMain fm)
+                    fm.ChangePanel(uc);
+                else
+                {
+                    mainForm.Controls.Clear();
+                    mainForm.Controls.Add(uc);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Greška pri otvaranju", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void SubmitOnEnter(object sender, KeyEventArgs e)
@@ -52,21 +70,22 @@ namespace Client.GuiController
             }
         }
 
-        /// Otvori rad sa Mestima i osveži combobox po zatvaranju (za UC).
         private void BtnDodajGrad_Click(object sender, EventArgs e)
         {
             try
             {
                 MainCoordinator.Instance.ShowRadSaMestima();
-                RefreshMesta();
+                RefreshMesta_UC();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Greška pri otvaranju rada sa mestima: " + ex.Message);
+                MessageBox.Show(ex.Message, "Greška pri otvaranju rada sa mestima",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void RefreshMesta()
+        // “fazon try/catch” za UC combobox
+        private void RefreshMesta_UC()
         {
             try
             {
@@ -77,12 +96,10 @@ namespace Client.GuiController
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Greška pri osvežavanju mesta: " + ex.Message);
+                MessageBox.Show(ex.Message, "Greška pri učitavanju", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        /// Pomoćni helper za kreiranje klijenta preko servera + poruka o uspehu.
-        /// Vraća true ako je sačuvan.
         private bool TrySaveNewKlijent(Klijent k)
         {
             try
@@ -93,13 +110,12 @@ namespace Client.GuiController
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Greška pri dodavanju klijenta: " + ex.Message);
+                MessageBox.Show(ex.Message, "Greška pri dodavanju klijenta", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
         }
 
-
-        /// Validacija + poziv CreateKlijent na serveru (UC).
+        // UC: Dodaj klijenta
         private void AddKlijent(object sender, EventArgs e)
         {
             try
@@ -110,38 +126,29 @@ namespace Client.GuiController
                 var mesto = view.cbMesto.SelectedItem as Mesto;
 
                 if (string.IsNullOrWhiteSpace(ime))
-                {
-                    MessageBox.Show("Unesite ime."); view.tbIme.Focus(); return;
-                }
+                { MessageBox.Show("Unesite ime."); view.tbIme.Focus(); return; }
                 if (string.IsNullOrWhiteSpace(prezime))
-                {
-                    MessageBox.Show("Unesite prezime."); view.tbPrezime.Focus(); return;
-                }
+                { MessageBox.Show("Unesite prezime."); view.tbPrezime.Focus(); return; }
                 if (string.IsNullOrWhiteSpace(tel))
-                {
-                    MessageBox.Show("Unesite broj telefona."); view.tbBrojTelefona.Focus(); return;
-                }
+                { MessageBox.Show("Unesite broj telefona."); view.tbBrojTelefona.Focus(); return; }
                 if (mesto == null)
-                {
-                    MessageBox.Show("Izaberite mesto."); view.cbMesto.DroppedDown = true; return;
-                }
+                { MessageBox.Show("Izaberite mesto."); view.cbMesto.DroppedDown = true; return; }
 
                 var klijent = new Klijent
                 {
                     Ime = ime,
                     Prezime = prezime,
                     BrTelefona = tel,
-                    Mesto = new Mesto { Ptt = mesto.Ptt } // bitno: setuj Ptt!
+                    // VAŽNO: čuvamo ceo objekat mesta (da imamo i Naziv i Ptt)
+                    Mesto = mesto
                 };
 
                 if (TrySaveNewKlijent(klijent))
-                {
                     ResetUcForm();
-                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Greška pri dodavanju klijenta: " + ex.Message);
+                MessageBox.Show(ex.Message, "Greška pri dodavanju klijenta", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -154,7 +161,9 @@ namespace Client.GuiController
             view.tbIme.Focus();
         }
 
-        // =================== LISTA/FORMA KLIJENATA ===================
+        // ============ FORMA / LISTA KLIJENATA ============
+        private FrmKlijenti listView;
+        private BindingList<Klijent> _klijenti;
 
         public Form CreateFrmKlijenti()
         {
@@ -167,7 +176,6 @@ namespace Client.GuiController
             listView.btnAzuriraj.Click += BtnAzuriraj_Click_List;
             listView.btnObrisi.Click += BtnObrisi_Click_List;
 
-            //Pretraga: dugme + Enter u tbFilter
             listView.btnPretrazi.Click += BtnPretrazi_Click_List;
             listView.tbFilter.KeyDown += (s, e) =>
             {
@@ -177,83 +185,118 @@ namespace Client.GuiController
             return listView;
         }
 
+        // try/catch da i poziv iz MainCoordinator-a bude “bezbedan”
         internal void ShowFrmKlijenti(Form parent)
         {
-            using var frm = (FrmKlijenti)CreateFrmKlijenti();
-            frm.ShowDialog(parent);
+            try
+            {
+                using var frm = (FrmKlijenti)CreateFrmKlijenti();
+                frm.ShowDialog(parent);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Greška pri otvaranju", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public void ShowKlijentiDialog(IWin32Window owner)
+        {
+            try
+            {
+                using var frm = (FrmKlijenti)CreateFrmKlijenti();
+                frm.ShowDialog(owner);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Greška pri otvaranju", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void FrmKlijenti_Load(object sender, EventArgs e)
+        {
+            // 1) kolone grida (bez auto-generisanja)
+            var dgv = listView.dgvKlijenti;
+            dgv.AutoGenerateColumns = false;
+            dgv.Columns.Clear();
+
+            var colId = new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = nameof(Klijent.Id),
+                HeaderText = "Id",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+                Visible = false
+            };
+            dgv.Columns.Add(colId);
+
+            dgv.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = nameof(Klijent.Ime),
+                HeaderText = "Ime",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+            });
+            dgv.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = nameof(Klijent.Prezime),
+                HeaderText = "Prezime",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+            });
+            dgv.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = nameof(Klijent.BrTelefona),
+                HeaderText = "Broj telefona",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+            });
+            dgv.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = nameof(Klijent.MestoPrikaz),
+                HeaderText = "Mesto",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+            });
+
+            // 2) punjenje grida (sa “fazon” try/catch)
+            ReloadKlijentiGrid();
+
+            // 3) punjenje combobox-a mesta (sa “fazon” try/catch)
+            RefreshMesta_ListForm();
+
+            ResetListForm();
+        }
+
+        private void ReloadKlijentiGrid()
         {
             try
             {
                 var data = Communication.Instance.GetAllKlijent() ?? new List<Klijent>();
                 _klijenti = new BindingList<Klijent>(data);
+                listView.dgvKlijenti.DataSource = _klijenti;
 
-                var dgv = listView.dgvKlijenti;
-                dgv.AutoGenerateColumns = false;
-                dgv.Columns.Clear();
-
-                dgv.Columns.Add(new DataGridViewTextBoxColumn
-                {
-                    DataPropertyName = nameof(Klijent.Id),
-                    HeaderText = "Id",
-                    AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-                });
-                dgv.Columns.Add(new DataGridViewTextBoxColumn
-                {
-                    DataPropertyName = nameof(Klijent.Ime),
-                    HeaderText = "Ime",
-                    AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-                });
-                dgv.Columns.Add(new DataGridViewTextBoxColumn
-                {
-                    DataPropertyName = nameof(Klijent.Prezime),
-                    HeaderText = "Prezime",
-                    AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-                });
-                dgv.Columns.Add(new DataGridViewTextBoxColumn
-                {
-                    DataPropertyName = nameof(Klijent.BrTelefona),
-                    HeaderText = "Broj telefona",
-                    AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
-                });
-                dgv.Columns.Add(new DataGridViewTextBoxColumn
-                {
-                    DataPropertyName = nameof(Klijent.MestoPrikaz),
-                    HeaderText = "Mesto",
-                    AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-                });
-
-                dgv.DataSource = _klijenti;
-
-                RefreshMestaListForm();
-                ResetListForm();
+                listView.dgvKlijenti.ClearSelection();
+                listView.dgvKlijenti.CurrentCell = null;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Greška pri učitavanju klijenata: " + ex.Message);
+                MessageBox.Show(ex.Message, "Greška pri učitavanju", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                _klijenti = new BindingList<Klijent>(new List<Klijent>());
+                listView.dgvKlijenti.DataSource = _klijenti;
             }
         }
 
-        private void RefreshMestaListForm()
+        private void RefreshMesta_ListForm()
         {
             try
             {
-                if (listView.cbMesto != null)
+                var mesta = Communication.Instance.GetAllMesto() ?? new List<Mesto>();
+                listView.cbMesto.DataSource = new BindingList<Mesto>(mesta);
+                listView.cbMesto.DisplayMember = nameof(Mesto.Naziv);
+                listView.cbMesto.Format += (s, e) =>
                 {
-                    var mesta = Communication.Instance.GetAllMesto() ?? new List<Mesto>();
-                    listView.cbMesto.DataSource = new BindingList<Mesto>(mesta);
-                    listView.cbMesto.DisplayMember = nameof(Mesto.Naziv);
-                    listView.cbMesto.Format += (s, e) =>
-                    {
-                        if (e.ListItem is Mesto m) e.Value = $"{m.Naziv} ({m.Ptt})";
-                    };
-                }
+                    if (e.ListItem is Mesto m) e.Value = $"{m.Naziv} ({m.Ptt})";
+                };
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Greška pri učitavanju mesta: " + ex.Message);
+                MessageBox.Show(ex.Message, "Greška pri učitavanju", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                listView.cbMesto.DataSource = new BindingList<Mesto>(new List<Mesto>());
             }
         }
 
@@ -264,6 +307,7 @@ namespace Client.GuiController
                 listView.tbIme.Text = k.Ime;
                 listView.tbPrezime.Text = k.Prezime;
                 listView.tbBrojTelefona.Text = k.BrTelefona;
+
                 if (listView.cbMesto?.DataSource is BindingList<Mesto> ms)
                 {
                     var idx = ms.ToList().FindIndex(x => x.Ptt == k.Mesto?.Ptt);
@@ -279,53 +323,46 @@ namespace Client.GuiController
             {
                 if (TrySaveNewKlijent(k))
                 {
-                    _klijenti.Add(k);
+                    // VAŽNO: povuci sveže iz baze (da dobijemo Id i ispravan MestoPrikaz)
+                    ReloadKlijentiGrid();
                     ResetListForm();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Greška pri dodavanju: " + ex.Message);
+                MessageBox.Show(ex.Message, "Greška pri dodavanju", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void BtnAzuriraj_Click_List(object sender, EventArgs e)
         {
             if (listView.dgvKlijenti.CurrentRow?.DataBoundItem is not Klijent sel)
-            {
-                MessageBox.Show("Selektuj klijenta."); return;
-            }
+            { MessageBox.Show("Selektuj klijenta."); return; }
+
             if (!TryBuildKlijentFromForm(out var k)) return;
 
-            // zadrži Id selektovanog
             k.Id = sel.Id;
 
             try
             {
                 Communication.Instance.UpdateKlijent(k);
 
-                // osveži lokalno
-                sel.Ime = k.Ime;
-                sel.Prezime = k.Prezime;
-                sel.BrTelefona = k.BrTelefona;
-                sel.Mesto = k.Mesto;
-                listView.dgvKlijenti.Refresh();
-
+                // najčistije: reload da MestoPrikaz sigurno bude ažuran
+                ReloadKlijentiGrid();
                 MessageBox.Show("Sistem je zapamtio klijenta");
                 ResetListForm();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Greška pri ažuriranju: " + ex.Message);
+                MessageBox.Show(ex.Message, "Greška pri ažuriranju", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void BtnObrisi_Click_List(object sender, EventArgs e)
         {
             if (listView.dgvKlijenti.CurrentRow?.DataBoundItem is not Klijent k)
-            {
-                MessageBox.Show("Selektuj klijenta."); return;
-            }
+            { MessageBox.Show("Selektuj klijenta."); return; }
+
             if (MessageBox.Show($"Obrisati {k.Prezime}, {k.Ime}?", "Potvrda",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) return;
 
@@ -338,11 +375,10 @@ namespace Client.GuiController
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Greška pri brisanju: " + ex.Message);
+                MessageBox.Show(ex.Message, "Greška pri brisanju", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        //Handler: pretraga -> napuni grid rezultatima
         private void BtnPretrazi_Click_List(object sender, EventArgs e)
         {
             try
@@ -353,9 +389,9 @@ namespace Client.GuiController
                 _klijenti = new BindingList<Klijent>(results ?? new List<Klijent>());
                 listView.dgvKlijenti.DataSource = _klijenti;
 
-                // UX: očisti selekciju i form polja nakon pretrage
                 listView.dgvKlijenti.ClearSelection();
                 listView.dgvKlijenti.CurrentCell = null;
+
                 listView.tbIme.Clear();
                 listView.tbPrezime.Clear();
                 listView.tbBrojTelefona.Clear();
@@ -363,7 +399,7 @@ namespace Client.GuiController
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Greška pri pretrazi klijenata: " + ex.Message);
+                MessageBox.Show(ex.Message, "Greška pri pretrazi klijenata", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -385,7 +421,8 @@ namespace Client.GuiController
                 Ime = ime,
                 Prezime = prezime,
                 BrTelefona = tel,
-                Mesto = new Mesto { Ptt = mesto.Ptt }
+                // VAŽNO: prosleđujemo ceo objekat Mesto (ne samo Ptt)
+                Mesto = mesto
             };
             return true;
         }

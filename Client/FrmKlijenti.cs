@@ -17,14 +17,7 @@ namespace Client
         public FrmKlijenti()
         {
             InitializeComponent();
-            BindingList<Mesto> mesta = new BindingList<Mesto>((List<Mesto>)Communication.Instance.GetAllMesto());
-            BindingList<Klijent> klijenti = new BindingList<Klijent>((List<Klijent>)Communication.Instance.GetAllKlijent());
-            cbMesto.DataSource = mesta;
-            cbMesto.DisplayMember = "Naziv";
-            dgvKlijenti.DataSource = klijenti;
-            dgvKlijenti.Columns["id"].Visible = false;
             dgvKlijenti.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
         }
 
         private void label4_Click(object sender, EventArgs e)

@@ -52,56 +52,119 @@ namespace Client.GuiController
             frmMain.ShowDialog();
         }
 
-
         // === ROBA ===
         internal void ShowDodajRobuOnMain()
         {
-            var uc = robaGuiController.CreateDodajRobu(onSaved: null);
-            frmMain.ChangePanel(uc);
+            try
+            {
+                var uc = robaGuiController.CreateDodajRobu(onSaved: null);
+                frmMain.ChangePanel(uc);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Greška pri otvaranju", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         internal void ShowDodajRobuDialog()
         {
-            robaGuiController.ShowDodajRobuDialog(frmMain, onSaved: null);
+            try
+            {
+                robaGuiController.ShowDodajRobuDialog(frmMain, onSaved: null);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Greška pri otvaranju", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         internal void ShowRadSaRobom()
         {
-            robaGuiController.ShowFrmRoba(frmMain);
+            try
+            {
+                robaGuiController.ShowFrmRoba(frmMain);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Greška pri otvaranju", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         // === KLIJENT ===
         internal void ShowDodajKlijenta()
         {
-            frmMain.ChangePanel(klijentGuiController.CreateDodajKlijenta());
+            try
+            {
+                klijentGuiController.ShowDodajKlijentaIn(frmMain); // centralizovani lepak
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Greška pri otvaranju", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         internal void ShowRadSaKlijentima()
         {
-            klijentGuiController.ShowFrmKlijenti(frmMain);
+            try
+            {
+                klijentGuiController.ShowKlijentiDialog(frmMain); // dijalog sa listom klijenata
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Greška pri otvaranju", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         // === REVERS ===
         internal void ShowAddReversPanel()
         {
-            frmMain.ChangePanel(reversGuiController.CreateDodajRevers());
+            try
+            {
+                frmMain.ChangePanel(reversGuiController.CreateDodajRevers());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Greška pri otvaranju", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
         internal void ShowRadSaReversima()
         {
-            reversGuiController.ShowFrmPretragaReversa(frmMain);
+            try
+            {
+                reversGuiController.ShowFrmPretragaReversa(frmMain);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Greška pri otvaranju", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         // === MESTO ===
         internal void ShowRadSaMestima()
         {
-            mestoGuiController.ShowFrmMesta(frmMain);
+            try
+            {
+                mestoGuiController.ShowFrmMesta(frmMain);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Greška pri otvaranju", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         // === STRUČNA SPREMA ===
         internal void ShowRadSaStrSpremom()
         {
-            var uc = strSpremaGuiController.CreateDodajStrSprema();
-            frmMain.ChangePanel(uc);
+            try
+            {
+                var uc = strSpremaGuiController.CreateDodajStrSprema();
+                frmMain.ChangePanel(uc);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Greška pri otvaranju", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         internal void PerformLogout()

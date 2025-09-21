@@ -100,10 +100,10 @@
 
         #endregion
 
-        private UserControls.UCDodajRobu ucDodajRobu1;
+        public UserControls.UCDodajRobu ucDodajRobu1;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.DataGridView dgvRoba;
-        private System.Windows.Forms.Button btnObrisi;
-        private System.Windows.Forms.Button btnAzuriraj;
+        public System.Windows.Forms.DataGridView dgvRoba;
+        public System.Windows.Forms.Button btnObrisi;
+        public System.Windows.Forms.Button btnAzuriraj;
     }
 }

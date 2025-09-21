@@ -16,10 +16,5 @@ namespace Client
         {
             InitializeComponent();
         }
-
-        private void dgvReversi_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
     }
 }
