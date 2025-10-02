@@ -12,8 +12,8 @@ namespace Common.Domain
     {
         string TableName { get; }
         string Values { get; }
-        string PrimaryKeyName { get; }         // npr. "id"
-        string PrimaryKeyValue { get; }        // npr. "5"
+        string PrimaryKeyName { get; }         
+        string PrimaryKeyValue { get; }        
         string UpdateValues { get; }
 
         List<IEntity> GetReaderList(SqlDataReader reader);

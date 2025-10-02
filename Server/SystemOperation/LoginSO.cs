@@ -28,7 +28,7 @@ namespace Server.SystemOperation
 
             if (Result == null)
             {
-                throw new Exception("Ne postoji zaposleni sa unetim kredencijalima.");
+                throw new Exception("Korisničko ime i šifra nisu ispravni.");
             }
 
         }

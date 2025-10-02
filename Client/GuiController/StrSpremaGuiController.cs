@@ -67,7 +67,7 @@ namespace Client.GuiController
                 var resp = Communication.Instance.CreateStrSprema(ss);
                 if (resp.ExceptionMessage != null) throw new Exception(resp.ExceptionMessage);
 
-                MessageBox.Show("Stručna sprema je sačuvana.", "OK",
+                MessageBox.Show("Sistem je zapamtio stručnu spremu.", "OK",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 uc.tbNaziv.Clear();
@@ -75,7 +75,7 @@ namespace Client.GuiController
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Greška: " + ex.Message, "Greška",
+                MessageBox.Show("Sistem ne može da zapamti stručnu spremu. Greška: " + ex.Message, "Greška",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

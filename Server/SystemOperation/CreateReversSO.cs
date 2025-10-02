@@ -57,23 +57,6 @@ namespace Server.SystemOperation
             kandidat.UkupnaCena = 0m;
             broker.Update(kandidat);
 
-            // (4) Ako ima stavki, guramo ih preko UpdateReversSO; inače vraćamo samo header
-            if (input.Stavke != null && input.Stavke.Count > 0)
-            {
-                var soUpdate = new UpdateReversSO(new Revers
-                {
-                    Id = kandidat.Id,
-                    Datum = kandidat.Datum,
-                    Klijent = kandidat.Klijent,
-                    Zaposleni = kandidat.Zaposleni,
-                    Stavke = input.Stavke
-                });
-                soUpdate.ExecuteTemplate();
-                Result = soUpdate.Result;
-                return;
-            }
-
-            // Nema stavki – vrati header kako je upisan
             Result = kandidat;
         }
     }

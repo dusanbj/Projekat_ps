@@ -101,17 +101,29 @@ namespace Client.GuiController
                 Password = frmLogin.TxtPassword.Text,
             };
 
-            var response = Communication.Instance.Login(Z);
-            if (response.ExceptionMessage == null)
+            try
             {
-                frmLogin.Visible = false;
-                Z = (Zaposleni)response.Result;
-                MainCoordinator.Instance.ShowFrmMain();
+                var response = Communication.Instance.Login(Z);
+
+                if (response.ExceptionMessage == null)
+                {
+                    frmLogin.Visible = false;
+                    Z = (Zaposleni)response.Result;
+                    MessageBox.Show("Korisničko ime i šifra su ispravni");
+                    MainCoordinator.Instance.ShowFrmMain();
+                }
+                else
+                {
+                    MessageBox.Show("Greška: " + response.ExceptionMessage, "Login neuspešan",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show(">>>" + response.ExceptionMessage);
+                MessageBox.Show( ex.Message,
+                    "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
     }
 }

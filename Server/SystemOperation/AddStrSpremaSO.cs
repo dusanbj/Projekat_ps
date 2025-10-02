@@ -3,10 +3,10 @@ using System.Linq;
 
 namespace Server.SystemOperation
 {
-    public class CreateStrSpremaSO : SystemOperationBase
+    public class AddStrSpremaSO : SystemOperationBase
     {
         private readonly StrSprema _input;
-        public CreateStrSpremaSO(StrSprema input) { _input = input; }
+        public AddStrSpremaSO(StrSprema input) { _input = input; }
 
         protected override void ExecuteConcreteOperation()
         {

@@ -93,7 +93,7 @@
             Controls.Add(tbFilter);
             Controls.Add(btnPretrazi);
             Name = "FrmRevers";
-            Text = "FrmRevers";
+            Text = "Reversi";
             panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvReversi).EndInit();
             ResumeLayout(false);

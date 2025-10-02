@@ -211,7 +211,7 @@ namespace Server
         // ===========================
         internal StrSprema AddStrSprema(StrSprema argument)
         {
-            var so = new CreateStrSpremaSO(argument);
+            var so = new AddStrSpremaSO(argument);
             so.ExecuteTemplate();
             return argument;
         }

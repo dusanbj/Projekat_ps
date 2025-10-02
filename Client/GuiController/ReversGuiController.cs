@@ -62,29 +62,39 @@ namespace Client.GuiController
                 return;
             }
 
-            revers = new Revers
+            try
             {
-                Datum = dodajRevers.danas,
-                Zaposleni = LoginGuiController.Instance.Z,
-                Klijent = izabrani,
-                Stavke = null
-            };
+                revers = new Revers
+                {
+                    Datum = dodajRevers.danas,
+                    Zaposleni = LoginGuiController.Instance.Z,
+                    Klijent = izabrani,
+                    Stavke = null
+                };
 
-            Response response = Communication.Instance.CreateRevers(revers);
-            if (response.ExceptionMessage == null)
-            {
-                // preuzmi kreirani revers sa ID-em iz response-a
-                if (response.Result is Revers r) revers = r;
+                var response = Communication.Instance.CreateRevers(revers);
 
+                // neuspeh: null response, poruka o grešci ili nema rezultata
+                if (response == null ||
+                    !string.IsNullOrEmpty(response.ExceptionMessage) ||
+                    response.Result is not Revers r)
+                {
+                    MessageBox.Show("Sistem ne može da kreira revers");
+                    return;
+                }
+
+                // uspeh
+                revers = r;
                 MessageBox.Show("Sistem je kreirao revers");
                 OpenStavkeFormForRevers(revers);
             }
-            else
+            catch (Exception ex)
             {
-                Debug.WriteLine(response.ExceptionMessage);
-                MessageBox.Show("Greška: " + response.ExceptionMessage);
+                System.Diagnostics.Debug.WriteLine("CreateRevers greška: " + ex.Message);
+                MessageBox.Show("Sistem ne može da kreira revers");
             }
         }
+
 
         // Otvaranje FrmStavke za dati revers (koristi se i kod kreiranja i kod detalja)
         private void OpenStavkeFormForRevers(Revers rHeader)
@@ -252,22 +262,33 @@ namespace Client.GuiController
             // Rb dodeljuje server (UpdateReversSO)
             revers.Stavke = dodajStavke.Stavke.ToList();
 
-            Response response = Communication.Instance.UpdateRevers(revers);
-            if (response.ExceptionMessage == null)
+            try
             {
-                MessageBox.Show("Sistem je zapamtio revers");
+                var response = Communication.Instance.UpdateRevers(revers);
 
-                // osveži grid u FrmRevers i zadrži selekciju na izmenjenom reversu
-                RefreshReversGridAfterEdit(revers?.Id ?? 0);
+                if (response != null && string.IsNullOrEmpty(response.ExceptionMessage))
+                {
+                    MessageBox.Show("Sistem je zapamtio revers");
+                    // osveži grid u FrmRevers i zadrži selekciju na izmenjenom reversu
+                    RefreshReversGridAfterEdit(revers?.Id ?? 0);
 
-                forma?.Close();
-                forma?.Dispose();
+                    forma?.Close();
+                    forma?.Dispose();
+                }
+                else
+                {
+                    // neuspeh bez bacenog exception-a (server vratio gresku u response-u)
+                    MessageBox.Show("Sistem ne može da zapamti revers");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Greška prilikom čuvanja: " + response.ExceptionMessage);
+                // neuspeh uz exception (mreza/komunikacija i sl.)
+                System.Diagnostics.Debug.WriteLine("Greška pri čuvanju reversa: " + ex.Message);
+                MessageBox.Show("Sistem ne može da zapamti revers");
             }
         }
+
 
         // =======================
         // PRETRAGA / LISTING (FrmRevers)
@@ -360,16 +381,6 @@ namespace Client.GuiController
 
             dgv.Columns.Add(new DataGridViewTextBoxColumn
             {
-                Name = "colKlijentId",
-                HeaderText = "KlijentId",
-                DataPropertyName = nameof(Revers.KlijentIdPrikaz),
-                Width = 90,
-                ReadOnly = true,
-                DefaultCellStyle = { Alignment = DataGridViewContentAlignment.MiddleRight }
-            });
-
-            dgv.Columns.Add(new DataGridViewTextBoxColumn
-            {
                 Name = "colKlijent",
                 HeaderText = "Klijent",
                 DataPropertyName = nameof(Revers.KlijentPrikaz),
@@ -395,6 +406,7 @@ namespace Client.GuiController
         }
 
         // server-side search
+        // server-side search
         private void BtnPretrazi_Click(object sender, EventArgs e)
         {
             var filter = (frmRevers.tbFilter.Text ?? "").Trim();
@@ -417,7 +429,14 @@ namespace Client.GuiController
             HydrateNames(rezultat);
 
             frmRevers.dgvReversi.DataSource = new BindingList<Revers>(rezultat);
+
+            // ⇩ poruke po uslovu
+            if (rezultat != null && rezultat.Count > 0)
+                MessageBox.Show("Sistem je našao reverse po zadatim kriterijumima");
+            else
+                MessageBox.Show("Sistem ne može da nađe reverse po zadatim kriterijumima");
         }
+
 
         // mala pomoćna da dopuni imena/prezimena u Revers objektima
         private void HydrateNames(IEnumerable<Revers> list)
@@ -437,6 +456,7 @@ namespace Client.GuiController
         }
 
         // Klik na Detalji – otvori FrmStavke za selektovani revers
+        // Klik na Detalji – otvori FrmStavke za selektovani revers
         private void BtnDetalji_Click(object sender, EventArgs e)
         {
             var r = frmRevers.dgvReversi.CurrentRow?.DataBoundItem as Revers;
@@ -446,8 +466,19 @@ namespace Client.GuiController
                 return;
             }
 
-            OpenStavkeFormForRevers(r);
+            try
+            {
+                // uspešan slučaj
+                MessageBox.Show("Sistem je našao revers");
+                OpenStavkeFormForRevers(r);
+            }
+            catch (Exception)
+            {
+                // neuspešan slučaj (npr. problem u komunikaciji / učitavanju stavki)
+                MessageBox.Show("Sistem ne može da nađe revers");
+            }
         }
+
 
         // =======================
         // Pomocne / Validacione

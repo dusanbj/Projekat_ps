@@ -39,7 +39,6 @@
             tbPrezime = new System.Windows.Forms.TextBox();
             label1 = new System.Windows.Forms.Label();
             tbIme = new System.Windows.Forms.TextBox();
-            btnSacuvajSve = new System.Windows.Forms.Button();
             btnAzuriraj = new System.Windows.Forms.Button();
             btnObrisi = new System.Windows.Forms.Button();
             panel1 = new System.Windows.Forms.Panel();
@@ -154,20 +153,10 @@
             tbIme.Size = new System.Drawing.Size(196, 23);
             tbIme.TabIndex = 0;
             // 
-            // btnSacuvajSve
-            // 
-            btnSacuvajSve.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            btnSacuvajSve.Location = new System.Drawing.Point(769, 421);
-            btnSacuvajSve.Name = "btnSacuvajSve";
-            btnSacuvajSve.Size = new System.Drawing.Size(168, 23);
-            btnSacuvajSve.TabIndex = 4;
-            btnSacuvajSve.Text = "Sacuvaj sve";
-            btnSacuvajSve.UseVisualStyleBackColor = true;
-            // 
             // btnAzuriraj
             // 
             btnAzuriraj.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            btnAzuriraj.Location = new System.Drawing.Point(597, 421);
+            btnAzuriraj.Location = new System.Drawing.Point(771, 420);
             btnAzuriraj.Name = "btnAzuriraj";
             btnAzuriraj.Size = new System.Drawing.Size(166, 24);
             btnAzuriraj.TabIndex = 12;
@@ -177,7 +166,7 @@
             // btnObrisi
             // 
             btnObrisi.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            btnObrisi.Location = new System.Drawing.Point(425, 421);
+            btnObrisi.Location = new System.Drawing.Point(599, 420);
             btnObrisi.Name = "btnObrisi";
             btnObrisi.Size = new System.Drawing.Size(166, 24);
             btnObrisi.TabIndex = 13;
@@ -231,11 +220,10 @@
             Controls.Add(btnPretrazi);
             Controls.Add(btnObrisi);
             Controls.Add(btnAzuriraj);
-            Controls.Add(btnSacuvajSve);
             Controls.Add(panel1);
             Controls.Add(pnlOsoba);
             Name = "FrmKlijenti";
-            Text = "FrmKlijenti";
+            Text = "Klijenti";
             pnlOsoba.ResumeLayout(false);
             pnlOsoba.PerformLayout();
             panel1.ResumeLayout(false);
@@ -257,7 +245,6 @@
         public System.Windows.Forms.TextBox tbPrezime;
         private System.Windows.Forms.Label label1;
         public System.Windows.Forms.TextBox tbIme;
-        public System.Windows.Forms.Button btnSacuvajSve;
         public System.Windows.Forms.Button btnAzuriraj;
         public System.Windows.Forms.Button btnObrisi;
         private System.Windows.Forms.Panel panel1;

@@ -12,6 +12,7 @@ namespace Client.GuiController
     {
         // ============ UC Dodaj Klijenta ============
         private UCDodajKlijenta view;
+        private bool _suppressSelectionChanged; // sprečava MB poruke tokom reload-a
 
         internal Control CreateDodajKlijenta()
         {
@@ -266,6 +267,8 @@ namespace Client.GuiController
         {
             try
             {
+                _suppressSelectionChanged = true;
+
                 var data = Communication.Instance.GetAllKlijent() ?? new List<Klijent>();
                 _klijenti = new BindingList<Klijent>(data);
                 listView.dgvKlijenti.DataSource = _klijenti;
@@ -279,7 +282,12 @@ namespace Client.GuiController
                 _klijenti = new BindingList<Klijent>(new List<Klijent>());
                 listView.dgvKlijenti.DataSource = _klijenti;
             }
+            finally
+            {
+                _suppressSelectionChanged = false;
+            }
         }
+
 
         private void RefreshMesta_ListForm()
         {
@@ -302,19 +310,33 @@ namespace Client.GuiController
 
         private void DgvKlijenti_SelectionChanged(object sender, EventArgs e)
         {
-            if (listView.dgvKlijenti.CurrentRow?.DataBoundItem is Klijent k)
-            {
-                listView.tbIme.Text = k.Ime;
-                listView.tbPrezime.Text = k.Prezime;
-                listView.tbBrojTelefona.Text = k.BrTelefona;
+            if (_suppressSelectionChanged) return;
 
-                if (listView.cbMesto?.DataSource is BindingList<Mesto> ms)
+            try
+            {
+                var row = listView.dgvKlijenti.CurrentRow;
+                if (row?.DataBoundItem is Klijent k)
                 {
-                    var idx = ms.ToList().FindIndex(x => x.Ptt == k.Mesto?.Ptt);
-                    if (idx >= 0) listView.cbMesto.SelectedIndex = idx;
+                    listView.tbIme.Text = k.Ime;
+                    listView.tbPrezime.Text = k.Prezime;
+                    listView.tbBrojTelefona.Text = k.BrTelefona;
+
+                    if (listView.cbMesto?.DataSource is BindingList<Mesto> ms)
+                    {
+                        var idx = ms.ToList().FindIndex(x => x.Ptt == k.Mesto?.Ptt);
+                        if (idx >= 0) listView.cbMesto.SelectedIndex = idx;
+                    }
+
+                    MessageBox.Show("Sistem je našao klijenta");
                 }
+                // ako nema selekcije – tiho preskoči (to se dešava pri čišćenju/Reload)
+            }
+            catch
+            {
+                MessageBox.Show("Sistem ne može da nađe klijenta");
             }
         }
+
 
         private void BtnDodaj_Click_List(object sender, EventArgs e)
         {
@@ -347,14 +369,14 @@ namespace Client.GuiController
             {
                 Communication.Instance.UpdateKlijent(k);
 
-                // najčistije: reload da MestoPrikaz sigurno bude ažuran
+                // najcistije: reload da MestoPrikaz sigurno bude ažuran
                 ReloadKlijentiGrid();
                 MessageBox.Show("Sistem je zapamtio klijenta");
                 ResetListForm();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Greška pri ažuriranju", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Sistem ne može da zapamti klijenta", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -368,14 +390,21 @@ namespace Client.GuiController
 
             try
             {
+                _suppressSelectionChanged = true;               // <<< ugasi SelectionChanged
                 Communication.Instance.DeleteKlijent(k);
-                _klijenti.Remove(k);
+                _klijenti.Remove(k);                            // trigeruje SelectionChanged → ugaseno vec
                 MessageBox.Show("Sistem je obrisao klijenta");
                 ResetListForm();
+                listView.dgvKlijenti.ClearSelection();
+                listView.dgvKlijenti.CurrentCell = null;
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Greška pri brisanju", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Sistem ne može da obriše klijenta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                _suppressSelectionChanged = false;              // ponovo dozvoli evente
             }
         }
 
@@ -383,6 +412,8 @@ namespace Client.GuiController
         {
             try
             {
+                _suppressSelectionChanged = true;
+
                 var q = (listView.tbFilter?.Text ?? string.Empty).Trim();
                 var results = Communication.Instance.GetKlijent(string.IsNullOrWhiteSpace(q) ? null : q);
 
@@ -396,12 +427,23 @@ namespace Client.GuiController
                 listView.tbPrezime.Clear();
                 listView.tbBrojTelefona.Clear();
                 if (listView.cbMesto.Items.Count > 0) listView.cbMesto.SelectedIndex = 0;
+
+                // ⇩ poruke po uslovu
+                if (_klijenti != null && _klijenti.Count > 0)
+                    MessageBox.Show("Sistem je našao klijente po zadatim kriterijimima");
+                else
+                    MessageBox.Show("Sistem nije našao klijente po zadatim kriterijimima");
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Greška pri pretrazi klijenata", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            finally
+            {
+                _suppressSelectionChanged = false;
+            }
         }
+
 
         private bool TryBuildKlijentFromForm(out Klijent k)
         {

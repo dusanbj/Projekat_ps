@@ -23,7 +23,7 @@ namespace Server.SystemOperation
             if (imaReversa)
                 throw new System.Exception("Klijent se koristi u reversima i ne može biti obrisan.");
 
-            // 2) Stvarni delete + fallback na FK ograničenje
+            // 2) Stvarni delete + fallback na FK ogranicenje (proveri da li narusava FK)
             try
             {
                 broker.Delete(p);
@@ -32,19 +32,19 @@ namespace Server.SystemOperation
             {
                 if (IsForeignKeyViolation(ex))
                     throw new System.Exception("Klijent se koristi u reversima i ne može biti obrisan.");
-                // Ako nije FK problem, prosledi dalje originalnu grešku (zadrži stack trace kao InnerException)
+                // Ako nije FK problem, prosledi dalje originalnu gresku (zadrzi stack trace kao InnerException)
                 throw new System.Exception(ex.Message, ex);
             }
         }
 
-        //ne znam tacno koji exception ce da baci pa smo obuhvatili sve, nece skoditi 
+        //ne znam tacno koji exception ce da baci pa sam obuhvatio sve
         private static bool IsForeignKeyViolation(System.Exception ex)
         {
             // SQL Server (ako je dostupno): 547 = FK/CK violation
             // if (ex is SqlException sqlEx && sqlEx.Number == 547) return true;
             // if (ex.InnerException is SqlException innerSql && innerSql.Number == 547) return true;
 
-            // Fallback: heuristika preko poruke (radi i za različite providere)
+            // Fallback: 
             var txt = ex.ToString();
             return txt.IndexOf("FOREIGN KEY", System.StringComparison.OrdinalIgnoreCase) >= 0
                 || txt.IndexOf("REFERENCE constraint", System.StringComparison.OrdinalIgnoreCase) >= 0

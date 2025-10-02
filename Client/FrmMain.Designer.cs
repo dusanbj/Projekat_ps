@@ -32,13 +32,12 @@
             itemAddPerson = new System.Windows.Forms.ToolStripMenuItem();
             dodajKlijentaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             radSaKlijentimaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            prikaziKlijenteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             reversToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             dodajReversToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            radSaReversimaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             robaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             dodajRobuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             radSaRobomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            prikaziRovuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             strucnaSpremaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             dodajStrucnuSpremuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             mestoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -47,7 +46,6 @@
             logoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             lblUser = new System.Windows.Forms.Label();
             pnlMain = new System.Windows.Forms.Panel();
-            radSaReversimaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             mnMain.SuspendLayout();
             SuspendLayout();
             // 
@@ -64,7 +62,7 @@
             // 
             // itemAddPerson
             // 
-            itemAddPerson.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { dodajKlijentaToolStripMenuItem, radSaKlijentimaToolStripMenuItem, prikaziKlijenteToolStripMenuItem });
+            itemAddPerson.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { dodajKlijentaToolStripMenuItem, radSaKlijentimaToolStripMenuItem });
             itemAddPerson.Name = "itemAddPerson";
             itemAddPerson.Size = new System.Drawing.Size(52, 20);
             itemAddPerson.Text = "Klijent";
@@ -73,22 +71,16 @@
             // dodajKlijentaToolStripMenuItem
             // 
             dodajKlijentaToolStripMenuItem.Name = "dodajKlijentaToolStripMenuItem";
-            dodajKlijentaToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            dodajKlijentaToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             dodajKlijentaToolStripMenuItem.Text = "Dodaj klijenta";
             dodajKlijentaToolStripMenuItem.Click += dodajKlijentaToolStripMenuItem_Click;
             // 
             // radSaKlijentimaToolStripMenuItem
             // 
             radSaKlijentimaToolStripMenuItem.Name = "radSaKlijentimaToolStripMenuItem";
-            radSaKlijentimaToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            radSaKlijentimaToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             radSaKlijentimaToolStripMenuItem.Text = "Rad sa klijentima";
             radSaKlijentimaToolStripMenuItem.Click += radSaKlijentimaToolStripMenuItem_Click;
-            // 
-            // prikaziKlijenteToolStripMenuItem
-            // 
-            prikaziKlijenteToolStripMenuItem.Name = "prikaziKlijenteToolStripMenuItem";
-            prikaziKlijenteToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
-            prikaziKlijenteToolStripMenuItem.Text = "Prikazi klijente";
             // 
             // reversToolStripMenuItem
             // 
@@ -104,9 +96,16 @@
             dodajReversToolStripMenuItem.Text = "Dodaj revers";
             dodajReversToolStripMenuItem.Click += dodajReversToolStripMenuItem_Click;
             // 
+            // radSaReversimaToolStripMenuItem
+            // 
+            radSaReversimaToolStripMenuItem.Name = "radSaReversimaToolStripMenuItem";
+            radSaReversimaToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            radSaReversimaToolStripMenuItem.Text = "Rad sa reversima";
+            radSaReversimaToolStripMenuItem.Click += radSaReversimaToolStripMenuItem_Click;
+            // 
             // robaToolStripMenuItem
             // 
-            robaToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { dodajRobuToolStripMenuItem, radSaRobomToolStripMenuItem, prikaziRovuToolStripMenuItem });
+            robaToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { dodajRobuToolStripMenuItem, radSaRobomToolStripMenuItem });
             robaToolStripMenuItem.Name = "robaToolStripMenuItem";
             robaToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             robaToolStripMenuItem.Text = "Roba";
@@ -114,20 +113,14 @@
             // dodajRobuToolStripMenuItem
             // 
             dodajRobuToolStripMenuItem.Name = "dodajRobuToolStripMenuItem";
-            dodajRobuToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            dodajRobuToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             dodajRobuToolStripMenuItem.Text = "Dodaj robu";
             // 
             // radSaRobomToolStripMenuItem
             // 
             radSaRobomToolStripMenuItem.Name = "radSaRobomToolStripMenuItem";
-            radSaRobomToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            radSaRobomToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             radSaRobomToolStripMenuItem.Text = "Rad sa robom";
-            // 
-            // prikaziRovuToolStripMenuItem
-            // 
-            prikaziRovuToolStripMenuItem.Name = "prikaziRovuToolStripMenuItem";
-            prikaziRovuToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
-            prikaziRovuToolStripMenuItem.Text = "Prikazi robu";
             // 
             // strucnaSpremaToolStripMenuItem
             // 
@@ -153,7 +146,7 @@
             // radSaMestimaToolStripMenuItem
             // 
             radSaMestimaToolStripMenuItem.Name = "radSaMestimaToolStripMenuItem";
-            radSaMestimaToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            radSaMestimaToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             radSaMestimaToolStripMenuItem.Text = "Rad sa mestima";
             radSaMestimaToolStripMenuItem.Click += radSaMestimaToolStripMenuItem_Click;
             // 
@@ -167,7 +160,7 @@
             // logoutToolStripMenuItem
             // 
             logoutToolStripMenuItem.Name = "logoutToolStripMenuItem";
-            logoutToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            logoutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             logoutToolStripMenuItem.Text = "Logout";
             logoutToolStripMenuItem.Click += logoutToolStripMenuItem_Click;
             // 
@@ -186,13 +179,6 @@
             pnlMain.Name = "pnlMain";
             pnlMain.Size = new System.Drawing.Size(643, 398);
             pnlMain.TabIndex = 2;
-            // 
-            // radSaReversimaToolStripMenuItem
-            // 
-            radSaReversimaToolStripMenuItem.Name = "radSaReversimaToolStripMenuItem";
-            radSaReversimaToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            radSaReversimaToolStripMenuItem.Text = "Rad sa reversima";
-            radSaReversimaToolStripMenuItem.Click += radSaReversimaToolStripMenuItem_Click;
             // 
             // FrmMain
             // 
@@ -219,13 +205,11 @@
         private System.Windows.Forms.Panel pnlMain;
         private System.Windows.Forms.ToolStripMenuItem dodajKlijentaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem radSaKlijentimaToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem prikaziKlijenteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reversToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dodajReversToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem robaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dodajRobuToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem radSaRobomToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem prikaziRovuToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem strucnaSpremaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem mestoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem radSaMestimaToolStripMenuItem;
