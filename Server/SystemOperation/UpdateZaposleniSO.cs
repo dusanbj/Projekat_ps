@@ -2,10 +2,10 @@
 
 namespace Server.SystemOperation
 {
-    internal class UpdateZaposleni : SystemOperationBase
+    internal class UpdateZaposleniSO : SystemOperationBase
     {
         private readonly Zaposleni z;
-        public UpdateZaposleni(Zaposleni z)
+        public UpdateZaposleniSO(Zaposleni z)
         {
             this.z = z;
         }

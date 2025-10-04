@@ -30,13 +30,13 @@ namespace Server
         // ===========================
         public Zaposleni Login(Zaposleni argument)
         {
-            var so = new LoginSO(argument);
+            SystemOperationBase so = new LoginSO(argument);
             so.ExecuteTemplate();
             if (so != null)
             {
                 prijavljeniZaposleni.Add(argument);
             }
-            return so.Result;
+            return ((LoginSO)so).Result;
         }
 
         internal void Logout(Zaposleni prijavljen)
@@ -55,22 +55,22 @@ namespace Server
         // ===========================
         //        ZAPOSLENI
         // ===========================
-        internal void CreateZaposleni(Zaposleni argument)
+        internal Zaposleni CreateZaposleni(Zaposleni argument)
         {
-            var so = new CreateZaposleniSO(argument);
+            SystemOperationBase so = new CreateZaposleniSO(argument);
             so.ExecuteTemplate();
-            // TODO: vratiti kreiranog zaposlenog ako je potrebno
+            return argument;
         }
 
         internal void UpdateZaposleni(Zaposleni argument)
         {
-            var so = new UpdateZaposleni(argument);
+            SystemOperationBase so = new UpdateZaposleniSO(argument);
             so.ExecuteTemplate();
         }
 
         internal void DeleteZaposleni(Zaposleni argument)
         {
-            var so = new DeleteZaposleniSO(argument);
+            SystemOperationBase so = new DeleteZaposleniSO(argument);
             so.ExecuteTemplate();
         }
 
@@ -83,18 +83,19 @@ namespace Server
 
         internal List<Zaposleni> GetAllZaposleni()
         {
-            var so = new GetAllZaposleniSO();
+            SystemOperationBase so = new GetAllZaposleniSO();
             so.ExecuteTemplate();
-            return so.Result;
+            return ((GetAllZaposleniSO)so).Result;
         }
 
         // ===========================
         //           KLIJENT
         // ===========================
-        internal void CreateKlijent(Klijent argument)
+        internal Klijent CreateKlijent(Klijent argument)
         {
-            var so = new CreateKlijentSO(argument);
+            SystemOperationBase so = new CreateKlijentSO(argument);
             so.ExecuteTemplate();
+            return argument;
         }
 
         internal List<Klijent> GetKlijent(string argument)
@@ -104,21 +105,21 @@ namespace Server
                 return GetAllKlijent();
             }
 
-            var so = new GetKlijentSO(argument.Trim());
+            SystemOperationBase so = new GetKlijentSO(argument.Trim());
             so.ExecuteTemplate();
-            return so.Result;
+            return ((GetKlijentSO)so).Result;
         }
 
         internal bool UpdateKlijent(Klijent argument)
         {
-            var so = new UpdateKlijentSO(argument);
+            SystemOperationBase so = new UpdateKlijentSO(argument);
             so.ExecuteTemplate();
             return true;
         }
 
         internal bool DeleteKlijent(Klijent argument)
         {
-            var so = new DeleteKlijentSO(argument);
+            SystemOperationBase so = new DeleteKlijentSO(argument);
             so.ExecuteTemplate();
             return true;
         }
@@ -127,9 +128,9 @@ namespace Server
         {
             try
             {
-                var so = new GetAllKlijentFullSO();
+                SystemOperationBase so = new GetAllKlijentFullSO();
                 so.ExecuteTemplate();
-                return so.Result;
+                return ((GetAllKlijentFullSO)so).Result;
             }
             finally
             {
@@ -142,30 +143,30 @@ namespace Server
         // ===========================
         internal Roba CreateRoba(Roba argument)
         {
-            var so = new CreateRobaSO(argument);
+            SystemOperationBase so = new CreateRobaSO(argument);
             so.ExecuteTemplate();
             return argument;
         }
 
         internal bool UpdateRoba(Roba argument)
         {
-            var so = new UpdateRobaSO(argument);
+            SystemOperationBase so = new UpdateRobaSO(argument);
             so.ExecuteTemplate();
             return true;
         }
 
         internal bool DeleteRoba(Roba argument)
         {
-            var so = new DeleteRobaSO(argument);
+            SystemOperationBase so = new DeleteRobaSO(argument);
             so.ExecuteTemplate();
             return true;
         }
 
         internal List<Roba> GetRoba(string argument) // null ili "" => sve
         {
-            var so = new GetRobaSO(argument);
+            SystemOperationBase so = new GetRobaSO(argument);
             so.ExecuteTemplate();
-            return so.Result;
+            return ((GetRobaSO)so).Result;
         }
 
         // ===========================
@@ -173,37 +174,37 @@ namespace Server
         // ===========================
         internal Mesto CreateMesto(Mesto argument)
         {
-            var so = new CreateMestoSO(argument);
+            SystemOperationBase so = new CreateMestoSO(argument);
             so.ExecuteTemplate();
             return argument;
         }
 
         internal bool UpdateMesto(Mesto argument)
         {
-            var so = new UpdateMestoSO(argument);
+            SystemOperationBase so = new UpdateMestoSO(argument);
             so.ExecuteTemplate();
             return true;
         }
 
         internal bool DeleteMesto(Mesto argument)
         {
-            var so = new DeleteMestoSO(argument);
+            SystemOperationBase so = new DeleteMestoSO(argument);
             so.ExecuteTemplate();
             return true;
         }
 
         internal List<Mesto> GetAllMesto()
         {
-            var so = new GetAllMestoSO();
+            SystemOperationBase so = new GetAllMestoSO();
             so.ExecuteTemplate();
-            return so.Result;
+            return ((GetAllMestoSO)so).Result;
         }
 
         internal List<Mesto> GetMesto(string filter)
         {
-            var so = new GetMestoSO(filter);
+            SystemOperationBase so = new GetMestoSO(filter);
             so.ExecuteTemplate();
-            return so.Result;
+            return ((GetMestoSO)so).Result;
         }
 
         // ===========================
@@ -211,27 +212,9 @@ namespace Server
         // ===========================
         internal StrSprema AddStrSprema(StrSprema argument)
         {
-            var so = new AddStrSpremaSO(argument);
+            SystemOperationBase so = new AddStrSpremaSO(argument);
             so.ExecuteTemplate();
             return argument;
-        }
-
-        internal bool UpdateStrSprema(StrSprema argument)
-        {
-            //poziva SO
-            return false;
-        }
-
-        internal bool DeleteStrSprema(StrSprema argument)
-        {
-            //poziva SO
-            return false;
-        }
-
-        internal StrSprema GetStrSprema(string argument)
-        {
-            //poziva SO
-            return null;
         }
 
         // ===========================
@@ -239,21 +222,21 @@ namespace Server
         // ===========================
         internal Revers CreateRevers(Revers revers)
         {
-            var so = new CreateReversSO(revers);
+            SystemOperationBase so = new CreateReversSO(revers);
             so.ExecuteTemplate();
-            return so.Result; // revers sa ID-em
+            return ((CreateReversSO)so).Result; // revers sa ID-em
         }
 
         internal bool UpdateRevers(Revers argument)
         {
-            var so = new UpdateReversSO(argument);
+            SystemOperationBase so = new UpdateReversSO(argument);
             so.ExecuteTemplate();
             return true;
         }
 
         internal bool DeleteRevers(Revers argument)
         {
-            var so = new DeleteReversSO(argument);
+            SystemOperationBase so = new DeleteReversSO(argument);
             so.ExecuteTemplate();
             return true;
         }
@@ -265,25 +248,25 @@ namespace Server
             {
                 return GetAllRevers();
             }
-            var so = new GetReversSO(argument); // SO koji sklapa WHERE uslov
+            SystemOperationBase so = new GetReversSO(argument); // SO koji sklapa WHERE uslov
             so.ExecuteTemplate();
-            return so.Result; // List<Revers>
+            return ((GetReversSO)so).Result; // List<Revers>
         }
 
         internal List<Revers> GetAllRevers()
         {
-            var so = new GetAllReversSO();
+            SystemOperationBase so = new GetAllReversSO();
             so.ExecuteTemplate();
-            return so.Result;
+            return ((GetAllReversSO)so).Result;
         }
 
         internal List<StavkaReversa> GetStavkeByRevers(long idRevers)
         {
-            var so = new GetReversSO(idRevers.ToString());
+            SystemOperationBase so = new GetReversSO(idRevers.ToString());
             so.ExecuteTemplate();
 
             // Treba da postoji tačno jedan revers sa tim ID-jem
-            var revers = so.Result.FirstOrDefault(r => r.Id == idRevers);
+            var revers = ((GetReversSO)so).Result.FirstOrDefault(r => r.Id == idRevers);
 
             return revers?.Stavke ?? new List<StavkaReversa>();
         }

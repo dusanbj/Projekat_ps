@@ -457,10 +457,19 @@ namespace Client.GuiController
 
         // Klik na Detalji – otvori FrmStavke za selektovani revers
         // Klik na Detalji – otvori FrmStavke za selektovani revers
+        private Revers FetchReversById(long id)
+        {
+            var lista = Communication.Instance.GetRevers(id.ToString()) ?? new List<Revers>();
+            if (lista.Count == 0)
+                lista = Communication.Instance.GetAllRevers()?.Where(x => x?.Id == id).ToList() ?? new List<Revers>();
+            HydrateNames(lista);
+            return lista.FirstOrDefault();
+        }
+
         private void BtnDetalji_Click(object sender, EventArgs e)
         {
-            var r = frmRevers.dgvReversi.CurrentRow?.DataBoundItem as Revers;
-            if (r == null)
+            var sel = frmRevers.dgvReversi.CurrentRow?.DataBoundItem as Revers;
+            if (sel == null)
             {
                 MessageBox.Show("Izaberite revers iz liste.");
                 return;
@@ -468,16 +477,22 @@ namespace Client.GuiController
 
             try
             {
-                // uspešan slučaj
+                var r = FetchReversById(sel.Id);
+                if (r == null)
+                {
+                    MessageBox.Show("Sistem ne može da nađe revers");
+                    return;
+                }
+
                 MessageBox.Show("Sistem je našao revers");
                 OpenStavkeFormForRevers(r);
             }
-            catch (Exception)
+            catch
             {
-                // neuspešan slučaj (npr. problem u komunikaciji / učitavanju stavki)
                 MessageBox.Show("Sistem ne može da nađe revers");
             }
         }
+
 
 
         // =======================

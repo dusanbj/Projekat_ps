@@ -315,8 +315,16 @@ namespace Client.GuiController
             try
             {
                 var row = listView.dgvKlijenti.CurrentRow;
-                if (row?.DataBoundItem is Klijent k)
+                if (row?.DataBoundItem is Klijent selected)
                 {
+                    var svezi = Communication.Instance.GetKlijent(selected.Id.ToString());
+                    var k = svezi != null && svezi.Count > 0 ? svezi[0] : null;
+                    if (k == null)
+                    {
+                        MessageBox.Show("Sistem ne može da nađe klijenta");
+                        return;
+                    }
+
                     listView.tbIme.Text = k.Ime;
                     listView.tbPrezime.Text = k.Prezime;
                     listView.tbBrojTelefona.Text = k.BrTelefona;
@@ -329,13 +337,13 @@ namespace Client.GuiController
 
                     MessageBox.Show("Sistem je našao klijenta");
                 }
-                // ako nema selekcije – tiho preskoči (to se dešava pri čišćenju/Reload)
             }
             catch
             {
                 MessageBox.Show("Sistem ne može da nađe klijenta");
             }
         }
+
 
 
         private void BtnDodaj_Click_List(object sender, EventArgs e)

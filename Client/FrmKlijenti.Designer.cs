@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             pnlOsoba = new System.Windows.Forms.Panel();
-            btnDodajGrad = new System.Windows.Forms.Button();
             btnSacuvaj = new System.Windows.Forms.Button();
             cbMesto = new System.Windows.Forms.ComboBox();
             label4 = new System.Windows.Forms.Label();
@@ -54,7 +53,6 @@
             // 
             pnlOsoba.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             pnlOsoba.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            pnlOsoba.Controls.Add(btnDodajGrad);
             pnlOsoba.Controls.Add(btnSacuvaj);
             pnlOsoba.Controls.Add(cbMesto);
             pnlOsoba.Controls.Add(label4);
@@ -68,15 +66,6 @@
             pnlOsoba.Name = "pnlOsoba";
             pnlOsoba.Size = new System.Drawing.Size(407, 392);
             pnlOsoba.TabIndex = 1;
-            // 
-            // btnDodajGrad
-            // 
-            btnDodajGrad.Location = new System.Drawing.Point(298, 175);
-            btnDodajGrad.Name = "btnDodajGrad";
-            btnDodajGrad.Size = new System.Drawing.Size(38, 23);
-            btnDodajGrad.TabIndex = 11;
-            btnDodajGrad.Text = "+";
-            btnDodajGrad.UseVisualStyleBackColor = true;
             // 
             // btnSacuvaj
             // 
@@ -235,7 +224,6 @@
         #endregion
 
         private System.Windows.Forms.Panel pnlOsoba;
-        public System.Windows.Forms.Button btnDodajGrad;
         public System.Windows.Forms.Button btnSacuvaj;
         public System.Windows.Forms.ComboBox cbMesto;
         private System.Windows.Forms.Label label4;
